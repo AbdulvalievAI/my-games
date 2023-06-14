@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'my-games';
+  public search: string = '';
+
+  test(event: any) {
+    console.log('===> event', event);
+  }
 }
