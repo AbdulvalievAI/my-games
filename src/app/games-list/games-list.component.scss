@@ -1,0 +1,12 @@
+mat-list-item {
+    height: fit-content !important;
+    padding: 1vh 0 !important;
+}
+.emptyList {
+    margin: 0 auto;
+    display: block;
+    width: 40vh;
+    height: 40vh;
+    position: relative;
+    object-fit: cover;
+}

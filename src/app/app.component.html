@@ -1,8 +1,13 @@
-<mat-form-field appearance="outline">
-  <mat-label>Поиск</mat-label>
-  <input matInput placeholder="Placeholder"
-         [ngModel]="search"
-         (ngModelChange)="test($event)"
-  >
-  <mat-icon matSuffix [color]="'primary'">search</mat-icon>
-</mat-form-field>
+<div class="main">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Поиск игры</mat-label>
+    <input matInput
+          placeholder="Placeholder"
+          [ngModel]="filterSettings.searchText"
+          (ngModelChange)="onSearch($event)"
+    >
+  </mat-form-field>
+  
+  <games-list [gameList]="currentGameList"></games-list>
+</div>
