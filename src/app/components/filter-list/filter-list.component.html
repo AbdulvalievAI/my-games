@@ -1,0 +1,11 @@
+<mat-form-field appearance="outline">
+    <mat-label>Поиск игры</mat-label>
+    <input matInput
+        placeholder="Поиск игры"
+        [ngModel]="searchText"
+        (ngModelChange)="onSearch($event)"
+    >
+    <mat-icon matSuffix *ngIf="isSpinner">
+        <mat-spinner  [diameter]="25"></mat-spinner>
+    </mat-icon>
+</mat-form-field>

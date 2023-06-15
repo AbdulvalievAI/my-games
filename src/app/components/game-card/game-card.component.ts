@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { IGame } from '../interfaces/game.interface';
-import { DataService } from '../services/data.service';
+import { IGame } from '../../interfaces/game.interface';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'game-card',

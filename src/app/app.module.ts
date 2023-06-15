@@ -1,31 +1,26 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
-import { GameCardComponent } from './game-card/game-card.component';
-import { GamesListComponent } from './games-list/games-list.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
-import { MatListModule } from '@angular/material/list';
+import { AppRoutingModule } from './app-routing.module';
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GameCardComponent,
-    GamesListComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        FormsModule,
-        MatListModule
-    ],
+  imports: [
+      BrowserModule,
+      BrowserAnimationsModule,
+      // MatFormFieldModule,
+      // MatInputModule,
+      // MatIconModule,
+      // FormsModule,
+      // MatListModule,
+      AppRoutingModule,
+      PagesModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

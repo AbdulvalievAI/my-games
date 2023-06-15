@@ -1,6 +1,6 @@
-import { IGame } from './../interfaces/game.interface';
+import { IGame } from '../../interfaces/game.interface';
 import { Component, Input, OnInit } from '@angular/core';
-import { DataService } from '../services/data.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'games-list',
@@ -12,6 +12,7 @@ export class GamesListComponent implements OnInit {
 
     ngOnInit(): void {
         
+      console.log('===> GamesListComponent', this);
     }
 }
 
