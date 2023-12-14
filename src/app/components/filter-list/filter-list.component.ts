@@ -23,7 +23,7 @@ export class FilterComponent implements OnInit {
 	) {
 		
 	}
-
+    
 	ngOnInit(): void {
 		console.log('===> filter-list.component > this', this);
 		this.filterListService.filters.subscribe(filters => {

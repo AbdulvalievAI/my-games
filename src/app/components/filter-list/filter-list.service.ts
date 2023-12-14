@@ -12,23 +12,35 @@ export class FilterListService {
     private readonly defaultFilters: IFilterListSettings = {
 		searchText: '',
 	};
-    public readonly filters: BehaviorSubject<IFilterListSettings>;
+    public filters: BehaviorSubject<IFilterListSettings>;
     
     
     constructor(
         private dataService: DataService,
     ) {
-        this.defaultGameList = this.dataService.games;
-        this.filters = new BehaviorSubject(this.defaultFilters);
+        this.dataService.changeGames$.subscribe(games => {
+            this.defaultGameList = games;
+            this.filters = new BehaviorSubject(this.defaultFilters);
+        });
     }
     
-      
+    private sortByDate(games: IGame[]): void {
+        games.sort((a,b) => {
+            const dateA = new Date(a.dateEdit);
+            const dateB = new Date(b.dateEdit);
+           
+            return dateB.getTime() - dateA.getTime();
+        });
+    }
+    
     public applyFilterGameList(filters: IFilterListSettings): IGame[] {
         let resultGameList: IGame[] = this.defaultGameList;
         
         if (filters.searchText) {
             resultGameList = resultGameList.filter(game => game.name.includes(filters.searchText as string));
         }
+        
+        this.sortByDate(resultGameList);
         
         return resultGameList;
     }

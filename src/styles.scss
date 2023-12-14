@@ -2,3 +2,13 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+app-root {
+    display: block;
+    padding: 3vh 3vh 0 3vh;
+}
+
+.mat-option-text.mat-option-text {
+    height: 70%;
+    display: flex;
+    align-items: center;
+}

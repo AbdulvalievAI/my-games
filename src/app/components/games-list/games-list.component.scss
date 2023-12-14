@@ -1,6 +1,13 @@
 mat-list-item {
     height: fit-content !important;
     padding: 1vh 0 !important;
+    border-bottom: 1px solid gray;
+    
+    cursor: pointer;
+    
+    &:hover {
+        background-color: #0000000a;
+    }
 }
 .emptyList {
     margin: 0 auto;

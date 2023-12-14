@@ -1,4 +1,6 @@
 # MyGames
+https://www.npmjs.com/package/uuid
+https://www.npmjs.com/package/emailjs
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.0.
 

@@ -1,6 +1,9 @@
-<div class="gameCard">
-    <div class="gameCard__num">{{index}}</div>
+<div class="gameCard" (click)="onClick()">
+    <div class="gameCard__num">{{index + 1}}</div>
     <div class="gameCard__name">
         {{gameData.name}}
+    </div>
+    <div class="gameCard__logo-wrapper" *ngFor="let platformType of gameData.platforms">
+        <img class="gameCard__logo-platform" [title]="dataService.platformsObject[platformType]?.name" [src]="dataService.platformsObject[platformType]?.logo">
     </div>
 </div>

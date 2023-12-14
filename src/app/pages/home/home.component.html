@@ -1,4 +1,9 @@
 <div class="home">
-    <filter-list [(currentGameList)]="currentGameList"></filter-list>
+    <div class="header">
+        <filter-list [(currentGameList)]="currentGameList"></filter-list>
+        <button class="add-game" mat-fab extended (click)="goToAddGame()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
     <games-list [gameList]="currentGameList"></games-list>
 </div>

@@ -1,0 +1,46 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+.buttons-block {
+    display: flex;
+    // position: absolute;
+    right: 1vw;
+    top: 1vw;
+}
+.logo-block {
+    display: flex;
+    
+    mat-form-field {
+        width: -webkit-fill-available;
+    }
+    button {
+        margin-left: 1vw;
+    }
+}
+.logo-platform {
+    height: 70%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+    margin-right: 1vw;
+}
+.platforms-selected-list {
+    display: flex;
+}
+.platforms-selected-item {
+    font-size: inherit;
+    line-height: 3em;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    margin-right: 1vw;
+}
+h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+mat-divider {
+    margin: 4vh 0;
+    border-top-width: 3px;
+}
+

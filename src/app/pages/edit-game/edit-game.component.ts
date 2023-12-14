@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'edit-game',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditGameComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) {
+}
 
   ngOnInit(): void {
+    /*this.route.params.subscribe((params: Params) => {
+        this.id = +params['id'];
+       
+    })*/
   }
 
 }

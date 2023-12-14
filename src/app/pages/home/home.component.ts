@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IGame } from 'src/app/interfaces/game.interface';
 import { DataService } from 'src/app/services/data.service';
 
@@ -12,6 +13,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     constructor(
         private cdr: ChangeDetectorRef,
+        private router: Router,
+        private dataService: DataService,
     ) {
     }
 
@@ -21,5 +24,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     
     ngAfterViewInit(): void {
         this.cdr.detectChanges();
+    }
+    
+    public goToAddGame() {
+        this.router.navigate(['/game']);
     }
 }
