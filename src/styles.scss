@@ -12,3 +12,11 @@ app-root {
     display: flex;
     align-items: center;
 }
+
+.mat-menu-panel {
+    overflow: unset !important;
+    background: none !important;
+    box-shadow: none !important;
+    min-width: auto;
+    max-width: none;
+}

@@ -8,11 +8,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { GameCardComponent } from './game-card/game-card.component';
 import { GamesListComponent } from './games-list/games-list.component';
 import { FilterComponent } from './filter-list/filter-list.component';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 @NgModule({
     declarations: [
@@ -20,6 +23,7 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
         GamesListComponent,
         FilterComponent,
         ImageDialogComponent,
+        DeleteDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -30,6 +34,8 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
         MatListModule,
         MatProgressSpinnerModule,
         NoopAnimationsModule,
+        MatButtonModule,
+        MatDialogModule,
     ],
     exports: [
         GameCardComponent,

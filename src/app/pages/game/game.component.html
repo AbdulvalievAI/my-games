@@ -42,7 +42,7 @@
                 mat-fab
                 color="warn"
                 aria-label="Удалить"
-                matTooltip="удалить"
+                matTooltip="Удалить"
                 style="margin-right: 1vw;"
                 (click)="deleteGame()">
                 <mat-icon>delete</mat-icon>
@@ -83,7 +83,7 @@
             id="logo-block__view-log-btn"
             aria-label="Посмотреть лого"
             matTooltip="Посмотреть лого"
-            (click)="openDialog()"
+            (click)="openImageDialog()"
             [disabled]="!newGameForm.value.logo">
             <mat-icon>remove_red_eye</mat-icon>
         </button>

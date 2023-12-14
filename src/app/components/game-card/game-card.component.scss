@@ -15,10 +15,15 @@
         margin-right: 1vw;
     }
     
+    &__logos-wrapper {
+        display: flex;
+        margin-left: auto;
+    }
+    
     &__logo-wrapper {
         width: 5vh;
         height: 5vh;
-        margin-left: auto;
+        margin-left: 0.5vw;
     }
     
     &__logo-platform {

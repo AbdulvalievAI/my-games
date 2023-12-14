@@ -29,4 +29,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     public goToAddGame() {
         this.router.navigate(['/game']);
     }
+    
+    public copyGamesList() {
+        navigator.clipboard.writeText(JSON.stringify(this.dataService.getGamesLC(), null, 2));
+    }
 }

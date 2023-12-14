@@ -62,4 +62,9 @@ export class FilterComponent implements OnInit {
 		
 		this.isSpinner = false;
 	}
+    
+    public clearFilters () {
+        this.searchText = '';
+        this.changeFilter();
+    }
 }

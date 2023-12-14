@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { HomeComponent } from './home/home.component';
 import { GameComponent } from './game/game.component';
@@ -45,6 +46,7 @@ import { ComponentsModule } from "../components/components.module";
         MatTooltipModule,
         MatSnackBarModule,
         MatDividerModule,
+        MatMenuModule,
     ],
 })
 export class PagesModule { }

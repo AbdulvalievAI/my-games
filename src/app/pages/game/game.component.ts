@@ -9,6 +9,7 @@ import { DataService } from 'src/app/services/data.service';
 import { IPlatform } from 'src/app/interfaces/platform.interface';
 
 import { ImageDialogComponent } from 'src/app/components/image-dialog/image-dialog.component';
+import { DeleteDialogComponent } from 'src/app/components/delete-dialog/delete-dialog.component';
 import { INewGameData } from './game.component.interface';
 import { IGame } from 'src/app/interfaces/game.interface';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -60,7 +61,7 @@ export class GameComponent implements OnInit {
             this.newGameForm = this.fb.group({
                 id: uuidv4(),
                 dateEdit: new Date().toISOString(),
-                name: [null, Validators.required],
+                name: ['', Validators.required],
                 logo: [null, Validators.required],
                 platforms: [null, Validators.required],
             });
@@ -71,7 +72,7 @@ export class GameComponent implements OnInit {
         this.platformList = this.dataService.platforms;
     }
     
-    public openDialog() {
+    public openImageDialog() {
         this.dialog.open(ImageDialogComponent,
             {
                 width: '50vh',
@@ -80,7 +81,7 @@ export class GameComponent implements OnInit {
             }
         );
     }
-    
+
     public resetField() {
         this.initForm();
     }
@@ -120,15 +121,25 @@ export class GameComponent implements OnInit {
     }
     
     public deleteGame() {
-        this.dataService.deleteGame(this.editGame);
-        this.goToHome();
+        const dialogRef = this.dialog.open(DeleteDialogComponent);
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.dataService.deleteGame(this.editGame);
+                this.goToHome();
+            }
+        });
     }
     
     public goToYandexSearch() {
-        window.open(`https://yandex.ru/images/search?text=${this.newGameForm.value.name}`, '_blank');
+        if (this.newGameForm.value.name.trim()) {
+            window.open(`https://yandex.ru/search?text=${this.newGameForm.value.name}`, '_blank');
+        }
     }
     
     public goToYandexImage() {
-        window.open(`https://yandex.ru/images/search?text=${this.newGameForm.value.name}`, '_blank');
+        if (this.newGameForm.value.name.trim()) {
+            window.open(`https://yandex.ru/images/search?text=${this.newGameForm.value.name}`, '_blank');
+        }
     }
 }
