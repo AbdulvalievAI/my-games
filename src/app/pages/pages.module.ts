@@ -15,7 +15,6 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { HomeComponent } from './home/home.component';
 import { GameComponent } from './game/game.component';
-import { EditGameComponent } from './edit-game/edit-game.component';
 import { SettingsComponent } from './settings/settings.component';
 
 import { ComponentsModule } from "../components/components.module";
@@ -24,13 +23,11 @@ import { ComponentsModule } from "../components/components.module";
     declarations: [
         HomeComponent,
         GameComponent,
-        EditGameComponent,
         SettingsComponent,
     ],
     exports: [
         HomeComponent,
         GameComponent,
-        EditGameComponent,
         SettingsComponent,
     ],
     imports: [

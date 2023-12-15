@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,10 +9,11 @@ import { DataService } from 'src/app/services/data.service';
 import { IPlatform } from 'src/app/interfaces/platform.interface';
 
 import { ImageDialogComponent } from 'src/app/components/image-dialog/image-dialog.component';
-import { DeleteDialogComponent } from 'src/app/components/delete-dialog/delete-dialog.component';
+import { YesNoDialogComponent } from 'src/app/components/yes-no-dialog/yes-no-dialog.component';
 import { INewGameData } from './game.component.interface';
 import { IGame } from 'src/app/interfaces/game.interface';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { IYesNoDialogSettings } from 'src/app/components/yes-no-dialog/yes-no-dialog.component.interface';
 
 @Component({
   selector: 'game',
@@ -54,7 +55,7 @@ export class GameComponent implements OnInit {
                 id: [this.editGame.id, Validators.required],
                 dateEdit: [new Date(this.editGame.dateEdit as string).toISOString(), Validators.required],
                 name: [this.editGame.name, Validators.required],
-                logo: [this.editGame.logo, Validators.required],
+                logo: [this.editGame.logo, [Validators.required, this.createPasswordStrengthValidator()]],
                 platforms: [this.getPlatformsByTypes(this.editGame.platforms), Validators.required],
             });
         } else {
@@ -62,7 +63,7 @@ export class GameComponent implements OnInit {
                 id: uuidv4(),
                 dateEdit: new Date().toISOString(),
                 name: ['', Validators.required],
-                logo: [null, Validators.required],
+                logo: [null, [Validators.required, this.createPasswordStrengthValidator()]],
                 platforms: [null, Validators.required],
             });
         }
@@ -121,7 +122,16 @@ export class GameComponent implements OnInit {
     }
     
     public deleteGame() {
-        const dialogRef = this.dialog.open(DeleteDialogComponent);
+        const dialogRef = this.dialog.open<YesNoDialogComponent, IYesNoDialogSettings>(
+            YesNoDialogComponent,
+            {
+                data: {
+                    textDialog: 'Удалить игру?',
+                    yesTextButton: 'УДАЛИТЬ',
+                    noTextButton: 'Отмена',
+                },
+            },
+        );
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -140,6 +150,14 @@ export class GameComponent implements OnInit {
     public goToYandexImage() {
         if (this.newGameForm.value.name.trim()) {
             window.open(`https://yandex.ru/images/search?text=${this.newGameForm.value.name}`, '_blank');
+        }
+    }
+    
+    private createPasswordStrengthValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const isVaid = control.value.includes('https://') || control.value.includes('http://')
+            
+            return !isVaid ? { url: true }: null;
         }
     }
 }

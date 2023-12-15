@@ -15,7 +15,7 @@ import { GameCardComponent } from './game-card/game-card.component';
 import { GamesListComponent } from './games-list/games-list.component';
 import { FilterComponent } from './filter-list/filter-list.component';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +23,7 @@ import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
         GamesListComponent,
         FilterComponent,
         ImageDialogComponent,
-        DeleteDialogComponent,
+        YesNoDialogComponent,
     ],
     imports: [
         BrowserModule,
