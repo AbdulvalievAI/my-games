@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { GameCardComponent } from './game-card/game-card.component';
 import { GamesListComponent } from './games-list/games-list.component';
@@ -36,6 +37,7 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
         NoopAnimationsModule,
         MatButtonModule,
         MatDialogModule,
+        MatTooltipModule,
     ],
     exports: [
         GameCardComponent,
