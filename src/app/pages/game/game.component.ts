@@ -143,21 +143,25 @@ export class GameComponent implements OnInit {
     
     public goToYandexSearch() {
         if (this.newGameForm.value.name.trim()) {
-            window.open(`https://yandex.ru/search?text=${this.newGameForm.value.name}`, '_blank');
+            window.open(`https://yandex.ru/search?text=игра ${this.newGameForm.value.name}`, '_blank');
         }
     }
     
     public goToYandexImage() {
         if (this.newGameForm.value.name.trim()) {
-            window.open(`https://yandex.ru/images/search?text=${this.newGameForm.value.name}`, '_blank');
+            window.open(`https://yandex.ru/images/search?text=игра ${this.newGameForm.value.name}`, '_blank');
         }
     }
     
     private createPasswordStrengthValidator(): ValidatorFn {
         return (control: AbstractControl): ValidationErrors | null => {
-            const isVaid = control.value.includes('https://') || control.value.includes('http://')
+            if (control.value) {
+                const isVaid = control.value.includes('https://') || control.value.includes('http://')
+                
+                return !isVaid ? { url: true }: null;
+            }
             
-            return !isVaid ? { url: true }: null;
+            return { url: true };
         }
     }
 }

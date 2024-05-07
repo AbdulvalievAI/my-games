@@ -44,7 +44,7 @@ export class FilterComponent implements OnInit {
 		this.valueSpinner = 0;
 		
 		this.searchTimerId = setTimeout(() => {
-			this.searchText = event;
+			this.searchText = event.toLowerCase();
 			this.changeFilter();
 		}, 500);
 	}

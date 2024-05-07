@@ -37,7 +37,7 @@ export class FilterListService {
         let resultGameList: IGame[] = this.defaultGameList;
         
         if (filters.searchText) {
-            resultGameList = resultGameList.filter(game => game.name.includes(filters.searchText as string));
+            resultGameList = resultGameList.filter(game => game.name.toLowerCase().includes(filters.searchText as string));
         }
         
         this.sortByDate(resultGameList);
