@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,12 +21,12 @@ import { IYesNoDialogSettings } from 'src/app/components/yes-no-dialog/yes-no-di
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit {
-    public newGameForm: FormGroup;
+    public newGameForm: UntypedFormGroup;
     public platformList: IPlatform[] = [];
     public editGame: IGame;
     
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private dataService: DataService,
         public dialog: MatDialog,
         private _snackBar: MatSnackBar,
