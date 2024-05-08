@@ -7,13 +7,14 @@ app-root {
     padding: 3vh 3vh 0 3vh;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version. */
 .mat-option-text.mat-option-text {
     height: 70%;
     display: flex;
     align-items: center;
 }
 
-.mat-menu-panel {
+.mat-mdc-menu-panel {
     overflow: unset !important;
     background: none !important;
     box-shadow: none !important;
