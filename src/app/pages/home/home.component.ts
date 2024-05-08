@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         const element = document.createElement('a');
         
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.dataService.getGamesLC(), null, 2)));
-        element.setAttribute('download', 'GamesList.json');
+        element.setAttribute('download', `GamesList_${new Date().getTime()}.json`);
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
