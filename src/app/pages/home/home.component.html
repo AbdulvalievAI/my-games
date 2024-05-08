@@ -6,28 +6,34 @@
                 color="primary"
                 mat-fab
                 [matMenuTriggerFor]="menu"
-                style="margin-right: 1vw;"
-                extended
                 aria-label="Настройки"
-                matTooltip="Настройки">
+                matTooltip="Настройки"
+                style="margin-right: 1vw;">
                 <mat-icon>settings</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button
-                    color="primary"
-                    mat-fab
-                    style="margin-right: 1vw;"
-                    extended
-                    aria-label="Копировать данные"
-                    matTooltip="Копировать данные"
-                    (click)="copyGamesList()">
-                    <mat-icon>content_copy</mat-icon>
-                </button>
+                <div class="matMenu-buttons-block">
+                    <button
+                        color="primary"
+                        mat-mini-fab
+                        aria-label="Копировать данные"
+                        matTooltip="Копировать данные"
+                        (click)="copyGamesList()">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                    <button
+                        color="primary"
+                        mat-mini-fab
+                        aria-label="Копировать данные файлом"
+                        matTooltip="Копировать данные файлом"
+                        (click)="copyGamesListFile()">
+                        <mat-icon>sim_card_download</mat-icon>
+                    </button>
+                </div>
             </mat-menu>
             <button
                 color="accent"
                 mat-fab
-                extended
                 aria-label="Добавить игру"
                 matTooltip="Добавить игру"
                 (click)="goToAddGame()">

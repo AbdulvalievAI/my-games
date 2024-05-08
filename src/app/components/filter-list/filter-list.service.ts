@@ -24,13 +24,25 @@ export class FilterListService {
         });
     }
     
-    private sortByDate(games: IGame[]): void {
+    private sortByDateEdit(games: IGame[]): void {
         games.sort((a,b) => {
             const dateA = new Date(a.dateEdit);
             const dateB = new Date(b.dateEdit);
            
             return dateB.getTime() - dateA.getTime();
         });
+    }
+    
+    private sortByAlphabet(games: IGame[]): void {
+        games.sort((a, b) => {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) {
+              return -1;
+            }
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          });
     }
     
     public applyFilterGameList(filters: IFilterListSettings): IGame[] {
@@ -40,7 +52,7 @@ export class FilterListService {
             resultGameList = resultGameList.filter(game => game.name.toLowerCase().includes(filters.searchText as string));
         }
         
-        this.sortByDate(resultGameList);
+        this.sortByAlphabet(resultGameList);
         
         return resultGameList;
     }

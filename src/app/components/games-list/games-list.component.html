@@ -1,5 +1,5 @@
 <mat-list role="list">
-    <mat-list-item *ngFor="let game of gameList; index as i;" role="listitem">
+    <mat-list-item *ngFor="let game of gameList; index as i;" role="listitem" class="mat-mdc-list-item-interactive">
         <game-card [gameData]="game" [index]="i"></game-card>
     </mat-list-item>
     <img class="emptyList" *ngIf="!gameList.length" src="/assets/empty.jpg" alt="">

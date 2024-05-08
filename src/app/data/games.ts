@@ -694,7 +694,7 @@ export const gamesList: IGame[] = [
         dateEdit: '2023-12-12T13:42:08.914Z',
         name: 'ABZÛ',
         logo: 'https://cdn.cloudflare.steamstatic.com/steam/apps/384190/capsule_184x69.jpg',
-        platforms: [EPlatform.STEAM]
+        platforms: [EPlatform.STEAM, EPlatform.EPIC]
     },
     {
         id: "52083f43-f194-475f-983c-e91e71a8d400",
@@ -2737,13 +2737,6 @@ export const gamesList: IGame[] = [
         id: "aa7afdb5-0ff2-4305-b487-745ea8a39d08",
         dateEdit: '2023-12-12T13:42:08.914Z',
         name: 'Conarium',
-        logo: '',
-        platforms: [EPlatform.EPIC]
-    },
-    {
-        id: "545baa3c-1f8c-41cc-b4c0-03872d0c6b1b",
-        dateEdit: '2023-12-12T13:42:08.914Z',
-        name: 'ABZU',
         logo: '',
         platforms: [EPlatform.EPIC]
     },

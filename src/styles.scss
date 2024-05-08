@@ -21,3 +21,9 @@ app-root {
     min-width: auto;
     max-width: none;
 }
+
+:root {
+    --mdc-fab-container-shape: 16px;
+    --mdc-fab-small-container-shape: 12px;
+    --mdc-dialog-container-color: #ffffff9e;
+}

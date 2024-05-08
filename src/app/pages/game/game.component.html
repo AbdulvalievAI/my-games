@@ -101,8 +101,10 @@
                 </div>
             </mat-select-trigger>
             <mat-option *ngFor="let platform of platformList" [value]="platform">
-                <img class="logo-platform" [src]="platform.logo">
-                <span class="name-platform">{{ platform.name }}</span>
+                <div  class="container-platform">
+                    <img class="logo-platform" [src]="platform.logo">
+                    <span class="name-platform">{{ platform.name }}</span>
+                </div>
             </mat-option>
         </mat-select>
     </mat-form-field>
