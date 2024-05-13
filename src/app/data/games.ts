@@ -4035,6 +4035,13 @@ export const gamesList: IGame[] = [
         logo: '',
         platforms: [EPlatform.EPIC]
     },
+    {
+        id: "b1d4c93c-2167-4d73-ad0b-4a4fe45591be",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: "Machinika: Museum",
+        logo: '',
+        platforms: [EPlatform.STEAM]
+    },
 ];
 
 
