@@ -1,14 +1,6 @@
 import { EPlatform } from "../enums/platform.enums";
 import { IGame } from "../interfaces/game.interface";
 
-/*
-gog +
-steam +
-ubisoft +
-arc +
-vk +
-EA +
- */
 export const gamesList: IGame[] = [
     {
         id: "498b674f-32c7-42f0-a4ff-9c9763a086e7",
@@ -4042,8 +4034,14 @@ export const gamesList: IGame[] = [
         logo: '',
         platforms: [EPlatform.STEAM]
     },
+    {
+        id: "3b02fb1c-a540-494d-b774-c6aaaba96e7d",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: "Evacuation",
+        logo: '',
+        platforms: [EPlatform.STEAM]
+    },
 ];
-
 
 
 
