@@ -4041,6 +4041,13 @@ export const gamesList: IGame[] = [
         logo: '',
         platforms: [EPlatform.STEAM]
     },
+    {
+        id: "208bfce6-0c1c-48ca-b017-56a7eb0a6570",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: "Farming Simulator 22",
+        logo: '',
+        platforms: [EPlatform.EPIC]
+    },
 ];
 
 
