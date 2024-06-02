@@ -4048,6 +4048,13 @@ export const gamesList: IGame[] = [
         logo: '',
         platforms: [EPlatform.EPIC]
     },
+    {
+        id: "332899be-144b-4af3-9479-87a6445ae686",
+        dateEdit: '2024-06-02T09:00:21.665Z',
+        name: "We Went Back",
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1218250/header.jpg',
+        platforms: [EPlatform.STEAM]
+    },
 ];
 
 
