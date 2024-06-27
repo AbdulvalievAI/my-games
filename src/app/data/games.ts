@@ -4055,6 +4055,14 @@ export const gamesList: IGame[] = [
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1218250/header.jpg',
         platforms: [EPlatform.STEAM]
     },
+    {
+        id: "ffc11e15-3385-41e6-9e9b-b26055fefd62",
+        dateEdit: '2024-06-27T09:49:34.205Z',
+        name: "Islands of Insight",
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2071500/header.jpg?t=1716489364',
+        platforms: [EPlatform.STEAM]
+    },
+    
 ];
 
 
