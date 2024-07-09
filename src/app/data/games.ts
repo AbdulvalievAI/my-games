@@ -4062,7 +4062,27 @@ export const gamesList: IGame[] = [
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2071500/header.jpg?t=1716489364',
         platforms: [EPlatform.STEAM]
     },
-    
+    {
+        id: "9a8a8775-afa2-4ade-b219-0d1eeafb8f1a",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: 'The Falconeer',
+        logo: 'https://cdn2.unrealengine.com/egs-thefalconeer-tomassala-s1-2560x1440-d1517aad984c.jpg?h=270&quality=medium&resize=1&w=480',
+        platforms: [EPlatform.EPIC]
+    },
+    {
+        id: "1426b943-5fbf-4688-8619-cacb8884eac5",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: "Cakey's Twisted Bakery",
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3028500/header.jpg?t=1720351714',
+        platforms: [EPlatform.STEAM]
+    },
+{
+        id: "e6e40d6a-b17b-414b-9067-92edb34e9c32",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: 'Islands of Insigh',
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2071500/header.jpg?t=1716489364',
+        platforms: [EPlatform.STEAM]
+    },
 ];
 
 
