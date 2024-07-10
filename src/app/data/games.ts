@@ -4076,11 +4076,18 @@ export const gamesList: IGame[] = [
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3028500/header.jpg?t=1720351714',
         platforms: [EPlatform.STEAM]
     },
-{
+    {
         id: "e6e40d6a-b17b-414b-9067-92edb34e9c32",
         dateEdit: '2023-12-12T13:42:08.914Z',
         name: 'Islands of Insigh',
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2071500/header.jpg?t=1716489364',
+        platforms: [EPlatform.STEAM]
+    },
+    {
+        id: "4e5b1949-1ffe-4e3f-b8ff-3736e8289b22",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: 'Once human',
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2139460/header.jpg?t=1720555237',
         platforms: [EPlatform.STEAM]
     },
 ];
