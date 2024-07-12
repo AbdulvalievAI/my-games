@@ -4090,6 +4090,20 @@ export const gamesList: IGame[] = [
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2139460/header.jpg?t=1720555237',
         platforms: [EPlatform.STEAM]
     },
+    {
+        id: "1e966306-5d9d-45d9-a6cc-27a096a09703",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: 'Deathly Stillness',
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1727650/header.jpg?t=1713895351',
+        platforms: [EPlatform.STEAM]
+    },
+    {
+        id: "08605e48-bf4f-4624-8bfd-9b04361c059b",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: 'TELEFORUM',
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2186570/header.jpg?t=1709583778',
+        platforms: [EPlatform.STEAM]
+    },
 ];
 
 
