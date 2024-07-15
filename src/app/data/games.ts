@@ -4104,6 +4104,13 @@ export const gamesList: IGame[] = [
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2186570/header.jpg?t=1709583778',
         platforms: [EPlatform.STEAM]
     },
+    {
+        id: "927c0009-19ea-44f2-8aeb-88481cf1eaf1",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: 'Devolverland Expo',
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1283220/header.jpg?t=1615966311',
+        platforms: [EPlatform.STEAM]
+    },
 ];
 
 
