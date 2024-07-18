@@ -4111,6 +4111,13 @@ export const gamesList: IGame[] = [
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1283220/header.jpg?t=1615966311',
         platforms: [EPlatform.STEAM]
     },
+    {
+        id: "ea32637c-c642-402d-b627-c78dae810693",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: "Maid of Sker",
+        logo: 'https://cdn1.epicgames.com/spt-assets/964693002c1b447c949b155c71727c45/maid-of-sker-1ig0g.jpg',
+        platforms: [EPlatform.EPIC]
+    },
 ];
 
 
