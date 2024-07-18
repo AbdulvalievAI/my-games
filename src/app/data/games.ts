@@ -4118,6 +4118,13 @@ export const gamesList: IGame[] = [
         logo: 'https://cdn1.epicgames.com/spt-assets/964693002c1b447c949b155c71727c45/maid-of-sker-1ig0g.jpg',
         platforms: [EPlatform.EPIC]
     },
+    {
+        id: "7c5182de-3f35-4f15-bc18-86aa88daa847",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: "Arcade Paradise",
+        logo: 'https://cdn1.epicgames.com/offer/89b9c510e8d74b9da34c447915b1ffb1/EGS_ArcadeParadise_NosebleedInteractive_S1_2560x1440-5a8ca84efde851f3ca2b0d30b393543e',
+        platforms: [EPlatform.EPIC]
+    },
 ];
 
 
