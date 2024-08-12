@@ -4125,6 +4125,20 @@ export const gamesList: IGame[] = [
         logo: 'https://cdn1.epicgames.com/offer/89b9c510e8d74b9da34c447915b1ffb1/EGS_ArcadeParadise_NosebleedInteractive_S1_2560x1440-5a8ca84efde851f3ca2b0d30b393543e',
         platforms: [EPlatform.EPIC]
     },
+    {
+        id: "5dfe5906-3926-42bf-a565-80b653879a2c",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: "Intravenous",
+        logo: 'https://images.gog-statics.com/ebbd9dccd2d23cd70e9b812afda6ba121429bdccb80f0b28f368162742bbf24e_product_tile_extended_432x243.webp',
+        platforms: [EPlatform.GOG]
+    },
+    {
+        id: "f2f2c9a0-4605-4e7a-a3bb-32bbd23300e9",
+        dateEdit: '2023-12-12T13:42:08.914Z',
+        name: "SAVE Teaser: Before the Dawn",
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3116360/header.jpg?t=1723390767',
+        platforms: [EPlatform.STEAM]
+    },
 ];
 
 
