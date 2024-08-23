@@ -4139,6 +4139,13 @@ export const gamesList: IGame[] = [
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3116360/header.jpg?t=1723390767',
         platforms: [EPlatform.STEAM]
     },
+    {
+        id: "d0c88d4f-0de5-4bee-b6b7-a3ca6f4e855e",
+        dateEdit: '2024-08-23T12:39:46.862Z',
+        name: "The Callisto Protocol",
+        logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1544020/header.jpg?t=1711549418',
+        platforms: [EPlatform.EPIC]
+    },
 ];
 
 
