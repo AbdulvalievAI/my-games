@@ -4146,6 +4146,13 @@ export const gamesList: IGame[] = [
         logo: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1544020/header.jpg?t=1711549418',
         platforms: [EPlatform.EPIC]
     },
+    {
+        id: "b70dc2c2-0fe3-4849-8b38-357ce32489a8",
+        dateEdit: '2024-09-05T16:55:51.338Z',
+        name: "Sniper Ghost Warrior Contracts",
+        logo: 'https://cdn1.epicgames.com/spt-assets/4ad9b2d4a92141a09e3ca4df8bfbcfea/sniper-ghost-warrior-contracts-logo-31cic.png?h=270&quality=medium&resize=1&w=480',
+        platforms: [EPlatform.EPIC]
+    },
 ];
 
 
