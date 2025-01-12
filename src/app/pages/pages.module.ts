@@ -13,22 +13,28 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 
+import { ComponentsModule } from "../components/components.module";
+
 import { HomeComponent } from './home/home.component';
 import { GameComponent } from './game/game.component';
 import { SettingsComponent } from './settings/settings.component';
-
-import { ComponentsModule } from "../components/components.module";
+import { AuthComponent } from './auth/auth.component';
+import { YandexTokenComponent } from './auth/yandexToken/yandex-token.component';
 
 @NgModule({
     declarations: [
         HomeComponent,
         GameComponent,
         SettingsComponent,
+        AuthComponent,
+        YandexTokenComponent,
     ],
     exports: [
         HomeComponent,
         GameComponent,
         SettingsComponent,
+        AuthComponent,
+        YandexTokenComponent,
     ],
     imports: [
         ComponentsModule,
