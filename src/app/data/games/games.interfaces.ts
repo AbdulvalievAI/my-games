@@ -1,5 +1,4 @@
-import { EPlatform } from "../enums/platform.enums";
-
+import { EPlatform } from "../platforms/platforms.interfaces";
 
 export interface IGame {
     id: number | string,

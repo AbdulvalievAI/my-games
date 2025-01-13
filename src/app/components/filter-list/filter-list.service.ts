@@ -1,39 +1,45 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IGame } from 'src/app/interfaces/game.interface';
-import { DataService } from 'src/app/services/data.service';
+
+import { IGame } from '../../data/games/games.interfaces';
+import { GamesService } from '../../data/games/games.service';
+
 import { IFilterListSettings } from './filter-list.component.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterListService {
-    private defaultGameList: IGame[];
-    private readonly defaultFilters: IFilterListSettings = {
-		searchText: '',
-	};
     public filters: BehaviorSubject<IFilterListSettings>;
     
+    private _defaultGameList: IGame[];
+    private readonly _defaultFilters: IFilterListSettings = {
+		searchText: '',
+	};
     
     constructor(
-        private dataService: DataService,
+        private _gamesService: GamesService,
     ) {
-        this.dataService.changeGames$.subscribe(games => {
-            this.defaultGameList = games;
-            this.filters = new BehaviorSubject(this.defaultFilters);
+        this._gamesService.changeGames$.subscribe(games => {
+            this._defaultGameList = games;
+            this.filters = new BehaviorSubject(this._defaultFilters);
         });
     }
+
     
-    private sortByDateEdit(games: IGame[]): void {
-        games.sort((a,b) => {
-            const dateA = new Date(a.dateEdit);
-            const dateB = new Date(b.dateEdit);
-           
-            return dateB.getTime() - dateA.getTime();
-        });
+    public applyFilterGameList(filters: IFilterListSettings): IGame[] {
+        let resultGameList: IGame[] = this._defaultGameList;
+        
+        if (filters.searchText) {
+            resultGameList = resultGameList.filter(game => game.name.toLowerCase().includes(filters.searchText as string));
+        }
+        
+        this._sortByAlphabet(resultGameList);
+        
+        return resultGameList;
     }
     
-    private sortByAlphabet(games: IGame[]): void {
+    private _sortByAlphabet(games: IGame[]): void {
         games.sort((a, b) => {
             if (a.name.toLowerCase() < b.name.toLowerCase()) {
               return -1;
@@ -45,15 +51,14 @@ export class FilterListService {
           });
     }
     
-    public applyFilterGameList(filters: IFilterListSettings): IGame[] {
-        let resultGameList: IGame[] = this.defaultGameList;
-        
-        if (filters.searchText) {
-            resultGameList = resultGameList.filter(game => game.name.toLowerCase().includes(filters.searchText as string));
-        }
-        
-        this.sortByAlphabet(resultGameList);
-        
-        return resultGameList;
+    /*
+    private _sortByDateEdit(games: IGame[]): void {
+        games.sort((a,b) => {
+            const dateA = new Date(a.dateEdit);
+            const dateB = new Date(b.dateEdit);
+           
+            return dateB.getTime() - dateA.getTime();
+        });
     }
+    */
 }

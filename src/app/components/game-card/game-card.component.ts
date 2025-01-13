@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { IGame } from '../../interfaces/game.interface';
-import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
+
+import { IGame } from '../../data/games/games.interfaces';
+import { GamesService } from '../../data/games/games.service';
+import { PlatformsService } from '../../data/platforms/platforms.service';
 
 @Component({
   selector: 'game-card',
@@ -9,17 +11,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./game-card.component.scss']
 })
 export class GameCardComponent {
-    @Input() gameData: IGame = this.dataService.mockGame;
+    @Input() gameData: IGame = this._gamesService.mockGame;
     @Input() index: number = 0;
 
     constructor (
-        public dataService: DataService,
-        private router: Router,
+        public platformsService: PlatformsService,
+        private _gamesService: GamesService,
+        private _router: Router,
     ) {
-
     }
+    
     public onClick() {
-        
-        this.router.navigate(['/game', this.gameData.id]);
+        this._router.navigate(['/game', this.gameData.id]);
     }
 }

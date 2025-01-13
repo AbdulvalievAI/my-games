@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IGame } from 'src/app/interfaces/game.interface';
+
+import { IGame } from '../../data/games/games.interfaces';
+
 import { IFilterListSettings } from './filter-list.component.interface';
 import { FilterListService } from './filter-list.service';
 
@@ -10,24 +12,24 @@ import { FilterListService } from './filter-list.service';
 })
 export class FilterComponent implements OnInit {
 	@Input() currentGameList: IGame[] = [];
+    
 	@Output() currentGameListChange: EventEmitter<IGame[]> = new EventEmitter<IGame[]>();
-	
 	@Output() public onChange = new EventEmitter<string>();
+    
 	public valueSpinner = 0;
 	public searchText: IFilterListSettings['searchText'] = '';
-	private searchTimerId: any = null;
 	public isSpinner: boolean = false;
+    
+	private _searchTimerId: any = null;
 
 	constructor(
-		private filterListService: FilterListService,
+		private _filterListService: FilterListService,
 	) {
-		
 	}
     
 	ngOnInit(): void {
-		console.log('===> filter-list.component > this', this);
-		this.filterListService.filters.subscribe(filters => {
-			this.currentGameListChange.emit(this.filterListService.applyFilterGameList(filters));
+		this._filterListService.filters.subscribe(filters => {
+			this.currentGameListChange.emit(this._filterListService.applyFilterGameList(filters));
 		});
 		
 		setTimeout(() => {
@@ -37,19 +39,25 @@ export class FilterComponent implements OnInit {
 	
 	public onSearch(event: string) {
 		this.isSpinner = true;
-		if (this.searchTimerId) {
-			clearTimeout(this.searchTimerId);
-			this.searchTimerId = null;
+        
+		if (this._searchTimerId) {
+			clearTimeout(this._searchTimerId);
+			this._searchTimerId = null;
 		}
+        
 		this.valueSpinner = 0;
-		
-		this.searchTimerId = setTimeout(() => {
+		this._searchTimerId = setTimeout(() => {
 			this.searchText = event.toLowerCase();
-			this.changeFilter();
+			this._changeFilter();
 		}, 500);
 	}
+    
+    public clearFilters () {
+        this.searchText = '';
+        this._changeFilter();
+    }
 	
-	private changeFilter() {
+	private _changeFilter() {
 		const resultFilter: IFilterListSettings = {
 			searchText: this.searchText,
 		};
@@ -58,13 +66,7 @@ export class FilterComponent implements OnInit {
 			resultFilter.searchText = this.searchText;
 		}
 		
-		this.filterListService.filters.next(resultFilter);
-		
+		this._filterListService.filters.next(resultFilter);
 		this.isSpinner = false;
 	}
-    
-    public clearFilters () {
-        this.searchText = '';
-        this.changeFilter();
-    }
 }

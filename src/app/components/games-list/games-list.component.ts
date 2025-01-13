@@ -1,18 +1,12 @@
-import { IGame } from '../../interfaces/game.interface';
-import { Component, Input, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
+import { Component, Input } from '@angular/core';
+
+import { IGame } from '../../data/games/games.interfaces';
 
 @Component({
   selector: 'games-list',
   templateUrl: './games-list.component.html',
   styleUrls: ['./games-list.component.scss'],
 })
-export class GamesListComponent implements OnInit {
+export class GamesListComponent {
     @Input() gameList: IGame[] = [];
-
-    ngOnInit(): void {
-        
-      console.log('===> GamesListComponent', this);
-    }
 }
-

@@ -1,5 +1,5 @@
-import { EPlatform } from "../enums/platform.enums";
-import { IGame } from "../interfaces/game.interface";
+import { EPlatform } from "../platforms/platforms.interfaces";
+import { IGame } from "./games.interfaces";
 
 export const gamesList: IGame[] = [
     {
@@ -4154,8 +4154,3 @@ export const gamesList: IGame[] = [
         platforms: [EPlatform.EPIC]
     },
 ];
-
-
-
-
-

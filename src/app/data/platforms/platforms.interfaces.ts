@@ -1,3 +1,11 @@
+
+export interface IPlatform {
+    id: number;
+    name: string;
+    type: EPlatform,
+    logo: EPlatformLogo;
+}
+
 export enum EPlatform {
     LOCAL = 'local',
     STEAM = 'steam',

@@ -1,6 +1,7 @@
 <div class="home">
     <div class="home__header">
         <filter-list [(currentGameList)]="currentGameList"></filter-list>
+        
         <div class="home__buttons-block">
             <button
                 color="primary"
@@ -8,9 +9,11 @@
                 [matMenuTriggerFor]="menu"
                 aria-label="Настройки"
                 matTooltip="Настройки"
-                style="margin-right: 1vw;">
+                style="margin-right: 1vw;"
+            >
                 <mat-icon>settings</mat-icon>
             </button>
+            
             <mat-menu #menu="matMenu">
                 <div class="matMenu-buttons-block">
                     <button
@@ -18,28 +21,34 @@
                         mat-mini-fab
                         aria-label="Копировать данные"
                         matTooltip="Копировать данные"
-                        (click)="copyGamesList()">
+                        (click)="copyGamesList()"
+                    >
                         <mat-icon>content_copy</mat-icon>
                     </button>
+                    
                     <button
                         color="primary"
                         mat-mini-fab
                         aria-label="Копировать данные файлом"
                         matTooltip="Копировать данные файлом"
-                        (click)="copyGamesListFile()">
+                        (click)="copyGamesListFile()"
+                    >
                         <mat-icon>sim_card_download</mat-icon>
                     </button>
                 </div>
             </mat-menu>
+            
             <button
                 color="accent"
                 mat-fab
                 aria-label="Добавить игру"
                 matTooltip="Добавить игру"
-                (click)="goToAddGame()">
+                (click)="goToAddGame()"
+            >
                 <mat-icon>add</mat-icon>
             </button>
         </div>
     </div>
+    
     <games-list [gameList]="currentGameList"></games-list>
 </div>

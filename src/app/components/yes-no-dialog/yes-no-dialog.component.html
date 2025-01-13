@@ -1,17 +1,21 @@
 <h3>{{ settings.textDialog }}</h3>
+
 <mat-dialog-actions align="end">
     <button
         color="primary"
         mat-raised-button
         [mat-dialog-close]="false"
-        mat-dialog-close>
+        mat-dialog-close
+    >
         {{ settings.noTextButton}}
     </button>
+    
     <button
         color="warn"
         mat-raised-button
         [mat-dialog-close]="true"
-        cdkFocusInitial>
+        cdkFocusInitial
+    >
         {{ settings.yesTextButton }}
     </button>
 </mat-dialog-actions>

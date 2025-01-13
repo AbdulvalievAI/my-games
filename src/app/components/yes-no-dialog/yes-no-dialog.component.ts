@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { IYesNoDialogSettings } from './yes-no-dialog.component.interface';
 
 @Component({
@@ -8,7 +9,7 @@ import { IYesNoDialogSettings } from './yes-no-dialog.component.interface';
   styleUrls: ['./yes-no-dialog.component.scss']
 })
 export class YesNoDialogComponent {
-    private defaultSettings: IYesNoDialogSettings = {
+    private _defaultSettings: IYesNoDialogSettings = {
         yesTextButton: 'Согласиться',
         noTextButton: 'Отмена',
         textDialog: 'Подтвердить действие?',
@@ -16,13 +17,14 @@ export class YesNoDialogComponent {
     
     constructor(
         public dialogRef: MatDialogRef<YesNoDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _settings: IYesNoDialogSettings) {}
+        @Inject(MAT_DIALOG_DATA) private _settings: IYesNoDialogSettings,
+    ) {}
         
     public get settings(): IYesNoDialogSettings {
         if (this._settings) {
             return this._settings;
         } else {
-            return this.defaultSettings;
+            return this._defaultSettings;
         }
     }    
 }

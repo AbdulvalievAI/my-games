@@ -1,43 +1,40 @@
-import { ChangeDetectorRef, Component, OnInit, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IGame } from 'src/app/interfaces/game.interface';
-import { DataService } from 'src/app/services/data.service';
+
+import { IGame } from '../../data/games/games.interfaces';
+import { GamesService } from '../../data/games/games.service';
 
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements AfterViewInit {
     public currentGameList: IGame[] = [];
 
     constructor(
-        private cdr: ChangeDetectorRef,
-        private router: Router,
-        private dataService: DataService,
+        private _cdr: ChangeDetectorRef,
+        private _router: Router,
+        private _gamesService: GamesService,
     ) {
     }
 
-    ngOnInit(): void {
-        console.log('===> HomeComponent', this);
-    }
-    
     ngAfterViewInit(): void {
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
     
     public goToAddGame() {
-        this.router.navigate(['/game']);
+        this._router.navigate(['/game']);
     }
     
     public copyGamesList() {
-        navigator.clipboard.writeText(JSON.stringify(this.dataService.getGamesLC(), null, 2));
+        navigator.clipboard.writeText(JSON.stringify(this._gamesService.getGamesLC(), null, 2));
     }
     
     public copyGamesListFile() {
         const element = document.createElement('a');
         
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.dataService.getGamesLC(), null, 2)));
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this._gamesService.getGamesLC(), null, 2)));
         element.setAttribute('download', `GamesList_${new Date().getTime()}.json`);
         element.style.display = 'none';
         document.body.appendChild(element);

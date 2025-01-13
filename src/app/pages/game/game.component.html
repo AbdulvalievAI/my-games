@@ -6,26 +6,32 @@
             aria-label="Главная"
             matTooltip="Главная"
             style="margin-right: 1vw;"
-            (click)="goToHome()">
+            (click)="goToHome()"
+        >
             <mat-icon>home</mat-icon>
         </button>
+        
         <button
             mat-fab
             color="primary"
             aria-label="Яндекс поиск"
             matTooltip="Яндекс поиск"
             style="margin-right: 1vw;"
-            (click)="goToYandexSearch()">
+            (click)="goToYandexSearch()"
+        >
             <mat-icon>public</mat-icon>
         </button>
+        
         <button
             mat-fab
             color="primary"
             aria-label="Яндекс картинки"
             matTooltip="Яндекс картинки"
-            (click)="goToYandexImage()">
+            (click)="goToYandexImage()"
+        >
             <mat-icon>image</mat-icon>
         </button>
+        
         <div style="margin-left: auto;">
             <button
                 *ngIf="!editGame"
@@ -34,9 +40,11 @@
                 aria-label="Отчистить"
                 matTooltip="Отчистить"
                 style="margin-right: 1vw;"
-                (click)="resetField()">
+                (click)="resetField()"
+            >
                 <mat-icon>cleaning_services</mat-icon>
             </button>
+            
             <button
                 *ngIf="editGame"
                 mat-fab
@@ -44,26 +52,33 @@
                 aria-label="Удалить"
                 matTooltip="Удалить"
                 style="margin-right: 1vw;"
-                (click)="deleteGame()">
+                (click)="deleteGame()"
+            >
                 <mat-icon>delete</mat-icon>
             </button>
+            
             <button
                 mat-fab
                 color="accent"
                 aria-label="Сохранить игру"
                 matTooltip="Сохранить игру"
+                [disabled]="!newGameForm.valid"
                 (click)="saveGame()"
-                [disabled]="!newGameForm.valid">
+            >
                 <mat-icon>save</mat-icon>
             </button>
         </div>
     </div>
+    
     <h1>{{ newGameForm.value.name || 'Название игры' }}</h1>
     <h3>{{ newGameForm.value.dateEdit | date:'dd.MM.yy HH:mm' }}</h3>
     <mat-divider></mat-divider>
+    
     <mat-form-field appearance="outline">
         <mat-label>Название игры</mat-label>
-        <input matInput
+        
+        <input 
+            matInput
             placeholder="Название игры"
             formControlName="name"
         >
@@ -72,34 +87,42 @@
     <div class="logo-block">
         <mat-form-field appearance="outline" class="logo-block__logo-field">
             <mat-label>Ссылка на лого</mat-label>
-            <input matInput
+            
+            <input 
+                matInput
                 placeholder="Ссылка на лого"
                 formControlName="logo"
             >
         </mat-form-field>
+        
         <button
             mat-fab
             color="primary"
             id="logo-block__view-log-btn"
             aria-label="Посмотреть лого"
             matTooltip="Посмотреть лого"
+            [disabled]="!newGameForm.value.logo"
             (click)="openImageDialog()"
-            [disabled]="!newGameForm.value.logo">
+        >
             <mat-icon>remove_red_eye</mat-icon>
         </button>
     </div>
       
     <mat-form-field appearance="outline">
         <mat-label>Платформа</mat-label>
+        
         <mat-select formControlName="platforms" multiple>
             <mat-select-trigger>
                 <div class="platforms-selected-list">
-                    <div class="platforms-selected-item" *ngFor="let platform2 of newGameForm.value.platforms">
+                    <div class="platforms-selected-item"
+                         *ngFor="let platform2 of newGameForm.value.platforms"
+                    >
                         <img class="logo-platform" [src]="platform2.logo">
                         <span>{{ platform2.name }}</span>
                     </div>
                 </div>
             </mat-select-trigger>
+            
             <mat-option *ngFor="let platform of platformList" [value]="platform">
                 <div  class="container-platform">
                     <img class="logo-platform" [src]="platform.logo">

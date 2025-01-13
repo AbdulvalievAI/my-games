@@ -14,6 +14,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { ComponentsModule } from "../components/components.module";
+import { GamesService } from '../data/games/games.service';
+import { PlatformsService } from '../data/platforms/platforms.service';
 
 import { HomeComponent } from './home/home.component';
 import { GameComponent } from './game/game.component';
@@ -50,6 +52,10 @@ import { YandexTokenComponent } from './auth/yandexToken/yandex-token.component'
         MatSnackBarModule,
         MatDividerModule,
         MatMenuModule,
+    ],
+    providers: [
+        GamesService,
+        PlatformsService,
     ],
 })
 export class PagesModule { }
