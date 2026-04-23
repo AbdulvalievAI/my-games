@@ -6,9 +6,10 @@ import { GamesService } from '../../data/games/games.service';
 import { PlatformsService } from '../../data/platforms/platforms.service';
 
 @Component({
-  selector: 'game-card',
-  templateUrl: './game-card.component.html',
-  styleUrls: ['./game-card.component.scss']
+    selector: 'game-card',
+    templateUrl: './game-card.component.html',
+    styleUrls: ['./game-card.component.scss'],
+    standalone: false
 })
 export class GameCardComponent {
     @Input() gameData: IGame = this._gamesService.mockGame;

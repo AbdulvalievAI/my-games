@@ -5,9 +5,10 @@ import { IGame } from '../../data/games/games.interfaces';
 import { GamesService } from '../../data/games/games.service';
 
 @Component({
-  selector: 'home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: false
 })
 export class HomeComponent implements AfterViewInit {
     public currentGameList: IGame[] = [];

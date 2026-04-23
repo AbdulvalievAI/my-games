@@ -16,9 +16,10 @@ import { PlatformsService } from '../../data/platforms/platforms.service';
 import { INewGameData } from './game.component.interface';
 
 @Component({
-  selector: 'game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss'],
+    selector: 'game',
+    templateUrl: './game.component.html',
+    styleUrls: ['./game.component.scss'],
+    standalone: false
 })
 export class GameComponent implements OnInit {
     public newGameForm: UntypedFormGroup;

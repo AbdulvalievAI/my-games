@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { CoreModulePathsConfig } from '../../config/yandex.config';
 
 @Component({
-  selector: 'auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.scss']
+    selector: 'auth',
+    templateUrl: './auth.component.html',
+    styleUrls: ['./auth.component.scss'],
+    standalone: false
 })
 export class AuthComponent implements OnInit {
     ngOnInit(): void {

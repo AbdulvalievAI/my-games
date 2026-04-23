@@ -6,9 +6,10 @@ import { IFilterListSettings } from './filter-list.component.interface';
 import { FilterListService } from './filter-list.service';
 
 @Component({
-  selector: 'filter-list',
-  templateUrl: './filter-list.component.html',
-  styleUrls: ['./filter-list.component.scss']
+    selector: 'filter-list',
+    templateUrl: './filter-list.component.html',
+    styleUrls: ['./filter-list.component.scss'],
+    standalone: false
 })
 export class FilterComponent implements OnInit {
 	@Input() currentGameList: IGame[] = [];

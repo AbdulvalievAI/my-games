@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IYesNoDialogSettings } from './yes-no-dialog.component.interface';
 
 @Component({
-  selector: 'yes-no-dialog',
-  templateUrl: './yes-no-dialog.component.html',
-  styleUrls: ['./yes-no-dialog.component.scss']
+    selector: 'yes-no-dialog',
+    templateUrl: './yes-no-dialog.component.html',
+    styleUrls: ['./yes-no-dialog.component.scss'],
+    standalone: false
 })
 export class YesNoDialogComponent {
     private _defaultSettings: IYesNoDialogSettings = {
