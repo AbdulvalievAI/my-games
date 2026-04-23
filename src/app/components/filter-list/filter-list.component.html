@@ -1,19 +1,21 @@
 <mat-form-field appearance="outline">
-    <mat-label>Поиск игры</mat-label>
-    
-    <input 
-        matInput
-        placeholder="Поиск игры"
-        [ngModel]="searchText"
-        (ngModelChange)="onSearch($event)"
-    >
-    
-    <mat-icon matSuffix *ngIf="isSpinner">
-        <mat-spinner [diameter]="25"></mat-spinner>
-    </mat-icon>
-</mat-form-field>
+  <mat-label>Поиск игры</mat-label>
 
-<button
+  <input
+    matInput
+    placeholder="Поиск игры"
+    [ngModel]="searchText"
+    (ngModelChange)="onSearch($event)"
+    >
+
+    @if (isSpinner) {
+      <mat-icon matSuffix>
+        <mat-spinner [diameter]="25"></mat-spinner>
+      </mat-icon>
+    }
+  </mat-form-field>
+
+  <button
     color="warn"
     mat-mini-fab
     extended
@@ -21,6 +23,6 @@
     aria-label="Сбросить"
     matTooltip="Сбросить"
     (click)="clearFilters()"
->
+    >
     <mat-icon>cleaning_services</mat-icon>
-</button>
+  </button>

@@ -1,11 +1,14 @@
 <mat-list role="list">
+  @for (game of gameList; track game; let i = $index) {
     <mat-list-item
-        *ngFor="let game of gameList; index as i;"
-        role="listitem"
-        class="mat-mdc-list-item-interactive"
-    >
-        <game-card [gameData]="game" [index]="i"></game-card>
+      role="listitem"
+      class="mat-mdc-list-item-interactive"
+      >
+      <game-card [gameData]="game" [index]="i"></game-card>
     </mat-list-item>
-    
-    <img class="emptyList" *ngIf="!gameList.length" src="/assets/empty.jpg" alt="">
+  }
+
+  @if (!gameList.length) {
+    <img class="emptyList" src="/assets/empty.jpg" alt="">
+  }
 </mat-list>

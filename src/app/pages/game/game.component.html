@@ -1,134 +1,139 @@
 <form  [formGroup]="newGameForm">
-    <div class="buttons-block">
+  <div class="buttons-block">
+    <button
+      mat-fab
+      color="primary"
+      aria-label="Главная"
+      matTooltip="Главная"
+      style="margin-right: 1vw;"
+      (click)="goToHome()"
+      >
+      <mat-icon>home</mat-icon>
+    </button>
+
+    <button
+      mat-fab
+      color="primary"
+      aria-label="Яндекс поиск"
+      matTooltip="Яндекс поиск"
+      style="margin-right: 1vw;"
+      (click)="goToYandexSearch()"
+      >
+      <mat-icon>public</mat-icon>
+    </button>
+
+    <button
+      mat-fab
+      color="primary"
+      aria-label="Яндекс картинки"
+      matTooltip="Яндекс картинки"
+      (click)="goToYandexImage()"
+      >
+      <mat-icon>image</mat-icon>
+    </button>
+
+    <div style="margin-left: auto;">
+      @if (!editGame) {
         <button
-            mat-fab
-            color="primary"
-            aria-label="Главная"
-            matTooltip="Главная"
-            style="margin-right: 1vw;"
-            (click)="goToHome()"
-        >
-            <mat-icon>home</mat-icon>
+          mat-fab
+          color="warn"
+          aria-label="Отчистить"
+          matTooltip="Отчистить"
+          style="margin-right: 1vw;"
+          (click)="resetField()"
+          >
+          <mat-icon>cleaning_services</mat-icon>
         </button>
-        
+      }
+
+      @if (editGame) {
         <button
-            mat-fab
-            color="primary"
-            aria-label="Яндекс поиск"
-            matTooltip="Яндекс поиск"
-            style="margin-right: 1vw;"
-            (click)="goToYandexSearch()"
-        >
-            <mat-icon>public</mat-icon>
+          mat-fab
+          color="warn"
+          aria-label="Удалить"
+          matTooltip="Удалить"
+          style="margin-right: 1vw;"
+          (click)="deleteGame()"
+          >
+          <mat-icon>delete</mat-icon>
         </button>
-        
-        <button
-            mat-fab
-            color="primary"
-            aria-label="Яндекс картинки"
-            matTooltip="Яндекс картинки"
-            (click)="goToYandexImage()"
+      }
+
+      <button
+        mat-fab
+        color="accent"
+        aria-label="Сохранить игру"
+        matTooltip="Сохранить игру"
+        [disabled]="!newGameForm.valid"
+        (click)="saveGame()"
         >
-            <mat-icon>image</mat-icon>
-        </button>
-        
-        <div style="margin-left: auto;">
-            <button
-                *ngIf="!editGame"
-                mat-fab
-                color="warn"
-                aria-label="Отчистить"
-                matTooltip="Отчистить"
-                style="margin-right: 1vw;"
-                (click)="resetField()"
-            >
-                <mat-icon>cleaning_services</mat-icon>
-            </button>
-            
-            <button
-                *ngIf="editGame"
-                mat-fab
-                color="warn"
-                aria-label="Удалить"
-                matTooltip="Удалить"
-                style="margin-right: 1vw;"
-                (click)="deleteGame()"
-            >
-                <mat-icon>delete</mat-icon>
-            </button>
-            
-            <button
-                mat-fab
-                color="accent"
-                aria-label="Сохранить игру"
-                matTooltip="Сохранить игру"
-                [disabled]="!newGameForm.valid"
-                (click)="saveGame()"
-            >
-                <mat-icon>save</mat-icon>
-            </button>
-        </div>
+        <mat-icon>save</mat-icon>
+      </button>
     </div>
-    
-    <h1>{{ newGameForm.value.name || 'Название игры' }}</h1>
-    <h3>{{ newGameForm.value.dateEdit | date:'dd.MM.yy HH:mm' }}</h3>
-    <mat-divider></mat-divider>
-    
-    <mat-form-field appearance="outline">
-        <mat-label>Название игры</mat-label>
-        
-        <input 
-            matInput
-            placeholder="Название игры"
-            formControlName="name"
-        >
+  </div>
+
+  <h1>{{ newGameForm.value.name || 'Название игры' }}</h1>
+  <h3>{{ newGameForm.value.dateEdit | date:'dd.MM.yy HH:mm' }}</h3>
+  <mat-divider></mat-divider>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Название игры</mat-label>
+
+    <input
+      matInput
+      placeholder="Название игры"
+      formControlName="name"
+      >
     </mat-form-field>
-    
+
     <div class="logo-block">
-        <mat-form-field appearance="outline" class="logo-block__logo-field">
-            <mat-label>Ссылка на лого</mat-label>
-            
-            <input 
-                matInput
-                placeholder="Ссылка на лого"
-                formControlName="logo"
-            >
+      <mat-form-field appearance="outline" class="logo-block__logo-field">
+        <mat-label>Ссылка на лого</mat-label>
+
+        <input
+          matInput
+          placeholder="Ссылка на лого"
+          formControlName="logo"
+          >
         </mat-form-field>
-        
+
         <button
-            mat-fab
-            color="primary"
-            id="logo-block__view-log-btn"
-            aria-label="Посмотреть лого"
-            matTooltip="Посмотреть лого"
-            [disabled]="!newGameForm.value.logo"
-            (click)="openImageDialog()"
-        >
-            <mat-icon>remove_red_eye</mat-icon>
+          mat-fab
+          color="primary"
+          id="logo-block__view-log-btn"
+          aria-label="Посмотреть лого"
+          matTooltip="Посмотреть лого"
+          [disabled]="!newGameForm.value.logo"
+          (click)="openImageDialog()"
+          >
+          <mat-icon>remove_red_eye</mat-icon>
         </button>
-    </div>
-      
-    <mat-form-field appearance="outline">
+      </div>
+
+      <mat-form-field appearance="outline">
         <mat-label>Платформа</mat-label>
-        
+
         <mat-select formControlName="platforms" multiple>
-            <mat-select-trigger>
-                <div class="platforms-selected-list">
-                    <div class="platforms-selected-item"
-                         *ngFor="let platform2 of newGameForm.value.platforms"
-                    >
-                        <img class="logo-platform" [src]="platform2.logo">
-                        <span>{{ platform2.name }}</span>
-                    </div>
+          <mat-select-trigger>
+            <div class="platforms-selected-list">
+              @for (platform2 of newGameForm.value.platforms; track platform2) {
+                <div class="platforms-selected-item"
+                  >
+                  <img class="logo-platform" [src]="platform2.logo">
+                  <span>{{ platform2.name }}</span>
                 </div>
-            </mat-select-trigger>
-            
-            <mat-option *ngFor="let platform of platformList" [value]="platform">
-                <div  class="container-platform">
-                    <img class="logo-platform" [src]="platform.logo">
-                    <span class="name-platform">{{ platform.name }}</span>
-                </div>
+              }
+            </div>
+          </mat-select-trigger>
+
+          @for (platform of platformList; track platform) {
+            <mat-option [value]="platform">
+              <div  class="container-platform">
+                <img class="logo-platform" [src]="platform.logo">
+                <span class="name-platform">{{ platform.name }}</span>
+              </div>
             </mat-option>
+          }
         </mat-select>
-    </mat-form-field>
-</form>
+      </mat-form-field>
+    </form>
