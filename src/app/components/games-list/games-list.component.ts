@@ -1,12 +1,18 @@
 import { Component, Input } from '@angular/core';
+import { MatListModule } from '@angular/material/list';
 
-import { IGame } from '../../data/games/games.interfaces';
+import type { IGame } from '../../types/games.interfaces';
+import { GameCardComponent } from '../game-card/game-card.component';
 
 @Component({
-    selector: 'games-list',
+    selector: 'app-games-list',
     templateUrl: './games-list.component.html',
-    styleUrls: ['./games-list.component.scss'],
-    standalone: false
+    styleUrls: [ './games-list.component.scss' ],
+    standalone: true,
+    imports: [
+        MatListModule,
+        GameCardComponent,
+    ],
 })
 export class GamesListComponent {
     @Input() gameList: IGame[] = [];

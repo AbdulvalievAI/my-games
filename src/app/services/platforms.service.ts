@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { EPlatform, EPlatformLogo, IPlatform } from './platforms.interfaces';
 import cloneDeep from 'lodash-es/cloneDeep';
+
+import { EPlatform, EPlatformLogo } from "../data/platforms.data";
+import {
+    type IPlatform,
+} from '../types/platforms.interfaces';
 
 @Injectable()
 export class PlatformsService {
-    public _platformsObject: {[key in EPlatform]?: IPlatform} = {};
-    
-    private _platformsList: IPlatform[] = [
+    public _platformsObject: Partial<Record<EPlatform, IPlatform>> = {};
+
+    private readonly _platformsList: IPlatform[] = [
         {
             id: 0,
             name: 'Local',
@@ -74,17 +78,17 @@ export class PlatformsService {
             type: EPlatform.VKPLAY,
         }
     ];
-    
+
     constructor() {
         this._platformsList.forEach(item => {
             this._platformsObject[item.type] = item;
         });
     }
-    
+
     public get platforms(): IPlatform[] {
         return cloneDeep(this._platformsList);
     }
-    
+
     public getPlatform(typePlatform: EPlatform): IPlatform | undefined {
         return this._platformsObject[typePlatform];
     }

@@ -1,14 +1,11 @@
 <mat-list role="list">
-  @for (game of gameList; track game; let i = $index) {
-    <mat-list-item
-      role="listitem"
-      class="mat-mdc-list-item-interactive"
-      >
-      <game-card [gameData]="game" [index]="i"></game-card>
-    </mat-list-item>
-  }
+    @for (game of gameList; track game; let i = $index) {
+        <mat-list-item role="listitem" class="mat-mdc-list-item-interactive">
+            <app-game-card [gameData]="game" [index]="i"></app-game-card>
+        </mat-list-item>
+    }
 
-  @if (!gameList.length) {
-    <img class="emptyList" src="/assets/empty.jpg" alt="">
-  }
+    @if (!gameList.length) {
+        <img class="emptyList" src="/assets/empty.jpg" alt="" />
+    }
 </mat-list>

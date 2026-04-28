@@ -1,43 +1,12 @@
 <div class="home">
     <div class="home__header">
-        <filter-list [(currentGameList)]="currentGameList"></filter-list>
-        
+        <app-filter-list
+            [(currentGameList)]="currentGameList"
+        ></app-filter-list>
+
         <div class="home__buttons-block">
-            <button
-                color="primary"
-                mat-fab
-                [matMenuTriggerFor]="menu"
-                aria-label="Настройки"
-                matTooltip="Настройки"
-                style="margin-right: 1vw;"
-            >
-                <mat-icon>settings</mat-icon>
-            </button>
-            
-            <mat-menu #menu="matMenu">
-                <div class="matMenu-buttons-block">
-                    <button
-                        color="primary"
-                        mat-mini-fab
-                        aria-label="Копировать данные"
-                        matTooltip="Копировать данные"
-                        (click)="copyGamesList()"
-                    >
-                        <mat-icon>content_copy</mat-icon>
-                    </button>
-                    
-                    <button
-                        color="primary"
-                        mat-mini-fab
-                        aria-label="Копировать данные файлом"
-                        matTooltip="Копировать данные файлом"
-                        (click)="copyGamesListFile()"
-                    >
-                        <mat-icon>sim_card_download</mat-icon>
-                    </button>
-                </div>
-            </mat-menu>
-            
+            <app-settings></app-settings>
+
             <button
                 color="accent"
                 mat-fab
@@ -49,6 +18,6 @@
             </button>
         </div>
     </div>
-    
-    <games-list [gameList]="currentGameList"></games-list>
+
+    <app-games-list [gameList]="currentGameList"></app-games-list>
 </div>

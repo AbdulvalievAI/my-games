@@ -1,31 +1,38 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogModule,
+    MatDialogRef,
+} from '@angular/material/dialog';
 
-import { IYesNoDialogSettings } from './yes-no-dialog.component.interface';
+import type { IYesNoDialogSettings } from './yes-no-dialog.component.interface';
 
 @Component({
-    selector: 'yes-no-dialog',
+    selector: 'app-yes-no-dialog',
     templateUrl: './yes-no-dialog.component.html',
-    styleUrls: ['./yes-no-dialog.component.scss'],
-    standalone: false
+    styleUrls: [ './yes-no-dialog.component.scss' ],
+    standalone: true,
+    imports: [
+        MatDialogModule,
+        MatButtonModule,
+    ],
 })
 export class YesNoDialogComponent {
-    private _defaultSettings: IYesNoDialogSettings = {
+    readonly dialogRef = inject(MatDialogRef<YesNoDialogComponent>);
+    private readonly _settings = inject<IYesNoDialogSettings>(MAT_DIALOG_DATA);
+
+    private readonly _defaultSettings: IYesNoDialogSettings = {
         yesTextButton: 'Согласиться',
         noTextButton: 'Отмена',
         textDialog: 'Подтвердить действие?',
     };
-    
-    constructor(
-        public dialogRef: MatDialogRef<YesNoDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _settings: IYesNoDialogSettings,
-    ) {}
-        
+
     public get settings(): IYesNoDialogSettings {
         if (this._settings) {
             return this._settings;
         } else {
             return this._defaultSettings;
         }
-    }    
+    }
 }

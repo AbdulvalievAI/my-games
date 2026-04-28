@@ -1,11 +1,4 @@
 
-export interface IPlatform {
-    id: number;
-    name: string;
-    type: EPlatform,
-    logo: EPlatformLogo;
-}
-
 export enum EPlatform {
     LOCAL = 'local',
     STEAM = 'steam',
@@ -17,7 +10,7 @@ export enum EPlatform {
     ARC = 'arc',
     EA = 'electronicarts',
     BETHESDA = 'bethesda',
-    VKPLAY = 'vkplay',
+    VKPLAY = 'vkplay'
 }
 
 export enum EPlatformLogo {
@@ -31,5 +24,6 @@ export enum EPlatformLogo {
     ARC = '/assets/platforms_logo/arc.png',
     EA = '/assets/platforms_logo/Electronic_Arts.png',
     BETHESDA = '/assets/platforms_logo/bethesda.jpg',
-    VKPLAY = '/assets/platforms_logo/vkplay.png',
+    VKPLAY = '/assets/platforms_logo/vkplay.png'
 }
+

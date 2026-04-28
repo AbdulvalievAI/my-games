@@ -1,45 +1,46 @@
-import { ChangeDetectorRef, Component, AfterViewInit } from '@angular/core';
+import {
+    type AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    inject,
+} from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 
-import { IGame } from '../../data/games/games.interfaces';
-import { GamesService } from '../../data/games/games.service';
+import { FilterComponent } from '../../components/filter-list/filter-list.component';
+import { GamesListComponent } from '../../components/games-list/games-list.component';
+import { SettingsComponent } from "../../components/settings/settings.component";
+import type { IGame } from '../../types/games.interfaces';
 
 @Component({
-    selector: 'home',
+    selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
-    standalone: false
+    styleUrls: [ './home.component.scss' ],
+    standalone: true,
+    imports: [
+        FilterComponent,
+        GamesListComponent,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule,
+        SettingsComponent
+    ],
 })
 export class HomeComponent implements AfterViewInit {
+    private readonly _cdr = inject(ChangeDetectorRef);
+    private readonly _router = inject(Router);
+
     public currentGameList: IGame[] = [];
 
-    constructor(
-        private _cdr: ChangeDetectorRef,
-        private _router: Router,
-        private _gamesService: GamesService,
-    ) {
-    }
-
-    ngAfterViewInit(): void {
+    public ngAfterViewInit(): void {
         this._cdr.detectChanges();
     }
-    
-    public goToAddGame() {
-        this._router.navigate(['/game']);
+
+    public goToAddGame(): void {
+        this._router.navigate([ '/game' ]);
     }
-    
-    public copyGamesList() {
-        navigator.clipboard.writeText(JSON.stringify(this._gamesService.getGamesLC(), null, 2));
-    }
-    
-    public copyGamesListFile() {
-        const element = document.createElement('a');
-        
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this._gamesService.getGamesLC(), null, 2)));
-        element.setAttribute('download', `GamesList_${new Date().getTime()}.json`);
-        element.style.display = 'none';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-      }
 }

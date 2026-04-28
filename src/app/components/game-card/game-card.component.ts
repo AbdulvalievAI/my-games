@@ -1,28 +1,31 @@
-import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, Input } from "@angular/core";
+import { Router } from "@angular/router";
 
-import { IGame } from '../../data/games/games.interfaces';
-import { GamesService } from '../../data/games/games.service';
-import { PlatformsService } from '../../data/platforms/platforms.service';
+import { GamesService } from "../../services/games.service";
+import { PlatformsService } from "../../services/platforms.service";
+import type { IGame } from "../../types/games.interfaces";
 
 @Component({
-    selector: 'game-card',
+    selector: 'app-game-card',
     templateUrl: './game-card.component.html',
-    styleUrls: ['./game-card.component.scss'],
-    standalone: false
+    styleUrls: [ './game-card.component.scss' ],
+    standalone: true,
+    providers: [
+        PlatformsService,
+        GamesService,
+    ],
+
 })
 export class GameCardComponent {
-    @Input() gameData: IGame = this._gamesService.mockGame;
-    @Input() index: number = 0;
+    public platformsService = inject(PlatformsService);
+    private readonly _gamesService = inject(GamesService);
+    private readonly _router = inject(Router);
 
-    constructor (
-        public platformsService: PlatformsService,
-        private _gamesService: GamesService,
-        private _router: Router,
-    ) {
-    }
-    
-    public onClick() {
-        this._router.navigate(['/game', this.gameData.id]);
+    @Input() gameData: IGame = this._gamesService.mockGame;
+    @Input() index = 0;
+
+
+    public onClick(): void {
+        this._router.navigate([ '/game', this.gameData.id ]);
     }
 }

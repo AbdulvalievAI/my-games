@@ -1,15 +1,24 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, inject,type OnInit } from '@angular/core';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogModule,
+    MatDialogRef,
+} from '@angular/material/dialog';
 
 @Component({
-    selector: 'image-dialog',
+    selector: 'app-image-dialog',
     templateUrl: './image-dialog.component.html',
-    styleUrls: ['./image-dialog.component.scss'],
-    standalone: false
+    styleUrls: [ './image-dialog.component.scss' ],
+    standalone: true,
+    imports: [
+        MatDialogModule,
+    ],
 })
-export class ImageDialogComponent {
-    constructor(
-        public dialogRef: MatDialogRef<ImageDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: string,
-    ) {}
+export class ImageDialogComponent implements OnInit {
+    ngOnInit(): void {
+        console.log('===> image-dialog.component > this', this);
+    }
+    readonly dialogRef = inject(MatDialogRef<ImageDialogComponent>);
+    public readonly data: string = inject<string>(MAT_DIALOG_DATA);
+
 }

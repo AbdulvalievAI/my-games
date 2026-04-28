@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build --base-href ./",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "browser": {
     "timers": false
@@ -35,15 +36,20 @@
     "@angular/build": "^21.2.8",
     "@angular/cli": "^21.2.8",
     "@angular/compiler-cli": "^21.2.10",
+    "@eslint/js": "^10.0.1",
     "@types/jasmine": "^5.1.2",
     "@types/node": "^20.12.10",
     "@types/uuid": "^9.0.8",
+    "angular-eslint": "21.3.1",
+    "eslint": "^10.0.3",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
     "jasmine-core": "^5.1.2",
     "karma": "^6.4.3",
     "karma-chrome-launcher": "^3.2.0",
     "karma-coverage": "^2.2.1",
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "typescript-eslint": "8.56.1"
   }
 }

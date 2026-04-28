@@ -1,18 +1,20 @@
 <div class="gameCard" (click)="onClick()">
-  <div class="gameCard__num">{{index + 1}}</div>
+    <div class="gameCard__num">{{ index + 1 }}</div>
 
-  <div class="gameCard__name">
-    {{gameData.name}}
-  </div>
-
-  <div class="gameCard__logos-wrapper">
-    @for (platformType of gameData.platforms; track platformType) {
-      <div class="gameCard__logo-wrapper"
-        >
-        <img class="gameCard__logo-platform"
-          [title]="platformsService.getPlatform(platformType)?.name"
-          [src]="platformsService.getPlatform(platformType)?.logo">
-        </div>
-      }
+    <div class="gameCard__name">
+        {{ gameData.name }}
     </div>
-  </div>
+
+    <div class="gameCard__logos-wrapper">
+        @for (platformType of gameData.platforms; track platformType) {
+            <div class="gameCard__logo-wrapper">
+                <img
+                    class="gameCard__logo-platform"
+                    [title]="platformsService.getPlatform(platformType)?.name"
+                    [src]="platformsService.getPlatform(platformType)?.logo"
+                    [alt]="platformsService.getPlatform(platformType)?.logo"
+                />
+            </div>
+        }
+    </div>
+</div>
