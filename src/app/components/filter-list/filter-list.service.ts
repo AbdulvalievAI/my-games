@@ -3,7 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 
 import { GamesService } from '../../services/games.service';
 import type { IGame } from '../../types/games.interfaces';
-import type { IFilterListSettings } from './filter-list.component.interface';
+import type { IPlatform } from '../../types/platforms.interfaces';
+import type { IFilters } from './filter-list.component.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -11,11 +12,12 @@ import type { IFilterListSettings } from './filter-list.component.interface';
 export class FilterListService {
     private readonly _gamesService = inject(GamesService);
 
-    public filters: BehaviorSubject<IFilterListSettings>;
+    public filters: BehaviorSubject<IFilters>;
 
     private _defaultGameList: IGame[];
-    private readonly _defaultFilters: IFilterListSettings = {
-		searchText: '',
+    private readonly _defaultFilters: IFilters = {
+		search: '',
+        platform: null,
 	};
 
     constructor(
@@ -27,11 +29,17 @@ export class FilterListService {
     }
 
 
-    public applyFilterGameList(filters: IFilterListSettings): IGame[] {
+    public applyFilterGameList(filters: IFilters): IGame[] {
         let resultGameList: IGame[] = this._defaultGameList;
+        const search = filters.search as string;
+        const platform = filters.platform as IPlatform;
 
-        if (filters.searchText) {
-            resultGameList = resultGameList.filter(game => game.name.toLowerCase().includes(filters.searchText));
+        if (search) {
+            resultGameList = resultGameList.filter(game => game.name.toLowerCase().includes(search));
+        }
+
+        if (platform) {
+            resultGameList = resultGameList.filter(game => game.platforms.includes(platform.type));
         }
 
         this._sortByAlphabet(resultGameList);

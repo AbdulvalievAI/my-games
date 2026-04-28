@@ -1,19 +1,25 @@
-
 /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
 mat-list-item {
     height: fit-content !important;
     padding: 1vh 0 !important;
     border-bottom: 1px solid gray;
-    
+
     &:hover {
         background-color: #0000000a;
     }
 }
-.emptyList {
-    margin: 0 auto;
-    display: block;
-    width: 40vh;
-    height: 40vh;
-    position: relative;
-    object-fit: cover;
+
+mat-card {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.empty-card {
+    max-width: 400px;
+
+    &__img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
 }

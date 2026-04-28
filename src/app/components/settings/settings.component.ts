@@ -36,4 +36,9 @@ export class SettingsComponent {
         element.click();
         document.body.removeChild(element);
     }
+/*
+    public openCloud(): void {
+        console.log('===> openAccount');
+    }
+*/
 }

@@ -4,8 +4,19 @@
             <app-game-card [gameData]="game" [index]="i"></app-game-card>
         </mat-list-item>
     }
-
-    @if (!gameList.length) {
-        <img class="emptyList" src="/assets/empty.jpg" alt="" />
-    }
 </mat-list>
+
+@if (!gameList.length) {
+    <mat-card class="empty-card" appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>Пусто...</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <img
+                class="empty-card__img"
+                src="/assets/empty.jpg"
+                alt="Список пуст"
+            />
+        </mat-card-content>
+    </mat-card>
+}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import cloneDeep from 'lodash-es/cloneDeep';
 
-import { EPlatform, EPlatformLogo } from "../data/platforms.data";
+import { type EPlatform, platformsList } from "../data/platforms.data";
 import {
     type IPlatform,
 } from '../types/platforms.interfaces';
@@ -10,86 +10,21 @@ import {
 export class PlatformsService {
     public _platformsObject: Partial<Record<EPlatform, IPlatform>> = {};
 
-    private readonly _platformsList: IPlatform[] = [
-        {
-            id: 0,
-            name: 'Local',
-            logo: EPlatformLogo.LOCAL,
-            type: EPlatform.LOCAL,
-        },
-        {
-            id: 1,
-            name: 'Steam',
-            logo: EPlatformLogo.STEAM,
-            type: EPlatform.STEAM,
-        },
-        {
-            id: 2,
-            name: 'Epic Games',
-            logo: EPlatformLogo.EPIC,
-            type: EPlatform.EPIC,
-        },
-        {
-            id: 3,
-            name: 'Ubisoft',
-            logo: EPlatformLogo.UBISOFT,
-            type: EPlatform.UBISOFT,
-        },
-        {
-            id: 4,
-            name: 'GOG Galaxy',
-            logo: EPlatformLogo.GOG,
-            type: EPlatform.GOG,
-        },
-        {
-            id: 5,
-            name: 'Rockstar Games',
-            logo: EPlatformLogo.ROCKSTAR,
-            type: EPlatform.ROCKSTAR,
-        },
-        {
-            id: 6,
-            name: 'Battle.net',
-            logo: EPlatformLogo.BATTLE,
-            type: EPlatform.BATTLE,
-        },
-        {
-            id: 7,
-            name: 'Arc',
-            logo: EPlatformLogo.ARC,
-            type: EPlatform.ARC,
-        },
-        {
-            id: 8,
-            name: 'Electronic Arts',
-            logo: EPlatformLogo.EA,
-            type: EPlatform.EA,
-        },
-        {
-            id: 9,
-            name: 'Bethesda.net',
-            logo: EPlatformLogo.BETHESDA,
-            type: EPlatform.BETHESDA,
-        },
-        {
-            id: 11,
-            name: 'VK Play',
-            logo: EPlatformLogo.VKPLAY,
-            type: EPlatform.VKPLAY,
-        }
-    ];
-
     constructor() {
-        this._platformsList.forEach(item => {
+        platformsList.forEach(item => {
             this._platformsObject[item.type] = item;
         });
     }
 
     public get platforms(): IPlatform[] {
-        return cloneDeep(this._platformsList);
+        return cloneDeep(platformsList);
     }
 
     public getPlatform(typePlatform: EPlatform): IPlatform | undefined {
         return this._platformsObject[typePlatform];
+    }
+
+    public getPlatformsByTypes(platformList: IPlatform[],ids: IPlatform['type'][]): IPlatform[] {
+        return platformList.filter(item => ids.includes(item.type));
     }
 }

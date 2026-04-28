@@ -1,14 +1,6 @@
 import type { EPlatform } from "../data/platforms.data";
 
-export interface IGamePattern {
-    id: unknown;
-    name: unknown;
-    logo: unknown;
-    platforms: unknown;
-    dateEdit: unknown;
-}
-
-export interface IGame extends IGamePattern {
+export interface IGame {
     id: string;
     name: string;
     logo: string;

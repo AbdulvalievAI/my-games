@@ -1,4 +1,4 @@
-import { Component, inject,type OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
     MAT_DIALOG_DATA,
     MatDialogModule,
@@ -14,11 +14,7 @@ import {
         MatDialogModule,
     ],
 })
-export class ImageDialogComponent implements OnInit {
-    ngOnInit(): void {
-        console.log('===> image-dialog.component > this', this);
-    }
+export class ImageDialogComponent {
     readonly dialogRef = inject(MatDialogRef<ImageDialogComponent>);
     public readonly data: string = inject<string>(MAT_DIALOG_DATA);
-
 }

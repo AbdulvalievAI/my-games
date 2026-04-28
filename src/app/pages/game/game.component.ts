@@ -88,8 +88,6 @@ export class GameComponent implements OnInit {
     }
 
     public openImageDialog(): void {
-        console.log('===> logo', this.newGameForm.value.logo);
-
         this.dialog.open(ImageDialogComponent,
             {
                 width: '50vh',
@@ -120,10 +118,6 @@ export class GameComponent implements OnInit {
 
     public goToHome(): void {
         this._router.navigate([ '/home' ]);
-    }
-
-    public getPlatformsByTypes(ids: IPlatform['type'][]): IPlatform[] {
-        return this.platformList.filter(item => ids.includes(item.type));
     }
 
     public deleteGame(): void {
@@ -165,7 +159,10 @@ export class GameComponent implements OnInit {
                 dateEdit: [ new Date(this.editGame.dateEdit).toISOString(), Validators.required ],
                 name: [ this.editGame.name, Validators.required ],
                 logo: [ this.editGame.logo, [ Validators.required, this._createPasswordStrengthValidator() ] ],
-                platforms: [ this.getPlatformsByTypes(this.editGame.platforms), Validators.required ],
+                platforms: [
+                    this._platformsService.getPlatformsByTypes(this.platformList, this.editGame.platforms),
+                    Validators.required
+                ],
             });
         } else {
             this.newGameForm = this._fb.group({
