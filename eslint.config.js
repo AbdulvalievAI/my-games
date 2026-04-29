@@ -91,6 +91,15 @@ module.exports = defineConfig([
 
             // Пробел перед блоками — всегда
             'space-before-blocks': ['error', 'always'],
+
+            'padding-line-between-statements': [
+                'error',
+                {
+                    blankLine: 'always',
+                    prev: '*',
+                    next: 'return'
+                }
+            ]
         },
         languageOptions: {
             parserOptions: {

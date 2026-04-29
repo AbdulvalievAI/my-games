@@ -69,9 +69,10 @@ export class FilterComponent implements OnInit, OnDestroy {
 
         this._initForm();
 
-        this._filterListService.filters.subscribe(filters => {
-            this.currentGameListChange.emit(this._filterListService.applyFilterGameList(filters));
-        });
+        this._filterListService.filters$
+            .subscribe(filters => {
+                this.currentGameListChange.emit(this._filterListService.applyFilterGameList(filters));
+            });
 
         setTimeout(() => {
             this.valueSpinner = 50
@@ -137,7 +138,8 @@ export class FilterComponent implements OnInit, OnDestroy {
             filters.platform = { ...formValue.platform };
         }
 
-        this._filterListService.filters.next(filters);
+        this._filterListService.filters$
+            .next(filters);
 
         this.isSpinner = false;
     }

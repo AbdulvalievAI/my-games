@@ -1,33 +1,42 @@
-import { inject,Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {
+    inject,
+    Injectable,
+    type OnDestroy,
+} from '@angular/core';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 import { GamesService } from '../../services/games.service';
 import type { IGame } from '../../types/games.interfaces';
 import type { IPlatform } from '../../types/platforms.interfaces';
 import type { IFilters } from './filter-list.component.interface';
 
-@Injectable({
-    providedIn: 'root'
-})
-export class FilterListService {
+@Injectable()
+export class FilterListService implements OnDestroy {
     private readonly _gamesService = inject(GamesService);
 
-    public filters: BehaviorSubject<IFilters>;
+    public filters$: BehaviorSubject<IFilters>;
 
     private _defaultGameList: IGame[];
     private readonly _defaultFilters: IFilters = {
 		search: '',
         platform: null,
 	};
+    private readonly destroy$ = new Subject<void>();
 
     constructor(
     ) {
-        this._gamesService.changeGames$.subscribe(games => {
-            this._defaultGameList = games;
-            this.filters = new BehaviorSubject(this._defaultFilters);
-        });
+        this._gamesService.changeGames$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(games => {
+                this._defaultGameList = games;
+                this.filters$ = new BehaviorSubject(this._defaultFilters);
+            });
     }
 
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 
     public applyFilterGameList(filters: IFilters): IGame[] {
         let resultGameList: IGame[] = this._defaultGameList;
@@ -55,6 +64,7 @@ export class FilterListService {
             if (a.name.toLowerCase() > b.name.toLowerCase()) {
               return 1;
             }
+
             return 0;
           });
     }

@@ -17,7 +17,6 @@ import { GamesService } from '@/app/services/games.service';
         MatButtonModule,
         MatTooltipModule,
     ],
-
 })
 export class SettingsComponent {
     private readonly _gamesService = inject(GamesService);
