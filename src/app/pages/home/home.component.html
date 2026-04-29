@@ -1,23 +1,28 @@
 <div class="home">
-    <div class="home__header">
-        <app-filter-list
-            [(currentGameList)]="currentGameList"
-        ></app-filter-list>
+    <div class="home__head">
+        <app-header>
+            <div modal-left>
+                <app-filter-list
+                    [(currentGameList)]="currentGameList"
+                ></app-filter-list>
+            </div>
+            <div modal-right>
+                <app-settings></app-settings>
 
-        <div class="home__buttons-block">
-            <app-settings></app-settings>
-
-            <button
-                color="accent"
-                mat-fab
-                aria-label="Добавить игру"
-                matTooltip="Добавить игру"
-                (click)="goToAddGame()"
-            >
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
+                <button
+                    color="accent"
+                    mat-fab
+                    aria-label="Добавить игру"
+                    matTooltip="Добавить игру"
+                    (click)="goToAddGame()"
+                >
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </app-header>
     </div>
 
-    <app-games-list [gameList]="currentGameList"></app-games-list>
+    <div class="home__body">
+        <app-games-list [gameList]="currentGameList"></app-games-list>
+    </div>
 </div>

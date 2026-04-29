@@ -22,6 +22,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { PlatformsService } from '../../services/platforms.service';
 import type { IGame } from '../../types/games.interfaces';
 import type { IPlatform } from '../../types/platforms.interfaces';
+import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
 import type { IFilterForm, IFilters } from './filter-list.component.interface';
 import { FilterListService } from './filter-list.service';
 
@@ -44,6 +45,7 @@ import { FilterListService } from './filter-list.service';
         MatTooltipModule,
         MatSelectModule,
         ReactiveFormsModule,
+        LogoPlatformComponent
     ],
 })
 export class FilterComponent implements OnInit, OnDestroy {

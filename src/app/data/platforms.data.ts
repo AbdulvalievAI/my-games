@@ -25,7 +25,8 @@ export enum EPlatformLogo {
     ARC = '/assets/platforms_logo/arc.png',
     EA = '/assets/platforms_logo/Electronic_Arts.png',
     BETHESDA = '/assets/platforms_logo/bethesda.jpg',
-    VKPLAY = '/assets/platforms_logo/vkplay.png'
+    VKPLAY = '/assets/platforms_logo/vkplay.png',
+    EMPTY = '/assets/alternative.png',
 }
 
 export const platformsList: IPlatform[] = [

@@ -29,7 +29,9 @@ import {
 } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 
+import { HeaderComponent } from "../../components/header/header.component";
 import { ImageDialogComponent } from '../../components/image-dialog/image-dialog.component';
+import { LogoPlatformComponent } from "../../components/logo-platform/logo-platform.component";
 import { YesNoDialogComponent } from '../../components/yes-no-dialog/yes-no-dialog.component';
 import type { IYesNoDialogSettings } from '../../components/yes-no-dialog/yes-no-dialog.component.interface';
 import { GamesService } from '../../services/games.service';
@@ -48,17 +50,19 @@ import type { INewGameForm, INewGameFormValue } from './game.component.interface
         PlatformsService,
     ],
     imports: [
-        MatSnackBarModule,
-        MatIconModule,
-        ReactiveFormsModule,
-        MatDividerModule,
-        DatePipe,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        MatButtonModule,
-        MatTooltipModule,
-    ],
+    MatSnackBarModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatDividerModule,
+    DatePipe,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTooltipModule,
+    HeaderComponent,
+    LogoPlatformComponent
+],
 })
 export class GameComponent implements OnInit {
     public dialog = inject(MatDialog);

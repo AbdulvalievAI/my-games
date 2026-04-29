@@ -8,12 +8,16 @@
     <div class="gameCard__logos-wrapper">
         @for (platformType of gameData.platforms; track platformType) {
             <div class="gameCard__logo-wrapper">
-                <img
+                <app-logo-platform
+                    [data]="platformsService.getPlatform(platformType)"
+                    [width]="'100%'"
+                ></app-logo-platform>
+                <!-- <img
                     class="gameCard__logo-platform"
                     [title]="platformsService.getPlatform(platformType)?.name"
                     [src]="platformsService.getPlatform(platformType)?.logo"
                     [alt]="platformsService.getPlatform(platformType)?.logo"
-                />
+                /> -->
             </div>
         }
     </div>

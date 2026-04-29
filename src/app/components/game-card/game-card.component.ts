@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { GamesService } from "../../services/games.service";
 import { PlatformsService } from "../../services/platforms.service";
 import type { IGame } from "../../types/games.interfaces";
+import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
 
 @Component({
     selector: 'app-game-card',
@@ -13,6 +14,9 @@ import type { IGame } from "../../types/games.interfaces";
     providers: [
         PlatformsService,
         GamesService,
+    ],
+    imports: [
+        LogoPlatformComponent,
     ],
 
 })

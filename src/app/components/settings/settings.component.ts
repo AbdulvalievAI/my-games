@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { GamesService } from '@/app/services/games.service';
+import { GamesService } from '../../services/games.service';
 
 @Component({
     selector: 'app-settings',

@@ -1,6 +1,6 @@
 @if (filterForm) {
     <form [formGroup]="filterForm">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Поиск игры</mat-label>
 
             <input matInput placeholder="Поиск игры" formControlName="search" />
@@ -12,31 +12,31 @@
             }
         </mat-form-field>
 
-        <mat-form-field appearance="outline" style="margin-left: 15px">
+        <mat-form-field
+            appearance="outline"
+            subscriptSizing="dynamic"
+            style="margin-left: 15px"
+        >
             <mat-label>Платформа</mat-label>
 
             <mat-select formControlName="platform">
-                <!-- <mat-select-trigger>
-                    <div class="platforms-selected-list">
-                        <div class="platforms-selected-item">
-                            <img
-                                class="logo-platform"
-                                [src]="filterForm.value.platform?.logo"
-                                [alt]="filterForm.value.platform?.logo"
-                            />
-                            <span>{{ filterForm.value.platform?.name }}</span>
-                        </div>
-                    </div>
-                </mat-select-trigger> -->
+                <mat-select-trigger>
+                    <app-logo-platform
+                        [data]="filterForm.value.platform"
+                    ></app-logo-platform>
+
+                    <span class="name-platform">
+                        {{ filterForm.value.platform?.name }}
+                    </span>
+                </mat-select-trigger>
 
                 @for (platform of platformList; track platform) {
                     <mat-option [value]="platform">
                         <div class="container-platform">
-                            <img
-                                class="logo-platform"
-                                [src]="platform.logo"
-                                [alt]="platform.logo"
-                            />
+                            <app-logo-platform
+                                [data]="platform"
+                            ></app-logo-platform>
+
                             <span class="name-platform">
                                 {{ platform.name }}
                             </span>

@@ -1,12 +1,28 @@
-<mat-list role="list">
-    @for (game of gameList; track game; let i = $index) {
-        <mat-list-item role="listitem" class="mat-mdc-list-item-interactive">
-            <app-game-card [gameData]="game" [index]="i"></app-game-card>
-        </mat-list-item>
-    }
-</mat-list>
-
-@if (!gameList.length) {
+@if (gameList.length) {
+    <div class="game-list">
+        <cdk-virtual-scroll-viewport itemSize="100" class="game-list-viewport">
+            <mat-list role="list">
+                <ng-container
+                    *cdkVirtualFor="
+                        let game of gameList;
+                        let i = index;
+                        trackBy: trackByGame
+                    "
+                >
+                    <mat-list-item
+                        role="listitem"
+                        class="mat-mdc-list-item-interactive"
+                    >
+                        <app-game-card
+                            [gameData]="game"
+                            [index]="i"
+                        ></app-game-card>
+                    </mat-list-item>
+                </ng-container>
+            </mat-list>
+        </cdk-virtual-scroll-viewport>
+    </div>
+} @else {
     <mat-card class="empty-card" appearance="outlined">
         <mat-card-header>
             <mat-card-title>Пусто...</mat-card-title>

@@ -2,15 +2,9 @@ form {
     display: flex;
     flex-direction: column;
 }
-.buttons-block {
-    display: flex;
-    // position: absolute;
-    right: 1vw;
-    top: 1vw;
-}
 .logo-block {
     display: flex;
-    
+
     mat-form-field {
         width: -webkit-fill-available;
     }
@@ -21,12 +15,6 @@ form {
 .container-platform {
     display: flex;
     align-items: center;
-}
-.logo-platform {
-    width: 3vh;
-    object-fit: cover;
-    aspect-ratio: 1/1;
-    margin-right: 1vw;
 }
 .platforms-selected-list {
     display: flex;
@@ -48,3 +36,6 @@ mat-divider {
     border-top-width: 3px;
 }
 
+.name-platform {
+    margin-left: 10px;
+}

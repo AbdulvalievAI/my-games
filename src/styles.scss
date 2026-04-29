@@ -1,10 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 app-root {
     display: block;
     padding: 3vh 3vh 0 3vh;
+    height: stretch;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version. */

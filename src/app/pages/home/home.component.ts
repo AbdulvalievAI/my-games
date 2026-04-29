@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 
 import { FilterComponent } from '../../components/filter-list/filter-list.component';
 import { GamesListComponent } from '../../components/games-list/games-list.component';
+import { HeaderComponent } from "../../components/header/header.component";
 import { SettingsComponent } from "../../components/settings/settings.component";
 import type { IGame } from '../../types/games.interfaces';
 
@@ -27,7 +28,8 @@ import type { IGame } from '../../types/games.interfaces';
         MatIconModule,
         MatButtonModule,
         MatTooltipModule,
-        SettingsComponent
+        SettingsComponent,
+        HeaderComponent,
     ],
 })
 export class HomeComponent implements AfterViewInit {

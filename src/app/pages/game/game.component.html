@@ -1,5 +1,5 @@
-<form [formGroup]="newGameForm">
-    <div class="buttons-block">
+<app-header>
+    <div modal-left>
         <button
             mat-fab
             color="primary"
@@ -31,51 +31,52 @@
         >
             <mat-icon>image</mat-icon>
         </button>
-
-        <div style="margin-left: auto">
-            @if (!editGame) {
-                <button
-                    mat-fab
-                    color="warn"
-                    aria-label="Отчистить"
-                    matTooltip="Отчистить"
-                    style="margin-right: 1vw"
-                    (click)="resetField()"
-                >
-                    <mat-icon>cleaning_services</mat-icon>
-                </button>
-            }
-
-            @if (editGame) {
-                <button
-                    mat-fab
-                    color="warn"
-                    aria-label="Удалить"
-                    matTooltip="Удалить"
-                    style="margin-right: 1vw"
-                    (click)="deleteGame()"
-                >
-                    <mat-icon>delete</mat-icon>
-                </button>
-            }
-
+    </div>
+    <div modal-right>
+        @if (!editGame) {
             <button
                 mat-fab
-                color="accent"
-                aria-label="Сохранить игру"
-                matTooltip="Сохранить игру"
-                [disabled]="!newGameForm.valid"
-                (click)="saveGame()"
+                color="warn"
+                aria-label="Отчистить"
+                matTooltip="Отчистить"
+                style="margin-right: 1vw"
+                (click)="resetField()"
             >
-                <mat-icon>save</mat-icon>
+                <mat-icon>cleaning_services</mat-icon>
             </button>
-        </div>
+        }
+
+        @if (editGame) {
+            <button
+                mat-fab
+                color="warn"
+                aria-label="Удалить"
+                matTooltip="Удалить"
+                style="margin-right: 1vw"
+                (click)="deleteGame()"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+        }
+
+        <button
+            mat-fab
+            color="accent"
+            aria-label="Сохранить игру"
+            matTooltip="Сохранить игру"
+            [disabled]="!newGameForm.valid"
+            (click)="saveGame()"
+        >
+            <mat-icon>save</mat-icon>
+        </button>
     </div>
+</app-header>
 
-    <h1>{{ newGameForm.value.name || "Название игры" }}</h1>
-    <h3>{{ newGameForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
-    <mat-divider></mat-divider>
+<h1>{{ newGameForm.value.name || "Название игры" }}</h1>
+<h3>{{ newGameForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
+<mat-divider></mat-divider>
 
+<form [formGroup]="newGameForm">
     <mat-form-field appearance="outline">
         <mat-label>Название игры</mat-label>
 
@@ -117,12 +118,13 @@
                         track platform2
                     ) {
                         <div class="platforms-selected-item">
-                            <img
-                                class="logo-platform"
-                                [src]="platform2.logo"
-                                [alt]="platform2.logo"
-                            />
-                            <span>{{ platform2.name }}</span>
+                            <app-logo-platform
+                                [data]="platform2"
+                            ></app-logo-platform>
+
+                            <span class="name-platform">
+                                {{ platform2.name }}
+                            </span>
                         </div>
                     }
                 </div>
@@ -131,12 +133,13 @@
             @for (platform of platformList; track platform) {
                 <mat-option [value]="platform">
                     <div class="container-platform">
-                        <img
-                            class="logo-platform"
-                            [src]="platform.logo"
-                            [alt]="platform.logo"
-                        />
-                        <span class="name-platform">{{ platform.name }}</span>
+                        <app-logo-platform
+                            [data]="platform"
+                        ></app-logo-platform>
+
+                        <span class="name-platform">
+                            {{ platform.name }}
+                        </span>
                     </div>
                 </mat-option>
             }
