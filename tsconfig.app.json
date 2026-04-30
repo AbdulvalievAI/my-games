@@ -6,6 +6,7 @@
         "types": [],
         "strictNullChecks": true
     },
-    "files": ["src/main.ts", "src/polyfills.ts"],
-    "include": ["src/**/*.d.ts"]
+    "files": ["src/main.ts"],
+    "include": ["src/**/*.ts"],
+    "exclude": ["src/**/*.spec.ts"]
 }

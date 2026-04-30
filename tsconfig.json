@@ -1,32 +1,27 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
     "compileOnSave": false,
     "compilerOptions": {
         "outDir": "./dist",
         "rootDir": "./src",
-        "paths": {
-            "@/*": ["./src/*"]
-        },
         "forceConsistentCasingInFileNames": true,
         "esModuleInterop": true,
         "strict": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "strictPropertyInitialization": false,
         "sourceMap": true,
         "declaration": false,
         "experimentalDecorators": true,
-        "moduleResolution": "bundler",
         "importHelpers": true,
         "target": "ES2022",
-        "useDefineForClassFields": false,
         "strictNullChecks": true,
-        "noImplicitAny": false,
         "noImplicitOverride": true,
-        "noPropertyAccessFromIndexSignature": false,
-        "module": "ES2022"
+        "noImplicitAny": true,
+        "strictPropertyInitialization": false,
+        "useDefineForClassFields": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "module": "preserve"
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "vitest.config.ts"],
     "exclude": ["node_modules", "dist"],
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
