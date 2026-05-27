@@ -1,0 +1,239 @@
+<app-header>
+    <div modal-left>
+        <button
+            mat-fab
+            color="primary"
+            aria-label="Главная"
+            matTooltip="Главная"
+            class="mr"
+            (click)="explorerService.goToHome()"
+        >
+            <mat-icon>home</mat-icon>
+        </button>
+
+        @if (this.newGameForm) {
+            <button
+                mat-fab
+                color="primary"
+                aria-label="Яндекс поиск"
+                matTooltip="Яндекс поиск"
+                class="mr"
+                (click)="
+                    explorerService.goToYandexSearch(
+                        this.newGameForm.value.name
+                    )
+                "
+            >
+                <mat-icon>public</mat-icon>
+            </button>
+
+            <button
+                mat-fab
+                color="primary"
+                aria-label="Яндекс картинки"
+                matTooltip="Яндекс картинки"
+                (click)="
+                    explorerService.goToYandexImage(this.newGameForm.value.name)
+                "
+            >
+                <mat-icon>image</mat-icon>
+            </button>
+        }
+    </div>
+
+    <div modal-right class="modal-right">
+        @if (isLoad$ | async) {
+            <mat-spinner
+                [diameter]="50"
+                style="margin-right: 10px"
+            ></mat-spinner>
+        }
+
+        @if (!editGame) {
+            <button
+                mat-fab
+                color="warn"
+                aria-label="Отчистить"
+                matTooltip="Отчистить"
+                class="mr"
+                [disabled]="(isLoad$ | async) || !newGameForm"
+                (click)="resetField()"
+            >
+                <mat-icon>cleaning_services</mat-icon>
+            </button>
+        }
+
+        @if (editGame) {
+            <button
+                mat-fab
+                color="warn"
+                aria-label="Удалить"
+                matTooltip="Удалить"
+                class="mr"
+                [disabled]="(isLoad$ | async) || !newGameForm"
+                (click)="deleteGame()"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+        }
+
+        <button
+            mat-fab
+            color="accent"
+            aria-label="Сохранить игру"
+            matTooltip="Сохранить игру"
+            [disabled]="(isLoad$ | async) || !newGameForm || !newGameForm.valid"
+            (click)="saveGame()"
+        >
+            <mat-icon>save</mat-icon>
+        </button>
+    </div>
+</app-header>
+
+@if (newGameForm) {
+    <div class="block">
+        <h1>{{ newGameForm.value.name || "Название игры" }}</h1>
+        <h3>{{ newGameForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
+
+        <form [formGroup]="newGameForm">
+            <mat-form-field appearance="outline">
+                <mat-label>Название игры</mat-label>
+
+                <input
+                    matInput
+                    placeholder="Название игры"
+                    formControlName="name"
+                />
+
+                @if (progressName.isShowProgress) {
+                    <mat-progress-spinner
+                        style="margin-right: 10px"
+                        matSuffix
+                        [diameter]="30"
+                        [mode]="'determinate'"
+                        [value]="progressName.valueProgress"
+                    ></mat-progress-spinner>
+                }
+                @if (progressName.isLoadData) {
+                    <mat-spinner
+                        style="margin-right: 10px"
+                        matSuffix
+                        [diameter]="30"
+                    ></mat-spinner>
+                }
+            </mat-form-field>
+
+            @if (progressName.findedGames.length) {
+                <app-btn-list
+                    [buttonsList]="progressName.findedGames"
+                    [orientation]="'horizontal'"
+                    (clickItem)="explorerService.goToGameEdit($event.id)"
+                ></app-btn-list>
+            }
+
+            <div class="logo-block">
+                <mat-form-field
+                    appearance="outline"
+                    class="logo-block__logo-field"
+                >
+                    <mat-label>Ссылка на лого</mat-label>
+
+                    <input
+                        matInput
+                        placeholder="Ссылка на лого"
+                        formControlName="logo"
+                    />
+                </mat-form-field>
+
+                <button
+                    mat-fab
+                    color="primary"
+                    id="logo-block__view-log-btn"
+                    aria-label="Посмотреть лого"
+                    matTooltip="Посмотреть лого"
+                    [disabled]="!newGameForm.value.logo"
+                    (click)="
+                        dialogService.openImageDialog(newGameForm.value.logo)
+                    "
+                >
+                    <mat-icon>remove_red_eye</mat-icon>
+                </button>
+            </div>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Платформа</mat-label>
+
+                <mat-select formControlName="platforms" multiple>
+                    <mat-select-trigger>
+                        <div class="platforms-selected-list">
+                            @for (
+                                platform2 of newGameForm.value.platforms;
+                                track platform2
+                            ) {
+                                <div class="platforms-selected-item">
+                                    <app-logo-platform
+                                        [data]="platform2"
+                                    ></app-logo-platform>
+
+                                    <span class="name-platform">
+                                        {{ platform2.name }}
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    </mat-select-trigger>
+
+                    @for (platform of platformList; track platform) {
+                        <mat-option [value]="platform">
+                            <div class="container-platform">
+                                <app-logo-platform
+                                    [data]="platform"
+                                ></app-logo-platform>
+
+                                <span class="name-platform">
+                                    {{ platform.name }}
+                                </span>
+                            </div>
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Группы</mat-label>
+
+                <mat-select formControlName="gameGroups" multiple>
+                    <mat-select-trigger>
+                        <div>
+                            @for (
+                                itemGameGroup of newGameForm.value.gameGroups;
+                                track itemGameGroup
+                            ) {
+                                {{ itemGameGroup.name }} |
+                            }
+                        </div>
+                    </mat-select-trigger>
+
+                    @for (itemGameGroup of gameGroupsRef; track itemGameGroup) {
+                        <mat-option [value]="itemGameGroup">
+                            <div class="container-platform">
+                                {{ itemGameGroup.name }}
+                            </div>
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </div>
+
+    @if (newGameForm.value.gameGroups?.length) {
+        <h2>Группы</h2>
+
+        <div class="block mt">
+            <app-btn-list
+                [buttonsList]="newGameForm.value.gameGroups"
+                (clickItem)="explorerService.goToGameGroupEdit($event.id)"
+            ></app-btn-list>
+        </div>
+    }
+}

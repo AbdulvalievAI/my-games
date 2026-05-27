@@ -1,0 +1,13 @@
+@use "./variables" as *;
+
+.mt {
+    margin-top: $gap-size;
+}
+
+.mb {
+    margin-bottom: $gap-size;
+}
+
+.mr {
+    margin-right: $gap-size;
+}

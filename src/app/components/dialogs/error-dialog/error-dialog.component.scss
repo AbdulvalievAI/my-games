@@ -1,0 +1,24 @@
+@use "../../../styles/variables" as *;
+
+:host {
+    display: flex;
+    height: 100%;
+    padding: $gap-size;
+}
+
+code {
+    text-wrap: auto;
+}
+
+mat-card-title {
+    display: flex;
+    align-items: center;
+}
+
+mat-icon {
+    margin-right: $gap-size;
+}
+
+mat-card {
+    width: 100%;
+}

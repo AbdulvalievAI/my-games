@@ -1,0 +1,38 @@
+@use "../../styles/common" as *;
+@use "../../styles/page-edit" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/gaps" as *;
+
+.logo-block {
+    display: flex;
+
+    mat-form-field {
+        width: -webkit-fill-available;
+    }
+
+    button {
+        margin-left: $gap-size;
+    }
+}
+
+.container-platform {
+    display: flex;
+    align-items: center;
+}
+
+.platforms-selected-list {
+    display: flex;
+}
+
+.platforms-selected-item {
+    font-size: inherit;
+    line-height: 3em;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    margin-right: $gap-size;
+}
+
+.name-platform {
+    margin-left: $gap-size;
+}

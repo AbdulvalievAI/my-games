@@ -1,0 +1,59 @@
+<button
+    color="primary"
+    mat-fab
+    [matMenuTriggerFor]="menu"
+    aria-label="Настройки"
+    matTooltip="Настройки"
+    class="mr"
+>
+    <mat-icon>settings</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu" class="settings">
+    <div class="settings__buttons">
+        <button
+            color="primary"
+            mat-mini-fab
+            matTooltip="Копировать данные"
+            (click)="copyGamesList()"
+        >
+            <mat-icon>content_copy</mat-icon>
+        </button>
+
+        <button
+            color="primary"
+            mat-mini-fab
+            matTooltip="Копировать данные файлом"
+            (click)="copyGamesListFile()"
+        >
+            <mat-icon>sim_card_download</mat-icon>
+        </button>
+
+        <button
+            color="primary"
+            mat-mini-fab
+            matTooltip="Группы игр"
+            (click)="explorerService.goToGameGroupsList()"
+        >
+            <mat-icon>group</mat-icon>
+        </button>
+
+        <button
+            color="primary"
+            mat-mini-fab
+            matTooltip="Аккаунт"
+            (click)="dialogService.openAuthDialog()"
+        >
+            <mat-icon>account_circle</mat-icon>
+        </button>
+
+        <button
+            color="primary"
+            mat-mini-fab
+            matTooltip="Тема"
+            (click)="dialogService.openThemeSwitcher()"
+        >
+            <mat-icon>color_lens</mat-icon>
+        </button>
+    </div>
+</mat-menu>

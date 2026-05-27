@@ -1,0 +1,38 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <mat-icon color="warn">error</mat-icon>
+            Ошибка!
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <pre>
+            <code>
+                @switch (typeof data) {
+                    @case ('string') {
+                        {{ data }}
+                    }
+                    @case ('object') {
+                        {{ data.stack }}
+                    }
+                }
+            </code>
+        </pre>
+    </mat-card-content>
+
+    @if (data) {
+        <mat-card-actions align="end">
+            <button
+                matButton
+                color="warn"
+                aria-label="Копировать текст ошибки"
+                matTooltip="Копировать текст ошибки"
+                (click)="copyTextError()"
+            >
+                <mat-icon>content_copy</mat-icon>
+                Копировать
+            </button>
+        </mat-card-actions>
+    }
+</mat-card>

@@ -1,0 +1,150 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            @if (authService.hasToken()) {
+                <mat-icon class="green mr" matTooltip="Авторизован">
+                    check_circle
+                </mat-icon>
+            } @else {
+                <mat-icon class="red mr" matTooltip="Не авторизован">
+                    error
+                </mat-icon>
+            }
+            Авторизация в Яндекс Диск
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="auth">
+        <p>
+            <mat-slide-toggle
+                class="mat-mdc-slide-toggle example-margin mat-accent"
+                [checked]="cloudChecked"
+                (change)="onToggleChange($event)"
+            >
+                Облачные сохранения
+                {{ cloudChecked ? "включены" : "выключены" }}
+            </mat-slide-toggle>
+        </p>
+        @if (authService.hasCloudEnabled()) {
+            @if (authService.hasCliendId()) {
+                @if (authService.hasToken()) {
+                    <div class="auth__login mt mb">
+                        <button
+                            matFab
+                            extended
+                            class="mat-button black"
+                            (click)="clearToken()"
+                        >
+                            <mat-icon>exit_to_app</mat-icon>
+                            Выйти из Яндекс Диск
+                        </button>
+                    </div>
+                } @else {
+                    <div class="auth__login mt mb">
+                        <button
+                            matFab
+                            extended
+                            class="mat-button black"
+                            (click)="login()"
+                        >
+                            <img
+                                src="/assets/yandex.png"
+                                alt="Icon"
+                                width="30"
+                                height="30"
+                                class="mr"
+                            />
+                            Получить токен Яндекс.Диск
+                        </button>
+                    </div>
+
+                    <mat-form-field appearance="outline" class="auth__field">
+                        <mat-label>Токен</mat-label>
+
+                        <textarea
+                            matInput
+                            placeholder="Токен"
+                            rows="5"
+                            [(ngModel)]="tokenField"
+                        ></textarea>
+                    </mat-form-field>
+                }
+            } @else {
+                <mat-form-field appearance="outline" class="auth__field">
+                    <mat-label>ID клиента</mat-label>
+
+                    <input
+                        matInput
+                        placeholder="ID клиента"
+                        [(ngModel)]="cliendIdField"
+                    />
+                </mat-form-field>
+            }
+        }
+    </mat-card-content>
+
+    @if (
+        authService.hasCloudEnabled() &&
+        (!authService.hasCliendId() || !authService.hasToken())
+    ) {
+        <mat-card-actions align="end">
+            <button
+                class="mr"
+                color="accent"
+                mat-fab
+                matTooltip="Сохранить"
+                (click)="save()"
+            >
+                <mat-icon>save</mat-icon>
+            </button>
+        </mat-card-actions>
+    }
+</mat-card>
+
+<!--
+<app-header>
+    <div modal-left>
+        <button
+            mat-fab
+            color="primary"
+            aria-label="Главная"
+            matTooltip="Главная"
+            class="mr"
+            (click)="explorerService.goToHome()"
+        >
+            <mat-icon>home</mat-icon>
+        </button>
+    </div>
+
+    <div modal-right class="modal-right">
+        <button
+            color="accent"
+            mat-fab
+            matTooltip="Удалить токен"
+            (click)="authService.clearToken()"
+        >
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</app-header>
+
+<div class="block mb">
+    @if (!authService.hasToken()) {
+        <div class="auth-prompt">
+            <h2>Подключение к Яндекс Диску</h2>
+            <p>Для работы с файлами требуется авторизация</p>
+            <a [href]="authService.getAuthUrl()" class="auth-button">
+                🔐 Авторизоваться через Яндекс
+            </a>
+        </div>
+    }
+
+    @if (authService.hasToken()) {
+        <div class="auth-success">
+            <h2>Успешно!</h2>
+            <p>
+                Вы подключены к Яндекс Диску. Теперь можно работать с файлами.
+            </p>
+        </div>
+    }
+</div> -->

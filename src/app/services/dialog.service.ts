@@ -1,0 +1,59 @@
+import { inject, Injectable } from "@angular/core";
+import {
+    MatDialog,
+    type MatDialogConfig,
+} from "@angular/material/dialog";
+
+import { AuthDialogComponent } from "../components/dialogs/auth-dialog/auth-dialog.component";
+import { ErrorDialogComponent } from "../components/dialogs/error-dialog/error-dialog.component";
+import { ImageDialogComponent } from "../components/dialogs/image-dialog/image-dialog.component";
+import { ThemeSwitcherComponent } from "../components/dialogs/theme-switcher-dialog/theme-switcher-dialog.component";
+import { YesNoDialogComponent } from "../components/dialogs/yes-no-dialog/yes-no-dialog.component";
+import type { IYesNoDialogSettings } from "../components/dialogs/yes-no-dialog/yes-no-dialog.interface";
+
+@Injectable()
+export class DialogService {
+    private readonly _dialog = inject(MatDialog);
+
+    public openErrorDialog(error: Error | string): void {
+        this._dialog.open(ErrorDialogComponent,
+            {
+                width: '540px',
+                data: error,
+            }
+        );
+    }
+
+    public openImageDialog(logoUrl: string | null | undefined): void {
+        if(!logoUrl) {
+            return;
+        }
+
+        this._dialog.open(ImageDialogComponent,
+            {
+                width: '50vh',
+                height: '50vh',
+                data: logoUrl,
+            },
+        );
+    }
+
+    public openYesNoDialog(settings: MatDialogConfig<IYesNoDialogSettings>) {
+        return this._dialog.open<YesNoDialogComponent, IYesNoDialogSettings>(
+            YesNoDialogComponent,
+            settings,
+        );
+    }
+
+    public openAuthDialog() {
+        return this._dialog.open(
+            AuthDialogComponent,
+        );
+    }
+
+    public openThemeSwitcher() {
+        return this._dialog.open(
+            ThemeSwitcherComponent,
+        );
+    }
+}

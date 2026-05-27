@@ -1,0 +1,51 @@
+@use "../../styles/common" as *;
+@use "../../styles/variables" as *;
+
+$mat-btn-small-size: 34px;
+$mat-icon-small-size: 26px;
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    width: 100%;
+}
+
+.vertical {
+    padding: 0;
+    width: 100%;
+}
+
+.btn-list {
+    display: flex;
+    border: 1px solid grey;
+    border-radius: $border-radius;
+    margin-bottom: $gap-size;
+    padding: $gap-size;
+
+    &__item {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+
+        &:not(:first-child) {
+            border-top: 1px solid gray;
+        }
+    }
+
+    &__btn {
+        &--small {
+            padding: 0;
+            width: $mat-btn-small-size;
+            height: $mat-btn-small-size;
+
+            .mat-icon {
+                height: $mat-icon-small-size;
+                width: $mat-icon-small-size;
+                font-size: $mat-icon-small-size;
+                line-height: $mat-icon-small-size;
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+@use "./variables" as *;
+
+mat-list-item {
+    height: fit-content !important;
+    padding: 1vh 0 !important;
+    border-bottom: 1px solid gray;
+
+    &:hover {
+        background-color: #0000000a;
+    }
+}
+
+.list {
+    padding: 0 $gap-size;
+    border: 3px solid grey;
+    border-radius: $border-radius;
+}
+
+.list-viewport {
+    height: 700px;
+    overflow-y: auto;
+}
+
+.cdk-virtual-scroll-content-wrapper {
+    scroll-behavior: smooth;
+}

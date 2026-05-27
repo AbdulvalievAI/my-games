@@ -1,0 +1,58 @@
+<app-header>
+    <div modal-left>
+        <button
+            mat-fab
+            color="primary"
+            aria-label="Главная"
+            matTooltip="Главная"
+            class="mr"
+            (click)="explorerService.goToHome()"
+        >
+            <mat-icon>home</mat-icon>
+        </button>
+    </div>
+
+    <div modal-right>
+        <button
+            color="accent"
+            mat-fab
+            aria-label="Добавить группу игр"
+            matTooltip="Добавить группу игр"
+            (click)="explorerService.goToAddGameGroup()"
+        >
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</app-header>
+
+@if (!isLoad) {
+    @if (gameGroupsList.length) {
+        <div class="list">
+            <cdk-virtual-scroll-viewport itemSize="100" class="list-viewport">
+                <mat-list role="list">
+                    <ng-container
+                        *cdkVirtualFor="
+                            let gameGroup of gameGroupsList;
+                            let i = index;
+                            trackBy: trackByGameGroup
+                        "
+                    >
+                        <mat-list-item
+                            role="listitem"
+                            class="mat-mdc-list-item-interactive"
+                            (click)="
+                                explorerService.goToGameGroupEdit(gameGroup.id)
+                            "
+                        >
+                            {{ gameGroup.name }}
+                        </mat-list-item>
+                    </ng-container>
+                </mat-list>
+            </cdk-virtual-scroll-viewport>
+        </div>
+    } @else {
+        <app-empty-card></app-empty-card>
+    }
+} @else {
+    <mat-spinner [diameter]="75"></mat-spinner>
+}

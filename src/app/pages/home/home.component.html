@@ -1,0 +1,33 @@
+<div class="home">
+    <div class="home__head">
+        <app-header>
+            <div modal-left>
+                <app-filter-list
+                    [(currentGameList)]="currentGameList"
+                    (dataLoadedChange)="dataLoaded($event)"
+                ></app-filter-list>
+            </div>
+            <div modal-right>
+                <app-settings></app-settings>
+
+                <button
+                    color="accent"
+                    mat-fab
+                    aria-label="Добавить игру"
+                    matTooltip="Добавить игру"
+                    (click)="explorerService.goToAddGame()"
+                >
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </app-header>
+    </div>
+
+    <div class="home__body">
+        @if (!isLoad) {
+            <app-games-list [gameList]="currentGameList"></app-games-list>
+        } @else {
+            <mat-spinner [diameter]="75"></mat-spinner>
+        }
+    </div>
+</div>

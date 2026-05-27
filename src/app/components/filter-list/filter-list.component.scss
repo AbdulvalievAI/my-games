@@ -1,0 +1,43 @@
+@use "../../styles/variables" as *;
+
+:host {
+    display: flex;
+}
+
+form mat-form-field {
+    margin-right: $gap-size;
+}
+mat-select-trigger {
+    display: flex;
+    align-items: center;
+
+    app-logo-platform {
+        position: absolute;
+    }
+
+    span {
+        margin-left: 35px;
+    }
+}
+
+.platforms-selected-item {
+    font-size: inherit;
+    line-height: 3em;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    margin-right: $gap-size;
+}
+
+.platforms-selected-list {
+    display: flex;
+}
+
+.container-platform {
+    display: flex;
+    align-items: center;
+}
+
+.name-platform {
+    margin-left: $gap-size;
+}

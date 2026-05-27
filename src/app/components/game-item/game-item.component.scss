@@ -1,0 +1,75 @@
+@use "../../styles/material-colors" as *;
+@use "../../styles/variables" as *;
+
+$mat-btn-small-size: 24px;
+$mat-icon-small-size: 16px;
+
+:host {
+    width: 100%;
+    height: 100%;
+}
+.game-item {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: $gap-size;
+
+    &:hover {
+        .game-item__tools {
+            display: block;
+        }
+    }
+
+    &__tools {
+        position: absolute;
+        display: none;
+        top: 3px;
+        left: 35px;
+        border: 1px solid grey;
+        border-radius: $border-radius;
+    }
+
+    &__btn {
+        &--small {
+            padding: 0;
+            width: $mat-btn-small-size;
+            height: $mat-btn-small-size;
+
+            &:not(:first-child) {
+                margin-left: $gap-size;
+            }
+
+            .mat-icon {
+                height: $mat-icon-small-size;
+                width: $mat-icon-small-size;
+                font-size: $mat-icon-small-size;
+                line-height: $mat-icon-small-size;
+            }
+        }
+    }
+
+    &__num {
+        margin-right: $gap-size;
+    }
+
+    &__logos-wrapper {
+        display: flex;
+        margin-left: auto;
+    }
+
+    &__logo-wrapper {
+        width: 54px;
+        height: 54px;
+        margin-left: $gap-size;
+    }
+
+    &__logo-platform {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+::ng-deep .snackbar-error .mdc-button__label {
+    color: $color-accent;
+}

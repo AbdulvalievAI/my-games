@@ -1,0 +1,58 @@
+@use "../../../styles/common" as *;
+@use "../../../styles/gaps" as *;
+@use "../../../styles/variables" as *;
+@use "../../../styles/material-colors" as *;
+
+$mat-icon-size: 40px;
+
+::ng-deep .mat-button.black {
+    background-color: black !important;
+    color: white !important;
+
+    .mdc-button__label {
+        display: flex;
+        align-items: center;
+    }
+}
+
+mat-card-title {
+    display: flex;
+    align-items: center;
+
+    .mat-icon {
+        height: $mat-icon-size;
+        width: $mat-icon-size;
+        font-size: $mat-icon-size;
+        line-height: $mat-icon-size;
+    }
+    .mat-icon.red {
+        color: $color-warn;
+    }
+
+    .mat-icon.green {
+        color: green;
+    }
+}
+
+.auth {
+    &__field {
+        width: 100%;
+    }
+
+    &__login {
+        display: flex;
+        justify-content: center;
+
+        button {
+            border-radius: 15px;
+            width: 100%;
+        }
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        margin-top: $gap-size;
+        margin-bottom: $gap-size;
+    }
+}

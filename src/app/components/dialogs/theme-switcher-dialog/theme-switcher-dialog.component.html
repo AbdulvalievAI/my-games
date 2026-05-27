@@ -1,0 +1,26 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title> Изменение темы приложения </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="mt">
+        <mat-form-field appearance="fill">
+            <mat-label>Выберите тему</mat-label>
+            <mat-select
+                [(value)]="selectedTheme"
+                (selectionChange)="onThemeChange($event)"
+            >
+                <mat-option value="azure-blue">Azure Blue</mat-option>
+                <mat-option value="cyan-orange">Cyan Orange</mat-option>
+                <mat-option value="deeppurple-amber"
+                    >Deep Purple Amber</mat-option
+                >
+                <mat-option value="indigo-pink">Indigo Pink</mat-option>
+                <mat-option value="magenta-violet">Magenta Violet</mat-option>
+                <mat-option value="pink-bluegrey">Pink Blue Grey</mat-option>
+                <mat-option value="purple-green">Purple Green</mat-option>
+                <mat-option value="rose-red">Rose Red</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,72 @@
+@if (filterForm) {
+    <form [formGroup]="filterForm">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Поиск игры</mat-label>
+
+            <input matInput placeholder="Поиск игры" formControlName="search" />
+
+            @if (isSpinner) {
+                <mat-icon matSuffix>
+                    <mat-spinner [diameter]="25"></mat-spinner>
+                </mat-icon>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Платформа</mat-label>
+
+            <mat-select formControlName="platform">
+                <mat-select-trigger>
+                    <app-logo-platform
+                        [data]="filterForm.value.platform"
+                    ></app-logo-platform>
+
+                    <span class="name-platform">
+                        {{ filterForm.value.platform?.name }}
+                    </span>
+                </mat-select-trigger>
+
+                @for (platform of platformList; track platform) {
+                    <mat-option [value]="platform">
+                        <div class="container-platform">
+                            <app-logo-platform
+                                [data]="platform"
+                            ></app-logo-platform>
+
+                            <span class="name-platform">
+                                {{ platform.name }}
+                            </span>
+                        </div>
+                    </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Группа</mat-label>
+
+            <mat-select formControlName="group">
+                <mat-select-trigger>
+                    {{ filterForm.value.group?.name }}
+                </mat-select-trigger>
+
+                @for (group of gameGroupsRef; track group) {
+                    <mat-option [value]="group">
+                        {{ group.name }}
+                    </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </form>
+
+    <button
+        color="warn"
+        mat-mini-fab
+        extended
+        aria-label="Сбросить"
+        matTooltip="Сбросить"
+        (click)="clearFilters()"
+    >
+        <mat-icon>cleaning_services</mat-icon>
+    </button>
+}

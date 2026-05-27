@@ -1,0 +1,109 @@
+<app-header>
+    <div modal-left>
+        <button
+            mat-fab
+            color="primary"
+            aria-label="Главная"
+            matTooltip="Главная"
+            class="mr"
+            (click)="explorerService.goToHome()"
+        >
+            <mat-icon>home</mat-icon>
+        </button>
+
+        <button
+            mat-fab
+            color="primary"
+            aria-label="Группы игр"
+            matTooltip="Группы игр"
+            class="mr"
+            (click)="explorerService.goToGameGroupsList()"
+        >
+            <mat-icon>group</mat-icon>
+        </button>
+    </div>
+
+    <div modal-right class="modal-right">
+        @if (isLoad$ | async) {
+            <mat-spinner
+                [diameter]="50"
+                style="margin-right: 10px"
+            ></mat-spinner>
+        }
+
+        @if (!editGameGroup) {
+            <button
+                mat-fab
+                color="warn"
+                aria-label="Отчистить"
+                matTooltip="Отчистить"
+                class="mr"
+                [disabled]="(isLoad$ | async) || !newGameGroupForm"
+                (click)="resetField()"
+            >
+                <mat-icon>cleaning_services</mat-icon>
+            </button>
+        }
+
+        @if (editGameGroup) {
+            <button
+                mat-fab
+                color="warn"
+                aria-label="Удалить"
+                matTooltip="Удалить"
+                class="mr"
+                [disabled]="(isLoad$ | async) || !newGameGroupForm"
+                (click)="deleteGame()"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+        }
+
+        <button
+            mat-fab
+            color="accent"
+            aria-label="Сохранить группу"
+            matTooltip="Сохранить группу"
+            [disabled]="
+                (isLoad$ | async) ||
+                !newGameGroupForm ||
+                !newGameGroupForm.valid
+            "
+            (click)="saveGame()"
+        >
+            <mat-icon>save</mat-icon>
+        </button>
+    </div>
+</app-header>
+
+@if (newGameGroupForm) {
+    <div class="block mb">
+        <h1>{{ newGameGroupForm.value.name || "Название группы" }}</h1>
+
+        <form [formGroup]="newGameGroupForm">
+            <mat-form-field appearance="outline">
+                <mat-label>Название группы</mat-label>
+
+                <input
+                    matInput
+                    placeholder="Название группы"
+                    formControlName="name"
+                />
+            </mat-form-field>
+        </form>
+    </div>
+}
+
+@if (gamesList.length) {
+    <h2>Игры</h2>
+
+    <div class="block btn-list">
+        <app-btn-list
+            [buttonsList]="gamesList"
+            [btnConfig]="btnConfig"
+            (clickItem)="explorerService.goToGameEdit($event.id)"
+            (clickBtn)="deleteGroupFromGame($event)"
+            [disabled]="isLoadGame$.value"
+        ></app-btn-list>
+    </div>
+}

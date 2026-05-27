@@ -1,0 +1,9 @@
+@use "../../styles/common" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/gaps" as *;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: $gap-size;
+}

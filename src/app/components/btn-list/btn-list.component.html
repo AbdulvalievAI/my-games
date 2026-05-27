@@ -1,0 +1,32 @@
+@if (buttonsList?.length) {
+    <div class="btn-list">
+        <mat-action-list [className]="orientation">
+            @for (btn of buttonsList; track btn) {
+                <div class="btn-list__item">
+                    <button
+                        mat-list-item
+                        class="mdc-list-item mat-mdc-list-item-interactive"
+                        [matTooltip]="btn.name"
+                        (click)="clickItem.emit(btn)"
+                        [disabled]="disabled"
+                    >
+                        {{ btn.name }}
+                    </button>
+
+                    @if (btnConfig) {
+                        <button
+                            class="btn-list__btn btn-list__btn--small"
+                            mat-fab
+                            [color]="btnConfig.color"
+                            [matTooltip]="btnConfig.title"
+                            [disabled]="disabled"
+                            (click)="clickBtn.emit(btn)"
+                        >
+                            <mat-icon>{{ btnConfig.icon }}</mat-icon>
+                        </button>
+                    }
+                </div>
+            }
+        </mat-action-list>
+    </div>
+}

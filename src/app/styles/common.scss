@@ -1,0 +1,7 @@
+@use "./variables" as *;
+
+.block {
+    border: 3px solid grey;
+    border-radius: $border-radius;
+    padding: $gap-size;
+}

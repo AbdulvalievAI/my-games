@@ -1,0 +1,27 @@
+@if (gameList.length) {
+    <div class="list">
+        <cdk-virtual-scroll-viewport itemSize="100" class="list-viewport">
+            <mat-list role="list">
+                <ng-container
+                    *cdkVirtualFor="
+                        let game of gameList;
+                        let i = index;
+                        trackBy: trackByGame
+                    "
+                >
+                    <mat-list-item
+                        role="listitem"
+                        class="mat-mdc-list-item-interactive"
+                    >
+                        <app-game-item
+                            [gameData]="game"
+                            [index]="i"
+                        ></app-game-item>
+                    </mat-list-item>
+                </ng-container>
+            </mat-list>
+        </cdk-virtual-scroll-viewport>
+    </div>
+} @else {
+    <app-empty-card></app-empty-card>
+}

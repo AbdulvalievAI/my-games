@@ -1,0 +1,24 @@
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+mat-spinner {
+    margin: auto;
+}
+
+.modal-right {
+    display: flex;
+}
+
+.horizontal-list {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+}
