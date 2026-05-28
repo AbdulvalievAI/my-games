@@ -32,7 +32,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { BtnListComponent } from "../../components/btn-list/btn-list.component";
-import type { IBtnConfig, IBtnListItem } from '../../components/btn-list/btn-list.interface';
+import type { IBtnConfig } from '../../components/btn-list/btn-list.interface';
 import { HeaderComponent } from "../../components/header/header.component";
 import { DialogService } from '../../services/dialog.service';
 import { ExplorerService } from '../../services/explorer.service';
@@ -175,7 +175,7 @@ export class GameGroupComponent implements OnInit, OnDestroy {
         }
     }
 
-    public deleteGroupFromGame(game: IBtnListItem): void {
+    public deleteGroupFromGame(game: IGame): void {
         if (this.editGameGroup?.id) {
             this.isLoadGame$.next(true);
 

@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { EPlatformLogo } from "../../data/platforms.data";
+import { EPlatformLogo } from "../../services/data/platforms";
 import type { IPlatform } from "../../types/platforms.interfaces";
 
 @Component({

@@ -1,14 +1,15 @@
-import { Injectable } from "@angular/core";
-import cloneDeep from 'lodash-es/cloneDeep';
+import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import type {
     IApiGameGroups,
     IApiGames,
+    IApiPlatforms,
     ISearchParam,
-} from "../types/api-games.interfaces";
+} from "../types/api.interfaces";
 import type { IGame, IGameGroup } from "../types/games.interfaces";
-import { gameGroups, gamesList } from './../data/mocks';
+import type { IPlatform } from "../types/platforms.interfaces";
+import { DataService } from "./data/data.service";
 
 export interface IServerMessage {
     status: string;
@@ -18,13 +19,14 @@ export interface IServerMessage {
 @Injectable({
     providedIn: 'root'
 })
-export class FakeGamesApiService implements IApiGames, IApiGameGroups {
-    private readonly _gamesList = cloneDeep(gamesList);
-    private readonly _gameGroups = cloneDeep(gameGroups);
+export class FakeGamesApiService implements IApiGames, IApiGameGroups, IApiPlatforms {
+    public readonly _dataService = inject(DataService);
 
     public createGame(game: IGame): Observable<IGame> {
         return this._serverDelay(() => {
-            this._gamesList.push(game);
+            const gamesList = this._dataService.games;
+
+            this._dataService.games = gamesList;
 
             return game;
         });
@@ -32,24 +34,27 @@ export class FakeGamesApiService implements IApiGames, IApiGameGroups {
 
     public getGameById(id: string): Observable<IGame | undefined> {
         return this._serverDelay(() => {
-            return this._gamesList.find(item => item.id === id);
+            return this._dataService.games.find(item => item.id === id);
         });
     }
 
     public getGames(): Observable<IGame[]> {
         return this._serverDelay(() => {
-            return cloneDeep(this._gamesList);
+            return this._dataService.games;;
         });
     }
 
     public updateGame(game: IGame): Observable<IGame> {
         return this._serverDelay(() => {
-            const findedGameIdx = this._gamesList.findIndex(gameItem => gameItem.id === game.id);
+            const gamesList = this._dataService.games;
+            const findedGameIdx = gamesList.findIndex(gameItem => gameItem.id === game.id);
 
             if (findedGameIdx !== -1) {
-                this._gamesList[findedGameIdx] = game;
+                gamesList[findedGameIdx] = game;
 
-                return this._gamesList[findedGameIdx];
+                this._dataService.games = gamesList;
+
+                return gamesList[findedGameIdx];
             } else {
                 throw new Error(`Не найдена игра с id ${game.id}`)
             }
@@ -58,10 +63,11 @@ export class FakeGamesApiService implements IApiGames, IApiGameGroups {
 
     public deleteGame(id: string): Observable<IServerMessage> {
         return this._serverDelay(() => {
+            const gamesList = this._dataService.games;
             const gameIdx: number = ((): number => {
                 let idx = -1;
 
-                this._gamesList.find((item, i) => {
+                gamesList.find((item, i) => {
                     if (item.id === id) {
                         idx = i;
 
@@ -74,7 +80,9 @@ export class FakeGamesApiService implements IApiGames, IApiGameGroups {
                 return idx;
             })();
 
-            this._gamesList.splice(gameIdx, 1);
+            gamesList.splice(gameIdx, 1);
+
+            this._dataService.games = gamesList;
 
             return {
                 "status": "success",
@@ -91,7 +99,11 @@ export class FakeGamesApiService implements IApiGames, IApiGameGroups {
 
     public createGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
         return this._serverDelay(() => {
-            this._gameGroups.push(gameGroup);
+            const gameGroupsList = this._dataService.gameGroups;
+
+            gameGroupsList.push(gameGroup);
+
+            this._dataService.gameGroups = gameGroupsList;
 
             return gameGroup;
         });
@@ -99,22 +111,28 @@ export class FakeGamesApiService implements IApiGames, IApiGameGroups {
 
     public getGameGroupById(id: string): Observable<IGameGroup | undefined> {
         return this._serverDelay(() => {
-            return this._gameGroups.find(item => item.id === id);
+            return this._dataService.gameGroups.find(item => item.id === id);
         });
     }
 
     public getGameGroups(): Observable<IGameGroup[]> {
         return this._serverDelay(() => {
-            return cloneDeep(this._gameGroups);
+            return this._dataService.gameGroups;
         });
     }
 
     public updateGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
         return this._serverDelay(() => {
-            const findedGroup: IGameGroup | undefined = this._gameGroups.find(gameGroupItem => gameGroupItem.id === gameGroup.id);
+            const gameGroupsList = this._dataService.gameGroups;
+            const findedGroup: IGameGroup | undefined = gameGroupsList.find(gameGroupItem => gameGroupItem.id === gameGroup.id);
 
             if (findedGroup) {
-                return Object.assign(findedGroup, gameGroup);
+                const updatedGameGroup = Object.assign(findedGroup, gameGroup);
+
+                this._dataService.gameGroups = gameGroupsList;
+
+                return updatedGameGroup;
+
             } else {
                 throw new Error(`Не найдена группа с id ${gameGroup.id}`);
             }
@@ -123,7 +141,9 @@ export class FakeGamesApiService implements IApiGames, IApiGameGroups {
 
     public deleteGameGroup(id: string): Observable<IServerMessage> {
         return this._serverDelay(() => {
-            const games: IGame[] = this._gamesList.filter(gameItem => {
+            const gameGroupsList = this._dataService.gameGroups;
+            const gamesList = this._dataService.games;
+            const games: IGame[] = gamesList.filter(gameItem => {
                 if (!gameItem.groups?.length) {
                     return false;
                 }
@@ -131,21 +151,24 @@ export class FakeGamesApiService implements IApiGames, IApiGameGroups {
                 return gameItem.groups.includes(id);
             });
 
-            if(games.length) {
+            if (games.length) {
                 games.forEach(gameItem => {
-                    if(gameItem.groups?.length === 1) {
+                    if (gameItem.groups?.length === 1) {
                         delete gameItem.groups;
                     } else {
-                        const gameGroupIdx = this._gameGroups.findIndex(item => (gameItem.groups?.includes(item.id)));
+                        const gameGroupIdx = gameGroupsList.findIndex(item => (gameItem.groups?.includes(item.id)));
 
                         gameItem.groups?.splice(gameGroupIdx, 1);
                     }
                 });
             }
 
-            const gameGroupIdx = this._gameGroups.findIndex(item => (item.id === id));
+            const gameGroupIdx = gameGroupsList.findIndex(item => (item.id === id));
 
-            this._gameGroups.splice(gameGroupIdx, 1);
+            gameGroupsList.splice(gameGroupIdx, 1);
+
+            this._dataService.gameGroups = gameGroupsList;
+            this._dataService.games = gamesList;
 
             return {
                 "status": "success",
@@ -154,14 +177,22 @@ export class FakeGamesApiService implements IApiGames, IApiGameGroups {
         });
     }
 
+    public getPlatforms(): Observable<IPlatform[]> {
+        return this._serverDelay(() => {
+            return this._dataService.platforms;
+        });
+    }
+
     private _filterGames(params: ISearchParam[]): IGame[] | [] {
-        return this._gamesList.filter(gameItem => {
+        const gamesList = this._dataService.games;
+
+        return gamesList.filter(gameItem => {
             const filterResults = params.filter(paramItem => {
                 if (!Object.hasOwn(gameItem, paramItem.field)) {
                     return false;
                 }
 
-                switch(paramItem.operator) {
+                switch (paramItem.operator) {
                     case 'like': {
                         const targetValue = paramItem.value;
                         const gameValue = gameItem[paramItem.field] as string;

@@ -5,6 +5,7 @@ import {
 } from "@angular/material/dialog";
 
 import { AuthDialogComponent } from "../components/dialogs/auth-dialog/auth-dialog.component";
+import { DataDialogComponent } from "../components/dialogs/data-dialog/data-dialog.component";
 import { ErrorDialogComponent } from "../components/dialogs/error-dialog/error-dialog.component";
 import { ImageDialogComponent } from "../components/dialogs/image-dialog/image-dialog.component";
 import { ThemeSwitcherComponent } from "../components/dialogs/theme-switcher-dialog/theme-switcher-dialog.component";
@@ -56,4 +57,11 @@ export class DialogService {
             ThemeSwitcherComponent,
         );
     }
+
+    public openDataDialog() {
+        return this._dialog.open(
+            DataDialogComponent,
+        );
+    }
 }
+

@@ -106,15 +106,16 @@ export class GameComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.isLoad$.next(true);
-        this._initPlatformList();
 
         forkJoin([
             this._route.params.pipe(take(1)),
             this._gameGroupsService.getGameGroups(),
+            this._platformsService.getPlatforms(),
         ])
         .pipe(takeUntil(this._destroy$))
-        .subscribe(([ params, gameGroups ]) => {
+        .subscribe(([ params, gameGroups, platforms ]) => {
             this.gameGroupsRef = gameGroups;
+            this.platformList = platforms;
 
             const id = params && params['id'];
 
@@ -317,10 +318,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
     private _openSnackBar(message: string): void {
         this._snackBar.open(message, 'OK', { duration: 5000 });
-    }
-
-    private _initPlatformList(): void {
-        this.platformList = this._platformsService.platforms;
     }
 
     private _setValueChanges(): void {

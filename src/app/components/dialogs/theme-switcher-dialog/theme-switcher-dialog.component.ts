@@ -1,4 +1,3 @@
-// theme-switcher.component.ts
 import { Component, inject } from '@angular/core';
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
 import { MatDialogRef } from '@angular/material/dialog';

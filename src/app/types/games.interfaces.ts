@@ -1,4 +1,4 @@
-import type { EPlatform } from "../data/platforms.data";
+import type { EPlatform } from "../services/data/platforms";
 
 export interface IGame {
     id: string;

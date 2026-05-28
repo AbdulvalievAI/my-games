@@ -2,6 +2,7 @@ import type { Observable } from "rxjs";
 
 import type { IServerMessage } from "../services/fake-games-api.service";
 import type { IGame, IGameGroup } from "./games.interfaces";
+import type { IPlatform } from "./platforms.interfaces";
 
 export interface ISearchParam {
     field: keyof IGame;
@@ -24,4 +25,8 @@ export interface IApiGameGroups {
     getGameGroups(): Observable<IGameGroup[]>;
     updateGameGroup(gameGroup: IGameGroup): Observable<IGameGroup>;
     deleteGameGroup(id: string): Observable<IServerMessage>;
+}
+
+export interface IApiPlatforms {
+    getPlatforms(): Observable<IPlatform[]>;
 }

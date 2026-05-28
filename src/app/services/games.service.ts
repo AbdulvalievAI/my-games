@@ -11,9 +11,9 @@ import {
     takeUntil,
 } from 'rxjs';
 
-import { EPlatform } from "../data/platforms.data";
-import type { ISearchParam } from '../types/api-games.interfaces';
+import type { ISearchParam } from '../types/api.interfaces';
 import type { IGame } from '../types/games.interfaces';
+import { EPlatform } from './data/platforms';
 import {
     FakeGamesApiService,
     type IServerMessage,

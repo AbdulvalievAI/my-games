@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders, provideHttpClient } from '@angular/common/http';
-import { type ApplicationConfig, inject, Injectable } from '@angular/core';
-import { EMPTY, map, switchMap } from 'rxjs';
+import { type ApplicationConfig, inject, Injectable,type OnDestroy } from '@angular/core';
+import { EMPTY, map, Subject, switchMap, takeUntil } from 'rxjs';
 
 import { yandexConfig } from '../config/yandex.config';
+import type { IAnyObject } from '../types/common.interfaces';
 import { AuthService } from './auth.service';
 
 export const appConfig: ApplicationConfig = {
@@ -16,32 +17,39 @@ export interface IResponce {
 }
 
 @Injectable()
-export class DiskService {
+export class DiskService implements OnDestroy {
     public readonly http = inject(HttpClient);
     public readonly authService = inject(AuthService);
+    private readonly _destroy$ = new Subject<void>();
 
-    /*     public async uploadFile(file: File, path: string) {
-            const headers = new HttpHeaders({
-                Authorization: `Bearer ${this.token}`,
-            });
+    ngOnDestroy(): void {
+        this._destroy$.next();
+        this._destroy$.complete();
+    }
 
-            const response = await this.http
-                .get(`${this.baseUrl}resources/upload`, {
-                    params: { path },
-                    headers,
-                })
-                .toPromise();
+    public uploadFile(file: File, path: string) {
+        const headers = this._createAuthHeaders();
 
-            const uploadUrl = response && response.href;
+        return this.http
+            .get(`${yandexConfig.diskUrl}resources/upload`, {
+                params: { path },
+                headers,
+            })
+            .pipe(
+                takeUntil(this._destroy$),
+                switchMap(response => {
+                    const upload = response as IAnyObject;
+                    const href = upload['href'] as string;
 
-            return this.http
-                .put(uploadUrl, file, {
-                    headers: new HttpHeaders({
-                        'Content-Type': file.type,
-                    }),
-                })
-                .toPromise();
-        } */
+                    return this.http
+                        .put(href, file, {
+                            headers: new HttpHeaders({
+                                'Content-Type': file.type,
+                            }),
+                        })
+                }),
+            );
+    }
 
     /*     public downloadFile(path: string, filename: string) {
             const headers = new HttpHeaders({
@@ -69,11 +77,8 @@ export class DiskService {
                 console.log('===> res', res);
             });
      */
-    getJsonFile(path: string) {
-        const token = this.authService.getToken();
-        const headers = new HttpHeaders({
-            Authorization: `OAuth ${token}`,
-        });
+    public getJsonFile(path: string) {
+        const headers = this._createAuthHeaders();
 
         return this.http.get<IResponce>(
             `${yandexConfig.diskUrl}resources/download`,
@@ -106,6 +111,12 @@ export class DiskService {
             })
         )
     }
+
+    private _createAuthHeaders() {
+        return new HttpHeaders({
+            Authorization: `OAuth ${this.authService.getToken()}`,
+        });
+    };
 
 /*     loadJsonArray(path: string, token: string) {
         const headers = {

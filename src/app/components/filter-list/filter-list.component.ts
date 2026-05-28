@@ -82,6 +82,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         forkJoin([
             this._gamesService.getGames(),
             this._gameGroupsService.getGameGroups(),
+            this._platformsService.getPlatforms(),
         ])
         .pipe(
             takeUntil(this._destroy$),
@@ -92,13 +93,12 @@ export class FilterComponent implements OnInit, OnDestroy {
                 return EMPTY;
             }),
         )
-        .subscribe(([ games, gameGroups ]) => {
+        .subscribe(([ games, gameGroups, platforms ]) => {
                 this.currentGameList = games;
-
                 this.gameGroupsRef = gameGroups;
+                this.platformList = platforms;
 
                 this._filterListService.initialize(this.currentGameList);
-                this._initPlatformList();
                 this._initForm();
 
                 this._filterListService.filters$
@@ -193,9 +193,5 @@ export class FilterComponent implements OnInit, OnDestroy {
             .next(filters);
 
         this.isSpinner = false;
-    }
-
-    private _initPlatformList(): void {
-        this.platformList = this._platformsService.platforms;
     }
 }

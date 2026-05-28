@@ -3,7 +3,6 @@
         <button
             mat-fab
             color="primary"
-            aria-label="Главная"
             matTooltip="Главная"
             class="mr"
             (click)="explorerService.goToHome()"
@@ -14,7 +13,6 @@
         <button
             mat-fab
             color="primary"
-            aria-label="Группы игр"
             matTooltip="Группы игр"
             class="mr"
             (click)="explorerService.goToGameGroupsList()"
@@ -35,7 +33,6 @@
             <button
                 mat-fab
                 color="warn"
-                aria-label="Отчистить"
                 matTooltip="Отчистить"
                 class="mr"
                 [disabled]="(isLoad$ | async) || !newGameGroupForm"
@@ -49,7 +46,6 @@
             <button
                 mat-fab
                 color="warn"
-                aria-label="Удалить"
                 matTooltip="Удалить"
                 class="mr"
                 [disabled]="(isLoad$ | async) || !newGameGroupForm"

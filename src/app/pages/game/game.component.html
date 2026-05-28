@@ -3,7 +3,6 @@
         <button
             mat-fab
             color="primary"
-            aria-label="Главная"
             matTooltip="Главная"
             class="mr"
             (click)="explorerService.goToHome()"
@@ -15,7 +14,6 @@
             <button
                 mat-fab
                 color="primary"
-                aria-label="Яндекс поиск"
                 matTooltip="Яндекс поиск"
                 class="mr"
                 (click)="
@@ -30,7 +28,6 @@
             <button
                 mat-fab
                 color="primary"
-                aria-label="Яндекс картинки"
                 matTooltip="Яндекс картинки"
                 (click)="
                     explorerService.goToYandexImage(this.newGameForm.value.name)
@@ -53,7 +50,6 @@
             <button
                 mat-fab
                 color="warn"
-                aria-label="Отчистить"
                 matTooltip="Отчистить"
                 class="mr"
                 [disabled]="(isLoad$ | async) || !newGameForm"
@@ -67,7 +63,6 @@
             <button
                 mat-fab
                 color="warn"
-                aria-label="Удалить"
                 matTooltip="Удалить"
                 class="mr"
                 [disabled]="(isLoad$ | async) || !newGameForm"
@@ -80,7 +75,6 @@
         <button
             mat-fab
             color="accent"
-            aria-label="Сохранить игру"
             matTooltip="Сохранить игру"
             [disabled]="(isLoad$ | async) || !newGameForm || !newGameForm.valid"
             (click)="saveGame()"
@@ -149,7 +143,6 @@
                     mat-fab
                     color="primary"
                     id="logo-block__view-log-btn"
-                    aria-label="Посмотреть лого"
                     matTooltip="Посмотреть лого"
                     [disabled]="!newGameForm.value.logo"
                     (click)="

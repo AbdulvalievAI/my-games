@@ -20,12 +20,12 @@ import type { IBtnConfig, IBtnListItem } from './btn-list.interface';
         MatTooltipModule,
     ],
 })
-export class BtnListComponent {
-    @Input() buttonsList: IBtnListItem[] | null | undefined = [];
+export class BtnListComponent<T extends IBtnListItem> {
+    @Input() buttonsList: T[] | null | undefined = [];
     @Input() orientation: 'horizontal' | 'vertical' = 'vertical';
     @Input() btnConfig: IBtnConfig;
     @Input() disabled = false;
 
-    @Output() clickItem = new EventEmitter<IBtnListItem>();
-    @Output() clickBtn = new EventEmitter<IBtnListItem>();
+    @Output() clickItem = new EventEmitter<T>();
+    @Output() clickBtn = new EventEmitter<T>();
 }

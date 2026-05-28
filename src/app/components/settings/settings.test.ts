@@ -49,20 +49,12 @@ describe('component "app-settings"', async () => {
             expect(settingsButton).toBeTruthy();
         });
 
-        it('button "Копировать данные" exists', () => {
+        it('button "Данные" exists', () => {
             openMenu(fixture, settingsButton);
 
-            const copyGamesListButton = getDebugElementByCss(fixture, 'button[aria-label="Копировать данные"]');
+            const copyGamesListButton = getDebugElementByCss(fixture, 'button[aria-label="Данные"]');
 
             expect(copyGamesListButton).toBeTruthy();
-        });
-
-        it('button "Копировать данные файлом", exists', () => {
-            openMenu(fixture, settingsButton);
-
-            const copyGamesListFileButton = getDebugElementByCss(fixture, 'button[aria-label="Копировать данные файлом"]');
-
-            expect(copyGamesListFileButton).toBeTruthy();
         });
     });
 });

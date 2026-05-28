@@ -1,4 +1,4 @@
-import type { IPlatform } from "../types/platforms.interfaces";
+import type { IPlatform } from "../../types/platforms.interfaces";
 
 export enum EPlatform {
     LOCAL = 'local',
@@ -29,7 +29,7 @@ export enum EPlatformLogo {
     EMPTY = '/assets/alternative_logo.png',
 }
 
-export const platformsList: IPlatform[] = [
+export const platforms: IPlatform[] = [
     {
         id: 0,
         name: 'Local',

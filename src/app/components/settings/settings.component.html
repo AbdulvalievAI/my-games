@@ -14,19 +14,11 @@
         <button
             color="primary"
             mat-mini-fab
-            matTooltip="Копировать данные"
-            (click)="copyGamesList()"
+            aria-label="Данные"
+            matTooltip="Данные"
+            (click)="dialogService.openDataDialog()"
         >
-            <mat-icon>content_copy</mat-icon>
-        </button>
-
-        <button
-            color="primary"
-            mat-mini-fab
-            matTooltip="Копировать данные файлом"
-            (click)="copyGamesListFile()"
-        >
-            <mat-icon>sim_card_download</mat-icon>
+            <mat-icon>insert_drive_file</mat-icon>
         </button>
 
         <button
