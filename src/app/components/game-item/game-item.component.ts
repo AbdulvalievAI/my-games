@@ -4,9 +4,9 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
+import { GamesService } from "../../services/api/games.service";
+import { PlatformsService } from "../../services/api/platforms.service";
 import { ExplorerService } from "../../services/explorer.service";
-import { GamesService } from "../../services/games.service";
-import { PlatformsService } from "../../services/platforms.service";
 import type { IGame } from "../../types/games.interfaces";
 import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
 

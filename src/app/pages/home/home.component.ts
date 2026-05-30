@@ -15,8 +15,8 @@ import { FilterComponent } from '../../components/filter-list/filter-list.compon
 import { GamesListComponent } from '../../components/games-list/games-list.component';
 import { HeaderComponent } from "../../components/header/header.component";
 import { SettingsComponent } from "../../components/settings/settings.component";
+import { DiskService } from '../../services/api/disk.service';
 import { DialogService } from '../../services/dialog.service';
-import { DiskService } from '../../services/disk.service';
 import { ExplorerService } from '../../services/explorer.service';
 import type { IGame } from '../../types/games.interfaces';
 

@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders, provideHttpClient } from '@angular/common/http
 import { type ApplicationConfig, inject, Injectable,type OnDestroy } from '@angular/core';
 import { EMPTY, map, Subject, switchMap, takeUntil } from 'rxjs';
 
-import { yandexConfig } from '../config/yandex.config';
-import type { IAnyObject } from '../types/common.interfaces';
+import { yandexConfig } from '../../config/yandex.config';
+import type { IAnyObject } from '../../types/common.interfaces';
 import { AuthService } from './auth.service';
 
 export const appConfig: ApplicationConfig = {

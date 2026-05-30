@@ -5,11 +5,11 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 
+import { GameGroupsService } from '../../../services/api/game-groups.service';
+import { GamesService } from '../../../services/api/games.service';
+import { PlatformsService } from '../../../services/api/platforms.service';
 import { DataService } from '../../../services/data/data.service';
 import { type FileGenerationOptions, FileService } from '../../../services/file.service';
-import { GameGroupsService } from '../../../services/game-groups.service';
-import { GamesService } from '../../../services/games.service';
-import { PlatformsService } from '../../../services/platforms.service';
 import { BtnListComponent } from '../../btn-list/btn-list.component';
 import type { IBtnConfig } from '../../btn-list/btn-list.interface';
 

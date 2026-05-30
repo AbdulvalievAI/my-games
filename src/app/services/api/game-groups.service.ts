@@ -9,10 +9,10 @@ import {
     takeUntil,
 } from 'rxjs';
 
-import type { IGameGroup } from '../types/games.interfaces';
+import type { IServerMessage } from '../../types/api.interfaces';
+import type { IGameGroup } from '../../types/games.interfaces';
 import {
     FakeGamesApiService,
-    type IServerMessage,
 } from './fake-games-api.service';
 
 @Injectable({

@@ -1,6 +1,5 @@
 import type { Observable } from "rxjs";
 
-import type { IServerMessage } from "../services/fake-games-api.service";
 import type { IGame, IGameGroup } from "./games.interfaces";
 import type { IPlatform } from "./platforms.interfaces";
 
@@ -29,4 +28,9 @@ export interface IApiGameGroups {
 
 export interface IApiPlatforms {
     getPlatforms(): Observable<IPlatform[]>;
+}
+
+export interface IServerMessage {
+    status: string;
+    message: string;
 }

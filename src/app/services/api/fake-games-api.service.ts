@@ -6,15 +6,11 @@ import type {
     IApiGames,
     IApiPlatforms,
     ISearchParam,
-} from "../types/api.interfaces";
-import type { IGame, IGameGroup } from "../types/games.interfaces";
-import type { IPlatform } from "../types/platforms.interfaces";
-import { DataService } from "./data/data.service";
-
-export interface IServerMessage {
-    status: string;
-    message: string;
-}
+    IServerMessage,
+} from "../../types/api.interfaces";
+import type { IGame, IGameGroup } from "../../types/games.interfaces";
+import type { IPlatform } from "../../types/platforms.interfaces";
+import { DataService } from "../data/data.service";
 
 @Injectable({
     providedIn: 'root'

@@ -19,10 +19,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { catchError, EMPTY, forkJoin, Subject, takeUntil } from 'rxjs';
 
+import { GameGroupsService } from '../../services/api/game-groups.service';
+import { GamesService } from '../../services/api/games.service';
+import { PlatformsService } from '../../services/api/platforms.service';
 import { DialogService } from '../../services/dialog.service';
-import { GameGroupsService } from '../../services/game-groups.service';
-import { GamesService } from '../../services/games.service';
-import { PlatformsService } from '../../services/platforms.service';
 import type { IGame, IGameGroup } from '../../types/games.interfaces';
 import type { IPlatform } from '../../types/platforms.interfaces';
 import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";

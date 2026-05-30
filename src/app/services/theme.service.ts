@@ -28,14 +28,16 @@ export class ThemeService {
         }
 
         this._removeCurrentTheme();
-        this._loadTheme(themeUrl).then(() => {
-            this.currentTheme = themeName;
-            localStorage.setItem('app-theme', themeName);
-        }).catch((error) => {
-            console.error('Failed to load theme:', error);
-            // Откат к дефолтной теме
-            this.setTheme('indigo-pink');
-        });
+        this._loadTheme(themeUrl)
+            .then(() => {
+                this.currentTheme = themeName;
+                localStorage.setItem('app-theme', themeName);
+            })
+            .catch((error) => {
+                console.error('Failed to load theme:', error);
+                // Откат к дефолтной теме
+                this.setTheme('indigo-pink');
+            });
     }
 
     public getTheme(): string {

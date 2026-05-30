@@ -11,12 +11,11 @@ import {
     takeUntil,
 } from 'rxjs';
 
-import type { ISearchParam } from '../types/api.interfaces';
-import type { IGame } from '../types/games.interfaces';
-import { EPlatform } from './data/platforms';
+import type { ISearchParam, IServerMessage } from '../../types/api.interfaces';
+import type { IGame } from '../../types/games.interfaces';
+import { EPlatform } from '../data/platforms';
 import {
     FakeGamesApiService,
-    type IServerMessage,
 } from './fake-games-api.service';
 
 @Injectable({

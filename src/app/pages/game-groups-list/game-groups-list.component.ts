@@ -16,9 +16,9 @@ import { catchError, EMPTY,Subject,takeUntil } from 'rxjs';
 
 import { EmptyCardComponent } from '../../components/empty-card/empty-card.component';
 import { HeaderComponent } from "../../components/header/header.component";
+import { GameGroupsService } from '../../services/api/game-groups.service';
 import { DialogService } from '../../services/dialog.service';
 import { ExplorerService } from '../../services/explorer.service';
-import { GameGroupsService } from '../../services/game-groups.service';
 import type { IGameGroup } from '../../types/games.interfaces';
 
 @Component({

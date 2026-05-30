@@ -11,7 +11,7 @@ import { type MatSlideToggleChange, MatSlideToggleModule } from '@angular/materi
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../../services/api/auth.service';
 import { ExplorerService } from '../../../services/explorer.service';
 
 @Component({

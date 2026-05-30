@@ -11,9 +11,11 @@ import { platforms } from "./platforms";
     providedIn: 'root'
 })
 export class DataService {
+
     private _games: IGame[] = cloneDeep(games);
     private _platforms: IPlatform[] = cloneDeep(platforms);
     private _gameGroups: IGameGroup[] = cloneDeep(gameGroups);
+
 
     public get games(): IGame[] {
         return cloneDeep(this._games);

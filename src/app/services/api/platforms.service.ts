@@ -1,12 +1,12 @@
 import { inject, Injectable,type OnDestroy } from '@angular/core';
 import { type Observable,Subject, takeUntil } from 'rxjs';
 
-import type { IApiPlatforms } from '../types/api.interfaces';
+import type { IApiPlatforms } from '../../types/api.interfaces';
 import {
     type IPlatform,
-} from '../types/platforms.interfaces';
-import { DataService } from './data/data.service';
-import { type EPlatform } from './data/platforms';
+} from '../../types/platforms.interfaces';
+import { DataService } from '../data/data.service';
+import { type EPlatform } from '../data/platforms';
 import { FakeGamesApiService } from './fake-games-api.service';
 
 @Injectable()
