@@ -1,7 +1,7 @@
-<mat-card>
-    <mat-card-header>
+<mat-card class="auth">
+    <mat-card-header class="auth__header">
         <mat-card-title>
-            @if (authService.hasToken()) {
+            @if (authService.isAuthorized()) {
                 <mat-icon class="green mr" matTooltip="Авторизован">
                     check_circle
                 </mat-icon>
@@ -14,37 +14,47 @@
         </mat-card-title>
     </mat-card-header>
 
-    <mat-card-content class="auth">
-        <p>
-            <mat-slide-toggle
-                class="mat-mdc-slide-toggle example-margin mat-accent"
-                [checked]="cloudChecked"
-                (change)="onToggleChange($event)"
-            >
-                Облачные сохранения
-                {{ cloudChecked ? "включены" : "выключены" }}
-            </mat-slide-toggle>
-        </p>
-        @if (authService.hasCloudEnabled()) {
-            @if (authService.hasCliendId()) {
-                @if (authService.hasToken()) {
-                    <div class="auth__login mt mb">
+    <mat-card-content>
+        <form [formGroup]="authForm">
+            @if (!!this.authForm.get("clientId")) {
+                <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                    class="auth__field"
+                >
+                    <mat-label>ID клиента</mat-label>
+
+                    <input
+                        matInput
+                        placeholder="ID клиента"
+                        formControlName="clientId"
+                    />
+                </mat-form-field>
+            }
+
+            @if (!!this.authForm.get("token")) {
+                <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                    class="auth__field"
+                >
+                    <mat-label>Токен</mat-label>
+
+                    <textarea
+                        matInput
+                        placeholder="Токен"
+                        rows="5"
+                        formControlName="token"
+                    ></textarea>
+                </mat-form-field>
+
+                @if (!authService.isAuthorized()) {
+                    <div class="auth__login">
                         <button
                             matFab
                             extended
                             class="mat-button black"
-                            (click)="clearToken()"
-                        >
-                            <mat-icon>exit_to_app</mat-icon>
-                            Выйти из Яндекс Диск
-                        </button>
-                    </div>
-                } @else {
-                    <div class="auth__login mt mb">
-                        <button
-                            matFab
-                            extended
-                            class="mat-button black"
+                            [disabled]="!authForm.controls.clientId?.valid"
                             (click)="login()"
                         >
                             <img
@@ -57,46 +67,29 @@
                             Получить токен Яндекс.Диск
                         </button>
                     </div>
-
-                    <mat-form-field appearance="outline" class="auth__field">
-                        <mat-label>Токен</mat-label>
-
-                        <textarea
-                            matInput
-                            placeholder="Токен"
-                            rows="5"
-                            [(ngModel)]="tokenField"
-                        ></textarea>
-                    </mat-form-field>
                 }
-            } @else {
-                <mat-form-field appearance="outline" class="auth__field">
-                    <mat-label>ID клиента</mat-label>
-
-                    <input
-                        matInput
-                        placeholder="ID клиента"
-                        [(ngModel)]="cliendIdField"
-                    />
-                </mat-form-field>
             }
-        }
+        </form>
     </mat-card-content>
 
-    @if (
-        authService.hasCloudEnabled() &&
-        (!authService.hasCliendId() || !authService.hasToken())
-    ) {
-        <mat-card-actions align="end">
+    <mat-card-actions align="end">
+        @if (authService.isAuthorized()) {
+            <button matFab extended class="mat-button black" (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                Выйти из Яндекс Диск
+            </button>
+        } @else {
             <button
-                class="mr"
                 color="accent"
-                mat-fab
+                matFab
+                extended
                 matTooltip="Сохранить"
+                [disabled]="!authForm.valid"
                 (click)="save()"
             >
                 <mat-icon>save</mat-icon>
+                Сохранить
             </button>
-        </mat-card-actions>
-    }
+        }
+    </mat-card-actions>
 </mat-card>

@@ -1,18 +1,19 @@
 
-import { ChangeDetectorRef, Component, inject,type OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, type OnInit } from '@angular/core';
+import { FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCard, MatCardActions,MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
-import { type MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 
 import { AuthService } from '../../../services/api/auth.service';
 import { ExplorerService } from '../../../services/explorer.service';
+import type { IAuthForm } from './auth-dialog.interface';
 
 @Component({
     selector: 'app-auth-dialog',
@@ -35,6 +36,7 @@ import { ExplorerService } from '../../../services/explorer.service';
         MatDialogModule,
         MatTooltipModule,
         MatSlideToggleModule,
+        ReactiveFormsModule,
     ],
 })
 export class AuthDialogComponent implements OnInit {
@@ -42,71 +44,85 @@ export class AuthDialogComponent implements OnInit {
     public readonly authService = inject(AuthService);
     public readonly route = inject(ActivatedRoute);
     public readonly explorerService = inject(ExplorerService);
-    private readonly _cdr = inject(ChangeDetectorRef);
+    private readonly _fb = inject(FormBuilder);
 
-    public tokenField: string | null;
-    public cliendIdField: string | null;
-    public cloudChecked = false;
+    public authForm: FormGroup<IAuthForm>;
+    public disabledForm = true;
 
     constructor () {
         // this._handleOAuthCallback();
     }
 
     public ngOnInit(): void {
+        this._initForm();
+    }
+
+    private _initForm(): void {
+        this.disabledForm = this.authService.isAuthorized()
+
         const token = this.authService.getToken();
+        const clientId = this.authService.getCliendId();
 
-        if (token) {
-            this.tokenField = token;
-        }
+        this.authForm = this._fb.group({
+            token: this._createTokenControl(token, this.disabledForm),
+            clientId: this._createCliendIdControl(clientId, this.disabledForm),
+        }) as FormGroup<IAuthForm>;
+    }
 
-        this.cloudChecked = this.authService.getCloudEnabled();
+    private _createTokenControl(token: string | null, disabled = false) {
+        return this._fb.control({ value: token, disabled }, Validators.required);
+    }
+
+    private _createCliendIdControl(clientId: string | null, disabled = false) {
+        return this._fb.control({ value: clientId, disabled }, [ Validators.required ]);
     }
 
     public save() {
-        if (!this.authService.hasCliendId() && this.cliendIdField) {
-            this.authService.saveCliendId(this.cliendIdField);
-        } else if (!this.authService.hasToken() && this.tokenField) {
-            this.authService.saveToken(this.tokenField);
+        if (this.authForm.valid) {
+            const { clientId, token } = this.authForm.getRawValue();
+
+            if (clientId) {
+                this.authService.saveCliendId(clientId);
+            }
+
+            if (token) {
+                this.authService.saveToken(token);
+            }
+
+            this._initForm();
         }
     }
 
-    public clearToken() {
-        this.tokenField = null;
-
-        this.authService.clearToken();
+    public logout() {
+        this.authService.logout();
+        this._initForm();
     }
 
     public login() {
-        window.open(this.authService.getAuthUrl());
-    }
+        const clientId = this.authForm.value.clientId;
 
-    public onToggleChange(event: MatSlideToggleChange): void {
-        if (event.checked) {
-            this.authService.saveCloudEnabled(event.checked);
-        } else {
-            this.authService.clearToken();
-            this.authService.clearCliendId();
-            this.authService.clearCloudEnabled();
+        if (clientId) {
+            this.authService.login(clientId);
         }
     }
 
-/*     private _handleOAuthCallback(): void {
-        // Проверяем URL на наличие токена после авторизации
-        this.route.fragment.subscribe(fragment => {
-            if (fragment) {
-                const params = new URLSearchParams(fragment);
+    /*     private _handleOAuthCallback(): void {
+            // Проверяем URL на наличие токена после авторизации
+            this.route.fragment.subscribe(fragment => {
+                if (fragment) {
+                    const params = new URLSearchParams(fragment);
 
 
-                const accessToken = params.get('yandex_token');
+                    const accessToken = params.get('yandex_token');
 
-                if (accessToken) {
-                    this.setToken(accessToken);
+                    if (accessToken) {
+                        this.setToken(accessToken);
 
-                    console.info('Токен получен и сохранён:', accessToken);
+                        console.info('Токен получен и сохранён:', accessToken);
 
-                    // this._explorerService.goToHome();
+                        // this._explorerService.goToHome();
+                    }
                 }
-            }
-        });
-    } */
+            });
+        } */
 }

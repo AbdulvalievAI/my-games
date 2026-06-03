@@ -11,16 +11,13 @@ export class AuthService {
 
     private readonly _keyLsToken = 'yandex_token';
     private readonly _keyLsCliendId = 'client_id';
-    private readonly _keyLsCloudEnabled = 'cloud_enabled'
 
     // Метод для генерации URL авторизации
-    public getAuthUrl(): string {
-        const cliendId = this.getCliendId();
-
-        if (cliendId) {
+    public getAuthUrl(clientId: string): string {
+        if (clientId) {
             const params = new URLSearchParams({
                 response_type: 'token',
-                client_id: cliendId,
+                client_id: clientId,
                 redirect_uri: yandexConfig.redirectUri
             });
 
@@ -29,6 +26,21 @@ export class AuthService {
 
         throw new Error('Error create url')
     }
+
+    public login(clientId: string) {
+        window.open(this.getAuthUrl(clientId));
+    }
+
+    public logout() {
+        this.clearCliendId();
+        this.clearToken();
+    }
+
+    public isAuthorized(): boolean {
+        return this.hasToken() && this.hasCliendId();
+    }
+
+    /** Token */
 
     // Проверка, есть ли токен в localStorage
     public hasToken(): boolean {
@@ -49,6 +61,8 @@ export class AuthService {
         localStorage.removeItem(this._keyLsToken);
     }
 
+    /** ClientId */
+
     public hasCliendId(): boolean {
         return !!localStorage.getItem(this._keyLsCliendId);
     }
@@ -63,23 +77,5 @@ export class AuthService {
 
     public clearCliendId() {
         localStorage.removeItem(this._keyLsCliendId);
-    }
-
-    public hasCloudEnabled(): boolean {
-        return !!localStorage.getItem(this._keyLsCloudEnabled);
-    }
-
-    public getCloudEnabled(): boolean {
-        const enabled = localStorage.getItem(this._keyLsCloudEnabled);
-
-        return enabled === 'true' ? true : false;
-    }
-
-    public saveCloudEnabled(enabled: boolean): void {
-        localStorage.setItem(this._keyLsCloudEnabled, String(enabled));
-    }
-
-    public clearCloudEnabled() {
-        localStorage.removeItem(this._keyLsCloudEnabled);
     }
 }
