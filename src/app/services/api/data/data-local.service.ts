@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import cloneDeep from "lodash-es/cloneDeep";
 import type { Observable } from "rxjs";
 
-import type { EPlatform } from "../../../data/platforms";
+import { type EPlatform,platforms } from "../../../data/platforms";
 import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
 import type { IGame, IGameGroup } from "../../../types/games.interfaces";
 import type { IPlatform } from "../../../types/platforms.interfaces";
@@ -150,14 +150,22 @@ export class DataLocalService implements IDataPointService {
 
     public getPlatforms(): Observable<IPlatform[]> {
         return this._toolsService.serverDelay(() => {
-            return this._getParseData<IPlatform>(this._keyPlatforms);
+            return cloneDeep(this._getDataPlatforms());
         });
     }
 
     public getPlatformByType(type: EPlatform): IPlatform | undefined {
-        const platformsArr = this._getParseData<IPlatform>(this._keyPlatforms);
+        const platformsArr = this._getDataPlatforms();
 
         return platformsArr.find(platformItem => platformItem.type === type);
+    }
+
+    private _getDataPlatforms(isMock = true): IPlatform[] {
+        if (isMock) {
+            return cloneDeep(platforms);
+        } else {
+            return this._getParseData<IPlatform>(this._keyPlatforms)
+        }
     }
 
     private _getParseData<T>(key: string): T[] {
