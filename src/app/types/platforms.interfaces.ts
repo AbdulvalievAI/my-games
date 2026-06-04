@@ -1,7 +1,7 @@
-import type { EPlatform, EPlatformLogo } from "../services/data/platforms";
+import type { EPlatform, EPlatformLogo } from "../data/platforms";
 
 export interface IPlatform {
-    id: number;
+    id: string;
     name: string;
     type: EPlatform,
     logo: EPlatformLogo;

@@ -11,15 +11,11 @@ import {
 
 import type { IServerMessage } from '../../types/api.interfaces';
 import type { IGameGroup } from '../../types/games.interfaces';
-import {
-    FakeGamesApiService,
-} from './fake-games-api.service';
+import { DataService } from './data/data.service';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class GameGroupsService implements OnDestroy {
-    private readonly _fgaService = inject(FakeGamesApiService);
+    private readonly _dataService = inject(DataService);
 
     private readonly _destroy$ = new Subject<void>();
 
@@ -29,27 +25,26 @@ export class GameGroupsService implements OnDestroy {
     }
 
     public createGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
-        return this._fgaService.createGameGroup(gameGroup)
+        return this._dataService.createGameGroup(gameGroup)
             .pipe(takeUntil(this._destroy$));
     }
 
-    public getGameGroupById(id: string): Observable<IGameGroup | undefined> {
-        return this._fgaService.getGameGroupById(id)
-            .pipe(takeUntil(this._destroy$));
+    public getGameGroupById(id: string): IGameGroup | undefined {
+        return this._dataService.getGameGroupById(id);
     }
 
     public getGameGroups(): Observable<IGameGroup[]> {
-        return this._fgaService.getGameGroups()
+        return this._dataService.getGameGroups()
             .pipe(takeUntil(this._destroy$));
     }
 
     public updateGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
-        return this._fgaService.updateGameGroup(gameGroup)
+        return this._dataService.updateGameGroup(gameGroup)
             .pipe(takeUntil(this._destroy$));
     }
 
     public deleteGameGroup(id: string): Observable<IServerMessage> {
-        return this._fgaService.deleteGameGroup(id)
+        return this._dataService.deleteGameGroup(id)
             .pipe(takeUntil(this._destroy$));
     }
 }

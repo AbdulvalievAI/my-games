@@ -40,11 +40,11 @@ module.exports = defineConfig([
             // Правила типов TypeScript
             /* '@typescript-eslint/explicit-function-return-type': 'error', */
             /* '@typescript-eslint/explicit-module-boundary-types': 'error', */
-            '@typescript-eslint/no-explicit-any': ['error', { 'fixToUnknown': true }],
+            '@typescript-eslint/no-explicit-any': ['error', { 'fixToUnknown': true }], // any - "off"
             '@typescript-eslint/consistent-type-imports': 'error',
             /* '@typescript-eslint/no-unsafe-assignment': 'error', */
-            '@typescript-eslint/no-unsafe-member-access': 'error',
-            '@typescript-eslint/no-unsafe-call': 'error',
+            '@typescript-eslint/no-unsafe-member-access': 'error', // any - "off"
+            '@typescript-eslint/no-unsafe-call': 'error', // any - "off"
             '@typescript-eslint/no-unsafe-return': 'error',
             '@typescript-eslint/restrict-template-expressions': 'error',
             /*'@typescript-eslint/no-floating-promises': 'error',*/

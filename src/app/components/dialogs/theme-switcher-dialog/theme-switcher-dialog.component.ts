@@ -10,6 +10,9 @@ import { ThemeService } from '../../../services/theme.service';
     templateUrl: './theme-switcher-dialog.component.html',
     styleUrls: [ './theme-switcher-dialog.component.scss' ],
     standalone: true,
+    providers: [
+        ThemeService,
+    ],
     imports: [
         MatOption,
         MatSelect,

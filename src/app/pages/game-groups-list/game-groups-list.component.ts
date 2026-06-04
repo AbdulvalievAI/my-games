@@ -30,6 +30,7 @@ import type { IGameGroup } from '../../types/games.interfaces';
     providers: [
         DialogService,
         ExplorerService,
+        GameGroupsService,
     ],
     imports: [
         MatListModule,

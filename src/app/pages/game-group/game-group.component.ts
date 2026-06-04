@@ -23,7 +23,6 @@ import {
     catchError,
     EMPTY,
     filter,
-    forkJoin,
     Subject,
     switchMap,
     takeUntil,
@@ -176,10 +175,12 @@ export class GameGroupComponent implements OnInit, OnDestroy {
     }
 
     public deleteGroupFromGame(game: IGame): void {
-        if (this.editGameGroup?.id) {
+        const gameGroupId = this.editGameGroup?.id;
+
+        if (gameGroupId) {
             this.isLoadGame$.next(true);
 
-            this._gamesService.deleteGroupFromGame(game.id, this.editGameGroup.id)
+            this._gamesService.deleteGroupFromGame(game.id, gameGroupId)
                 .pipe(
                     takeUntil(this._destroy$),
                     catchError(error => {
@@ -189,16 +190,9 @@ export class GameGroupComponent implements OnInit, OnDestroy {
 
                         return EMPTY;
                     }),
-                    switchMap(() => {
-                        if (this.editGameGroup?.id) {
-                            return this._gamesService.searchGamesByGroup(this.editGameGroup.id);
-                        }
-
-                        return EMPTY
-                    }),
                 )
-                .subscribe(games => {
-                    this.gamesList = games
+                .subscribe(() => {
+                    this.gamesList = this._gamesService.searchGamesByGroup(gameGroupId);
 
                     this.isLoadGame$.next(false);
                 });
@@ -206,45 +200,11 @@ export class GameGroupComponent implements OnInit, OnDestroy {
     }
 
     private _initEditGameGroup(id: string): void {
-        forkJoin([
-            this._gameGroupsService.getGameGroupById(id),
-            this._gamesService.searchGamesByGroup(id),
-        ])
-        .pipe(
-            takeUntil(this._destroy$),
-            catchError(error => {
-                console.error(error);
-                this._dialogService.openErrorDialog(error);
-                this.isLoad$.next(false);
+        this.editGameGroup = this._gameGroupsService.getGameGroupById(id);
+        this.gamesList = this._gamesService.searchGamesByGroup(id);
 
-                return EMPTY;
-            }),
-        )
-        .subscribe(([ gameGroup, games ]) => {
-            this.editGameGroup = gameGroup;
-            this.gamesList = games;
-
-            this._initForm();
-            this.isLoad$.next(false);
-        });
-
-        this._gameGroupsService.getGameGroupById(id)
-            .pipe(
-                takeUntil(this._destroy$),
-                catchError(error => {
-                    console.error(error);
-                    this._dialogService.openErrorDialog(error);
-                    this.isLoad$.next(false);
-
-                    return EMPTY;
-                }),
-            )
-            .subscribe(gameGroup => {
-                this.editGameGroup = gameGroup;
-
-                this._initForm();
-                this.isLoad$.next(false);
-            });
+        this._initForm();
+        this.isLoad$.next(false);
     }
 
     private _initForm(): void {

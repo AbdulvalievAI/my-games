@@ -9,6 +9,9 @@ import { ThemeService } from './services/theme.service';
     templateUrl: './app.component.html',
     styleUrls: [ './app.component.scss' ],
     standalone: true,
+    providers: [
+        ThemeService,
+    ],
     imports: [ CommonModule, RouterModule ]
 })
 export class AppComponent implements OnInit {

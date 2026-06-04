@@ -36,7 +36,6 @@ export class GameItemComponent {
     @Input() gameData: IGame = this._gamesService.mockGame;
     @Input() index = 0;
 
-
     public copyName(event: PointerEvent): void {
         event.stopPropagation();
         navigator.clipboard.writeText(this.gameData.name);

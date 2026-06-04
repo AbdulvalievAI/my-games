@@ -29,7 +29,7 @@
         @for (platformType of gameData.platforms; track platformType) {
             <div class="game-item__logo-wrapper">
                 <app-logo-platform
-                    [data]="platformsService.getPlatform(platformType)"
+                    [data]="platformsService.getPlatformByType(platformType)"
                     [width]="'100%'"
                 ></app-logo-platform>
             </div>

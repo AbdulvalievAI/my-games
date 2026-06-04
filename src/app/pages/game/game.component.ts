@@ -192,24 +192,12 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     private _initEditGame(id: string): void {
-        this._gamesService.getGameById(id)
-            .pipe(
-                takeUntil(this._destroy$),
-                catchError(error => {
-                    console.error(error);
-                    this.dialogService.openErrorDialog(error);
-                    this.isLoad$.next(false);
+        const game = this._gamesService.getGameById(id);
 
-                    return EMPTY;
-                }),
-            )
-            .subscribe(game => {
-                this.editGame = game;
+        this.editGame = game;
 
-                this._initForm();
-                this.isLoad$.next(false);
-            });
-
+        this._initForm();
+        this.isLoad$.next(false);
     }
 
     private _initCreateGame(): void {
@@ -238,7 +226,7 @@ export class GameComponent implements OnInit, OnDestroy {
                     this._platformsService.getPlatformsByTypes(this.platformList, this.editGame.platforms),
                     Validators.required
                 ],
-                gameGroups: [ gameGroupsValue, Validators.required ],
+                gameGroups: [ gameGroupsValue ],
             });
         } else {
             this.newGameForm = this._fb.group({
@@ -247,7 +235,7 @@ export class GameComponent implements OnInit, OnDestroy {
                 name: [ '', Validators.required ],
                 logo: [ '', [ Validators.required, this._createPasswordStrengthValidator() ] ],
                 platforms: [ [] as IPlatform[], Validators.required ],
-                gameGroups: [ [] as IGameGroup[], Validators.required ],
+                gameGroups: [ [] as IGameGroup[] ],
             });
         }
 
@@ -355,15 +343,14 @@ export class GameComponent implements OnInit, OnDestroy {
                 this.progressName.isLoadData = true;
                 this._cdr.detectChanges();
 
-                this._gamesService.searchGamesByName(name)
-                    .subscribe(res => {
-                        if (res?.length) {
-                            this.progressName.findedGames = res.slice(0, 8);
-                        }
+                const games = this._gamesService.searchGamesByName(name);
 
-                        this.progressName.isLoadData = false;
-                        this._cdr.detectChanges();
-                    });
+                if (games?.length) {
+                    this.progressName.findedGames = games.slice(0, 8);
+                }
+
+                this.progressName.isLoadData = false;
+                this._cdr.detectChanges();
             } else {
                 this.progressName.valueProgress += 20;
                 this._cdr.detectChanges();

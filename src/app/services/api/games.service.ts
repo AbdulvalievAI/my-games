@@ -7,22 +7,20 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {
     type Observable,
     Subject,
-    switchMap,
     takeUntil,
 } from 'rxjs';
 
-import type { ISearchParam, IServerMessage } from '../../types/api.interfaces';
+import { EPlatform } from '../../data/platforms';
+import type { IServerMessage } from '../../types/api.interfaces';
 import type { IGame } from '../../types/games.interfaces';
-import { EPlatform } from '../data/platforms';
-import {
-    FakeGamesApiService,
-} from './fake-games-api.service';
+import type { ISearchParam } from '../tools.service';
+import { DataService } from './data/data.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class GamesService implements OnDestroy {
-    private readonly _fgaService = inject(FakeGamesApiService);
+    private readonly _dataService = inject(DataService);
 
     private readonly _destroy$ = new Subject<void>();
 
@@ -42,32 +40,31 @@ export class GamesService implements OnDestroy {
     }
 
     public createGame(game: IGame): Observable<IGame> {
-        return this._fgaService.createGame(game)
+        return this._dataService.createGame(game)
             .pipe(takeUntil(this._destroy$));
     }
 
-    public getGameById(id: string): Observable<IGame | undefined> {
-        return this._fgaService.getGameById(id)
-            .pipe(takeUntil(this._destroy$));
+    public getGameById(id: string): IGame | undefined {
+        return this._dataService.getGameById(id);
     }
 
     public getGames(): Observable<IGame[]> {
-        return this._fgaService.getGames()
+        return this._dataService.getGames()
             .pipe(takeUntil(this._destroy$));
     }
 
     public updateGame(game: IGame): Observable<IGame> {
-        return this._fgaService.updateGame(game)
+        return this._dataService.updateGame(game)
             .pipe(takeUntil(this._destroy$));
     }
 
     public deleteGame(id: string): Observable<IServerMessage> {
-        return this._fgaService.deleteGame(id)
+        return this._dataService.deleteGame(id)
             .pipe(takeUntil(this._destroy$));
     }
 
-    public searchGamesByName(name: string): Observable<IGame[] | []> {
-        const searchParams: ISearchParam[] = [
+    public searchGamesByName(name: string): IGame[] | [] {
+        const searchParams: ISearchParam<IGame>[] = [
             {
                 field: 'name',
                 operator: 'like',
@@ -75,12 +72,11 @@ export class GamesService implements OnDestroy {
             },
         ];
 
-        return this._fgaService.searchGames(searchParams)
-            .pipe(takeUntil(this._destroy$));
+        return this._dataService.searchGames(searchParams);
     }
 
-    public searchGamesByGroup(idGroup: string): Observable<IGame[] | []> {
-        const searchParams: ISearchParam[] = [
+    public searchGamesByGroup(idGroup: string): IGame[] | [] {
+        const searchParams: ISearchParam<IGame>[] = [
             {
                 field: 'groups',
                 operator: 'eq',
@@ -88,54 +84,45 @@ export class GamesService implements OnDestroy {
             },
         ];
 
-        return this._fgaService.searchGames(searchParams)
-            .pipe(takeUntil(this._destroy$));
+        return this._dataService.searchGames(searchParams);
     }
 
     public deleteGroupFromGame(idGame: string, idGroup: string): Observable<IGame> {
-        return this.getGameById(idGame)
-            .pipe(
-                takeUntil(this._destroy$),
-                switchMap(game => {
-                    if (!game) {
-                        throw new Error('Игра не найдена');
-                    }
+        const game = this.getGameById(idGame);
 
-                    const newGame = cloneDeep(game);
+        if (!game) {
+            throw new Error('Игра не найдена');
+        }
 
-                    if (newGame?.groups?.length === 1) {
-                        delete newGame.groups;
-                    } else if (newGame?.groups) {
-                        const gameGroupIdx = newGame.groups.findIndex(id => idGroup === id);
+        const newGame = cloneDeep(game);
 
-                        newGame.groups.splice(gameGroupIdx, 1);
-                    }
+        if (newGame?.groups?.length === 1) {
+            delete newGame.groups;
+        } else if (newGame?.groups) {
+            const gameGroupIdx = newGame.groups.findIndex(id => idGroup === id);
 
-                    return this.updateGame(newGame);
-                })
-            );
+            newGame.groups.splice(gameGroupIdx, 1);
+        }
+
+        return this.updateGame(newGame);
     }
 
     public addGameToGroup(idGame: string, idGroup: string): Observable<IGame> {
-        return this.getGameById(idGame)
-            .pipe(
-                takeUntil(this._destroy$),
-                switchMap(game => {
-                    if (!game) {
-                        throw new Error('Игра не найдена');
-                    }
+        const game = this.getGameById(idGame);
 
-                    const newGame = cloneDeep(game);
+        if (!game) {
+            throw new Error('Игра не найдена');
+        }
 
-                    if (!newGame?.groups) {
-                        newGame.groups = [];
-                    }
+        const newGame = cloneDeep(game);
 
-                    newGame.groups.push(idGroup)
+        if (!newGame?.groups) {
+            newGame.groups = [];
+        }
 
-                    return this.updateGame(newGame);
-                })
-            );
+        newGame.groups.push(idGroup)
+
+        return this.updateGame(newGame);
     }
 }
 

@@ -1,14 +1,14 @@
-import { Component, inject,type OnDestroy } from '@angular/core';
+import { Component, inject, type OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCard, MatCardActions,MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 
+import { DataService } from '../../../services/api/data/data.service';
 import { GameGroupsService } from '../../../services/api/game-groups.service';
 import { GamesService } from '../../../services/api/games.service';
 import { PlatformsService } from '../../../services/api/platforms.service';
-import { DataService } from '../../../services/data/data.service';
 import { type FileGenerationOptions, FileService } from '../../../services/file.service';
 import { BtnListComponent } from '../../btn-list/btn-list.component';
 import type { IBtnConfig } from '../../btn-list/btn-list.interface';
@@ -16,7 +16,6 @@ import type { IBtnConfig } from '../../btn-list/btn-list.interface';
 interface IDataList {
     id: string;
     name: string;
-    data: unknown;
 }
 
 @Component({
@@ -26,6 +25,8 @@ interface IDataList {
     standalone: true,
     providers: [
         PlatformsService,
+        GameGroupsService,
+        FileService,
     ],
     imports: [
         MatCardHeader,
@@ -56,17 +57,14 @@ export class DataDialogComponent implements OnDestroy {
         {
             id: '1',
             name: 'Список игр',
-            data: this._dataService.games,
         },
         {
             id: '2',
             name: 'Список платформ',
-            data: this._dataService.platforms,
         },
         {
             id: '3',
             name: 'Список групп',
-            data: this._dataService.gameGroups,
         },
     ];
 

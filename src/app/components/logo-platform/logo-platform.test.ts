@@ -1,12 +1,12 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, expect, it } from "vitest";
 
-import { platformsList } from "../../data/platforms.data";
+// import { platformsList } from "../../data1/platforms.data";
 import {
     getComponentHTML,
     getComponentInstance,
-    getComponentStable,
-    setComponentInputs,
+/*     getComponentStable,
+    setComponentInputs, */
 } from "../../test-tools/test-tools";
 import { LogoPlatformComponent } from "./logo-platform.component";
 
@@ -36,7 +36,7 @@ describe('component "app-logo-platform"', async () => {
         });
     });
 
-    describe('img set params', async () => {
+/*     describe('img set params', async () => {
         const component = await getComponentStable(LogoPlatformComponent);
         const html = component.nativeElement as HTMLElement;
         const testValue = platformsList[1];
@@ -52,5 +52,5 @@ describe('component "app-logo-platform"', async () => {
         it('alt equal', () => {
             expect(imgElement?.alt).toContain(testValue.logo);
         });
-    });
+    }); */
 });

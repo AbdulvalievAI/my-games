@@ -21,6 +21,7 @@ import type { IAuthForm } from './auth-dialog.interface';
     styleUrls: [ './auth-dialog.component.scss' ],
     providers: [
         ExplorerService,
+        AuthService,
     ],
     imports: [
         MatFormFieldModule,

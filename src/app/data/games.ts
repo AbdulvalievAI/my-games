@@ -1,4 +1,4 @@
-import type { IGame } from "../../types/games.interfaces";
+import type { IGame } from "../types/games.interfaces";
 import { EPlatform } from "./platforms";
 
 export const games: IGame[] = [

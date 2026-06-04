@@ -1,4 +1,4 @@
-import type { IGameGroup } from "../../types/games.interfaces";
+import type { IGameGroup } from "../types/games.interfaces";
 
 export const gameGroups: IGameGroup[] = [
     {

@@ -4,10 +4,12 @@ import { inject, Injectable } from '@angular/core';
 import { yandexConfig } from '../../config/yandex.config';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AuthService {
     public readonly http = inject(HttpClient);
+
+    public readonly useFake = true;
 
     private readonly _keyLsToken = 'yandex_token';
     private readonly _keyLsCliendId = 'client_id';
