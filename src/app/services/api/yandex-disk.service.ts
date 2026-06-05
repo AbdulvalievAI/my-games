@@ -3,14 +3,14 @@ import { inject, Injectable, type OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, EMPTY, map, type Observable, Subject, switchMap, takeUntil } from 'rxjs';
 
-import { yandexConfig } from '../../config/yandex.config';
+import { yandexDiskConfig } from '../../config/yandex.config';
 import type { IYdxDiskDownRes, IYdxDiskUpRes, IYdxErrorRes, IYdxFolderInfo, IYdxUserInfo } from '../../types/yandex-disk.interface';
 import { AuthService } from './auth.service';
 
 export enum EPathFiles {
     GAMES = 'db_games.json',
     GAMES_GROUPS = 'db_games_groups.json',
-    PLATFORMS = 'platforms.json',
+    PLATFORMS = 'db_platforms.json',
 }
 
 enum EUrls {
@@ -32,7 +32,7 @@ export class YdxDiskService implements OnDestroy {
     }
 
     public uploadFile(file: File, typeFile: EPathFiles) {
-        const url = `${yandexConfig.diskUrl}${EUrls.UPLOAD}`;
+        const url = `${yandexDiskConfig.diskUrl}${EUrls.UPLOAD}`;
         const params = {
             headers: this._createAuthHeaders(),
             params: {
@@ -79,7 +79,7 @@ export class YdxDiskService implements OnDestroy {
             });
      */
     public downloadFile(typeFile: EPathFiles) {
-        const url = `${yandexConfig.diskUrl}${EUrls.DOWNLOAD}`;
+        const url = `${yandexDiskConfig.diskUrl}${EUrls.DOWNLOAD}`;
         const params = {
             headers: this._createAuthHeaders(),
             params: {
@@ -122,7 +122,7 @@ export class YdxDiskService implements OnDestroy {
     }
 
     public checkAccess(token?: string): Observable<boolean> {
-        const url = yandexConfig.diskUrl;
+        const url = yandexDiskConfig.diskUrl;
         const params = {
             headers: this._createAuthHeaders(token),
         };
@@ -141,11 +141,11 @@ export class YdxDiskService implements OnDestroy {
     }
 
     public getFolderContents() {
-        const url = `${yandexConfig.diskUrl}${EUrls.FOLDER}`;
+        const url = `${yandexDiskConfig.diskUrl}${EUrls.FOLDER}`;
         const params = {
             headers: this._createAuthHeaders(),
             params: {
-                path: yandexConfig.diskFolderPath,
+                path: yandexDiskConfig.folderPath,
                 limit: '5',
             }
         };
@@ -166,10 +166,10 @@ export class YdxDiskService implements OnDestroy {
     }
 
     public createFolder(): Observable<boolean> {
-        const url = `${yandexConfig.diskUrl}${EUrls.FOLDER}`;
+        const url = `${yandexDiskConfig.diskUrl}${EUrls.FOLDER}`;
         const params = {
             headers: this._createAuthHeaders(),
-            params: new HttpParams().set('path', yandexConfig.diskFolderPath)
+            params: new HttpParams().set('path', yandexDiskConfig.folderPath)
         };
 
         return this._http
@@ -196,13 +196,13 @@ export class YdxDiskService implements OnDestroy {
     private _getPathFile(typeFile: EPathFiles): string {
         switch (typeFile) {
             case EPathFiles.GAMES: {
-                return `${yandexConfig.diskFolderPath}/${EPathFiles.GAMES}`;
+                return `${yandexDiskConfig.folderPath}/${EPathFiles.GAMES}`;
             }
             case EPathFiles.GAMES_GROUPS: {
-                return `${yandexConfig.diskFolderPath}/${EPathFiles.GAMES_GROUPS}`;
+                return `${yandexDiskConfig.folderPath}/${EPathFiles.GAMES_GROUPS}`;
             }
             case EPathFiles.PLATFORMS: {
-                return `${yandexConfig.diskFolderPath}/${EPathFiles.PLATFORMS}`;
+                return `${yandexDiskConfig.folderPath}/${EPathFiles.PLATFORMS}`;
             }
         }
     }

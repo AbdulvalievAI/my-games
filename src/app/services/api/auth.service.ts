@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
-import { yandexConfig } from '../../config/yandex.config';
+import { yandexAuthConfig } from '../../config/yandex.config';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +20,10 @@ export class AuthService {
             const params = new URLSearchParams({
                 response_type: 'token',
                 client_id: clientId,
-                redirect_uri: yandexConfig.redirectUri
+                redirect_uri: yandexAuthConfig.redirectUri
             });
 
-            return `${yandexConfig.authUrl}?${params.toString()}`;
+            return `${yandexAuthConfig.authUrl}?${params.toString()}`;
         }
 
         throw new Error('Error create url')
