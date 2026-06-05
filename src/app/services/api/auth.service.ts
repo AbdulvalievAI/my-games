@@ -29,7 +29,7 @@ export class AuthService {
         throw new Error('Error create url')
     }
 
-    public login(clientId: string) {
+    public openWindowToken(clientId: string) {
         window.open(this.getAuthUrl(clientId));
     }
 

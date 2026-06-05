@@ -1,11 +1,11 @@
 /* import { inject, Injectable } from "@angular/core";
 import type { Observable } from "rxjs";
 
-import type { IDataPointService, IServerMessage } from "../../types/api.interfaces";
-import type { IGame, IGameGroup } from "../../types/games.interfaces";
-import type { IPlatform } from "../../types/platforms.interfaces";
-import { AuthService } from "../api/auth.service";
-import type { ISearchParam } from "../tools.service";
+import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
+import type { IGame, IGameGroup } from "../../../types/games.interfaces";
+import type { IPlatform } from "../../../types/platforms.interfaces";
+import type { ISearchParam } from "../../tools.service";
+import { AuthService } from "../auth.service";
 
 @Injectable({
     providedIn: 'root'
