@@ -3,7 +3,7 @@
         <app-header>
             <div modal-left>
                 <app-filter-list
-                    [(currentGameList)]="currentGameList"
+                    [(gamesList)]="gamesList"
                     (dataLoadedChange)="dataLoaded($event)"
                 ></app-filter-list>
             </div>
@@ -24,7 +24,7 @@
 
     <div class="home__body">
         @if (!isLoad) {
-            <app-games-list [gameList]="currentGameList"></app-games-list>
+            <app-games-list [gamesList]="gamesList"></app-games-list>
         } @else {
             <mat-spinner [diameter]="75"></mat-spinner>
         }

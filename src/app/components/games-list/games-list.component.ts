@@ -20,7 +20,7 @@ import { GameItemComponent } from '../game-item/game-item.component';
     ],
 })
 export class GamesListComponent {
-    @Input() gameList: IGame[] = [];
+    @Input() gamesList: IGame[] = [];
 
     public trackByGame(index: number, game: IGame): string {
         return game.id;

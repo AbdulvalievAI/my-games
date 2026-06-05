@@ -1,7 +1,5 @@
 
 import {
-    type AfterViewInit,
-    ChangeDetectorRef,
     Component,
     inject,
 } from '@angular/core';
@@ -15,9 +13,9 @@ import { FilterComponent } from '../../components/filter-list/filter-list.compon
 import { GamesListComponent } from '../../components/games-list/games-list.component';
 import { HeaderComponent } from "../../components/header/header.component";
 import { SettingsComponent } from "../../components/settings/settings.component";
-import { DiskService } from '../../services/api/disk.service';
 import { DialogService } from '../../services/dialog.service';
 import { ExplorerService } from '../../services/explorer.service';
+import { FileService } from '../../services/file.service';
 import type { IGame } from '../../types/games.interfaces';
 
 @Component({
@@ -28,7 +26,7 @@ import type { IGame } from '../../types/games.interfaces';
     providers: [
         DialogService,
         ExplorerService,
-        DiskService,
+        FileService,
     ],
     imports: [
         FilterComponent,
@@ -42,18 +40,12 @@ import type { IGame } from '../../types/games.interfaces';
         MatProgressSpinnerModule,
     ],
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent {
     public dialogService = inject(DialogService);
     public explorerService = inject(ExplorerService);
-    private readonly _cdr = inject(ChangeDetectorRef);
-    private readonly _diskService = inject(DiskService);
 
     public isLoad = true;
-    public currentGameList: IGame[] = [];
-
-    public ngAfterViewInit(): void {
-        this._cdr.detectChanges();
-    }
+    public gamesList: IGame[] = [];
 
     public dataLoaded(isLoad: boolean): void {
         this.isLoad = isLoad;

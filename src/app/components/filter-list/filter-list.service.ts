@@ -12,7 +12,7 @@ import type { IFilters } from './filter-list.interface';
 export class FilterListService implements OnDestroy {
     public filters$: BehaviorSubject<IFilters>;
 
-    private _defaultGameList: IGame[];
+    private _defaultGamesList: IGame[];
     private readonly _defaultFilters: IFilters = {
 		search: '',
         platform: null,
@@ -25,31 +25,31 @@ export class FilterListService implements OnDestroy {
     }
 
     public initialize(games: IGame[]): void {
-        this._defaultGameList = games;
+        this._defaultGamesList = games;
         this.filters$ = new BehaviorSubject(this._defaultFilters);
     }
 
-    public applyFilterGameList(filters: IFilters): IGame[] {
-        let resultGameList: IGame[] = this._defaultGameList;
+    public applyFilterGamesList(filters: IFilters): IGame[] {
+        let resultGamesList: IGame[] = this._defaultGamesList;
         const search = filters.search as string;
         const platform = filters.platform as IPlatform;
         const group = filters.group as IGameGroup;
 
         if (search) {
-            resultGameList = resultGameList.filter(game => game.name.toLowerCase().includes(search));
+            resultGamesList = resultGamesList.filter(game => game.name.toLowerCase().includes(search));
         }
 
         if (platform) {
-            resultGameList = resultGameList.filter(game => game.platforms.includes(platform.type));
+            resultGamesList = resultGamesList.filter(game => game.platforms.includes(platform.type));
         }
 
         if (group) {
-            resultGameList = resultGameList.filter(game => game.groups?.includes(group.id));
+            resultGamesList = resultGamesList.filter(game => game.groups?.includes(group.id));
         }
 
-        this._sortByAlphabet(resultGameList);
+        this._sortByAlphabet(resultGamesList);
 
-        return resultGameList;
+        return resultGamesList;
     }
 
     private _sortByAlphabet(games: IGame[]): void {

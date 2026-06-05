@@ -63,9 +63,9 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     public gameGroupsRef: IGameGroup[];
 
-    @Input() currentGameList: IGame[] = [];
+    @Input() gamesList: IGame[] = [];
 
-    @Output() currentGameListChange: EventEmitter<IGame[]> = new EventEmitter<IGame[]>();
+    @Output() gamesListChange: EventEmitter<IGame[]> = new EventEmitter<IGame[]>();
     @Output() dataLoadedChange = new EventEmitter<boolean>();
 
     public filterForm: FormGroup<IFilterForm>;
@@ -94,16 +94,16 @@ export class FilterComponent implements OnInit, OnDestroy {
             }),
         )
         .subscribe(([ games, gameGroups, platforms ]) => {
-                this.currentGameList = games;
+                this.gamesList = games;
                 this.gameGroupsRef = gameGroups;
                 this.platformList = platforms;
 
-                this._filterListService.initialize(this.currentGameList);
+                this._filterListService.initialize(this.gamesList);
                 this._initForm();
 
                 this._filterListService.filters$
                     .subscribe(filters => {
-                        this.currentGameListChange.emit(this._filterListService.applyFilterGameList(filters));
+                        this.gamesListChange.emit(this._filterListService.applyFilterGamesList(filters));
                     });
 
                 setTimeout(() => {

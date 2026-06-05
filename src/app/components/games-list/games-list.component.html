@@ -1,10 +1,10 @@
-@if (gameList.length) {
+@if (gamesList.length) {
     <div class="list">
         <cdk-virtual-scroll-viewport itemSize="100" class="list-viewport">
             <mat-list role="list">
                 <ng-container
                     *cdkVirtualFor="
-                        let game of gameList;
+                        let game of gamesList;
                         let i = index;
                         trackBy: trackByGame
                     "
