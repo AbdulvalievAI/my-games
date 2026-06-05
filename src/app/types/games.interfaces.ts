@@ -13,4 +13,3 @@ export interface IGameGroup {
     id: string;
     name: string;
 }
-

@@ -1,60 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable, type OnDestroy } from '@angular/core';
-import { EMPTY, map, type Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, EMPTY, map, type Observable, Subject, switchMap, takeUntil } from 'rxjs';
 
 import { yandexConfig } from '../../config/yandex.config';
-import type { IAnyObject } from '../../types/common.interfaces';
+import type { IYdxDiskDownRes, IYdxDiskUpRes, IYdxErrorRes, IYdxFolderInfo, IYdxUserInfo } from '../../types/yandex-disk.interface';
 import { AuthService } from './auth.service';
-
-export interface IYdxDiskDownRes {
-    method: string;
-    href: string;
-    templated: boolean;
-}
-
-export interface IYdxDiskUpRes {
-    method: string;
-    href: string;
-    templated: boolean;
-    operation_id: string;
-}
-
-export interface IYdxUserInfo {
-    total_space: number;
-    used_space: number;
-    trash_size: number;
-    max_file_size: number;
-    paid_max_file_size: number;
-    photounlim_size: number;
-    system_folders: IAnyObject;
-    is_paid: boolean;
-    revision: number;
-    user: {
-        uid: string;
-        login: string;
-        display_name: string;
-        country: string;
-        is_child: boolean;
-        reg_time: string;
-    },
-    unlimited_autoupload_enabled: boolean;
-    reg_time: string;
-    is_idm_managed_public_access: boolean;
-    is_idm_managed_folder_address_access: boolean;
-    is_sync_shared_folder_desktop: boolean;
-    is_sync_vd_desktop: boolean;
-    payment_flow: boolean;
-    hide_screenshots_in_photoslice: boolean;
-    is_legal_entity: boolean;
-    monthly_traffic_limit: number
-    monthly_traffic_limit_upgrades: {
-        pro: number;
-    };
-    file_size_limit_upgrades: {
-        paid: number;
-        pro: number;
-    }
-}
 
 export enum EPathFiles {
     GAMES = 'db_games.json',
@@ -63,6 +14,7 @@ export enum EPathFiles {
 }
 
 enum EUrls {
+    FOLDER = 'resources',
     UPLOAD = 'resources/upload',
     DOWNLOAD = 'resources/download',
 }
@@ -72,6 +24,7 @@ export class YdxDiskService implements OnDestroy {
     private readonly _http = inject(HttpClient);
     private readonly _authService = inject(AuthService);
     private readonly _destroy$ = new Subject<void>();
+    private readonly _snackBar = inject(MatSnackBar);
 
     ngOnDestroy(): void {
         this._destroy$.next();
@@ -79,17 +32,17 @@ export class YdxDiskService implements OnDestroy {
     }
 
     public uploadFile(file: File, typeFile: EPathFiles) {
-        const headers = this._createAuthHeaders();
-        const path = this._getPathFile(typeFile);
+        const url = `${yandexConfig.diskUrl}${EUrls.UPLOAD}`;
+        const params = {
+            headers: this._createAuthHeaders(),
+            params: {
+                path: this._getPathFile(typeFile),
+                overwrite: true,
+            },
+        };
 
         return this._http
-            .get<IYdxDiskUpRes>(`${yandexConfig.diskUrl}${EUrls.UPLOAD}`, {
-                params: {
-                    path,
-                    overwrite: true,
-                },
-                headers,
-            })
+            .get<IYdxDiskUpRes>(url, params)
             .pipe(
                 takeUntil(this._destroy$),
                 switchMap(response => {
@@ -107,6 +60,11 @@ export class YdxDiskService implements OnDestroy {
                             }),
                         );
                 }),
+                catchError((error: IYdxErrorRes) => {
+                    this._error(error);
+
+                    return EMPTY;
+                }),
             );
     }
 
@@ -121,17 +79,16 @@ export class YdxDiskService implements OnDestroy {
             });
      */
     public downloadFile(typeFile: EPathFiles) {
-        const headers = this._createAuthHeaders();
-        const path = this._getPathFile(typeFile);
+        const url = `${yandexConfig.diskUrl}${EUrls.DOWNLOAD}`;
+        const params = {
+            headers: this._createAuthHeaders(),
+            params: {
+                path: this._getPathFile(typeFile),
+            },
+        };
 
         return this._http
-            .get<IYdxDiskDownRes>(
-                `${yandexConfig.diskUrl}${EUrls.DOWNLOAD}`,
-                {
-                    params: { path },
-                    headers,
-                }
-            )
+            .get<IYdxDiskDownRes>(url, params)
             .pipe(
                 takeUntil(this._destroy$),
                 map((response => response.href)), // Извлекаем URL из ответа
@@ -151,23 +108,82 @@ export class YdxDiskService implements OnDestroy {
 
                     } catch (error) {
                         console.error(error);
+                        this._snackBar.open(error as string, 'Закрыть', { duration: 5000 });
 
                         return EMPTY;
                     }
+                }),
+                catchError((error: IYdxErrorRes) => {
+                    this._error(error);
+
+                    return EMPTY;
                 }),
             )
     }
 
     public checkAccess(token?: string): Observable<boolean> {
-        const headers = this._createAuthHeaders(token);
+        const url = yandexConfig.diskUrl;
+        const params = {
+            headers: this._createAuthHeaders(token),
+        };
 
         return this._http
-            .get<IYdxUserInfo>(`${yandexConfig.diskUrl}`, {
-                headers,
-            })
+            .get<IYdxUserInfo>(url, params)
             .pipe(
                 takeUntil(this._destroy$),
                 map(userInfo => !!userInfo?.user?.login),
+                catchError((error: IYdxErrorRes) => {
+                    this._error(error);
+
+                    return EMPTY;
+                }),
+            );
+    }
+
+    public getFolderContents() {
+        const url = `${yandexConfig.diskUrl}${EUrls.FOLDER}`;
+        const params = {
+            headers: this._createAuthHeaders(),
+            params: {
+                path: yandexConfig.diskFolderPath,
+                limit: '5',
+            }
+        };
+
+        return this._http
+            .get<IYdxFolderInfo>(url, params)
+            .pipe(
+                takeUntil(this._destroy$),
+                map(filderInfo => {
+                    return filderInfo._embedded.items.map(fileItem => fileItem.name);
+                }),
+                catchError((error: IYdxErrorRes) => {
+                    this._error(error);
+
+                    return EMPTY;
+                }),
+            );
+    }
+
+    public createFolder(): Observable<boolean> {
+        const url = `${yandexConfig.diskUrl}${EUrls.FOLDER}`;
+        const params = {
+            headers: this._createAuthHeaders(),
+            params: new HttpParams().set('path', yandexConfig.diskFolderPath)
+        };
+
+        return this._http
+            .put(url, null, params)
+            .pipe(
+                takeUntil(this._destroy$),
+                map(() => {
+                    return true
+                }),
+                catchError((error: IYdxErrorRes) => {
+                    this._error(error);
+
+                    return EMPTY;
+                }),
             );
     }
 
@@ -189,5 +205,10 @@ export class YdxDiskService implements OnDestroy {
                 return `${yandexConfig.diskFolderPath}/${EPathFiles.PLATFORMS}`;
             }
         }
+    }
+
+    private _error(error: IYdxErrorRes): void {
+        console.error(error);
+        this._snackBar.open(error.error?.message || error.message, 'Закрыть', { duration: 5000 });
     }
 }
