@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable, type OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, EMPTY, map, type Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { catchError, map, type Observable, of, Subject, switchMap, takeUntil, throwError } from 'rxjs';
 
 import { yandexDiskConfig } from '../../config/yandex.config';
 import type { IYdxDiskDownRes, IYdxDiskUpRes, IYdxErrorRes, IYdxFolderInfo, IYdxUserInfo } from '../../types/yandex-disk.interface';
@@ -31,7 +31,7 @@ export class YdxDiskService implements OnDestroy {
         this._destroy$.complete();
     }
 
-    public uploadFile(file: File, typeFile: EPathFiles) {
+    public uploadFile(file: File, typeFile: EPathFiles): Observable<boolean> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.UPLOAD}`;
         const params = {
             headers: this._createAuthHeaders(),
@@ -63,7 +63,7 @@ export class YdxDiskService implements OnDestroy {
                 catchError((error: IYdxErrorRes) => {
                     this._error(error);
 
-                    return EMPTY;
+                    return throwError(() => error);
                 }),
             );
     }
@@ -78,7 +78,7 @@ export class YdxDiskService implements OnDestroy {
                 console.log('===> res', res);
             });
      */
-    public downloadFile(typeFile: EPathFiles) {
+    public downloadFile<T>(typeFile: EPathFiles): Observable<T[]> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.DOWNLOAD}`;
         const params = {
             headers: this._createAuthHeaders(),
@@ -104,21 +104,21 @@ export class YdxDiskService implements OnDestroy {
                             throw new Error('Файл не содержит массив данных');
                         }
 
-                        return jsonData as unknown;
+                        return jsonData as T[];
 
                     } catch (error) {
                         console.error(error);
                         this._snackBar.open(error as string, 'Закрыть', { duration: 5000 });
 
-                        return EMPTY;
+                        return [];
                     }
                 }),
                 catchError((error: IYdxErrorRes) => {
                     this._error(error);
 
-                    return EMPTY;
+                    return throwError(() => error);
                 }),
-            )
+            );
     }
 
     public checkAccess(token?: string): Observable<boolean> {
@@ -135,12 +135,12 @@ export class YdxDiskService implements OnDestroy {
                 catchError((error: IYdxErrorRes) => {
                     this._error(error);
 
-                    return EMPTY;
+                    return throwError(() => error);
                 }),
             );
     }
 
-    public getFolderContents() {
+    public getFolderContents(): Observable<string[]> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.FOLDER}`;
         const params = {
             headers: this._createAuthHeaders(),
@@ -160,7 +160,7 @@ export class YdxDiskService implements OnDestroy {
                 catchError((error: IYdxErrorRes) => {
                     this._error(error);
 
-                    return EMPTY;
+                    return throwError(() => error);
                 }),
             );
     }
@@ -182,12 +182,35 @@ export class YdxDiskService implements OnDestroy {
                 catchError((error: IYdxErrorRes) => {
                     this._error(error);
 
-                    return EMPTY;
+                    return throwError(() => error);
                 }),
             );
     }
 
-    private _createAuthHeaders(token?: string) {
+    public checkResourceExists(path: string): Observable<boolean> {
+        const url = `${yandexDiskConfig.diskUrl}${EUrls.FOLDER}`;
+        const params = {
+            headers: this._createAuthHeaders(),
+            params: new HttpParams().set('path', path),
+        };
+
+        return this._http.get(url, params)
+            .pipe(
+                takeUntil(this._destroy$),
+                map(() => true),
+                catchError((error: IYdxErrorRes) => {
+                    if (error.status === 404) {
+                        return of(false);
+                    }
+
+                    this._error(error);
+
+                    return throwError(() => error);
+                })
+            );
+    }
+
+    private _createAuthHeaders(token?: string): HttpHeaders {
         return new HttpHeaders({
             Authorization: `OAuth ${token || this._authService.getToken()}`,
         });

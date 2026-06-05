@@ -94,23 +94,23 @@ export class FilterComponent implements OnInit, OnDestroy {
             }),
         )
         .subscribe(([ games, gameGroups, platforms ]) => {
-                this.gamesList = games;
-                this.gameGroupsRef = gameGroups;
-                this.platformList = platforms;
+            this.gamesList = games;
+            this.gameGroupsRef = gameGroups;
+            this.platformList = platforms;
 
-                this._filterListService.initialize(this.gamesList);
-                this._initForm();
+            this._filterListService.initialize(this.gamesList);
+            this._initForm();
 
-                this._filterListService.filters$
-                    .subscribe(filters => {
-                        this.gamesListChange.emit(this._filterListService.applyFilterGamesList(filters));
-                    });
+            this._filterListService.filters$
+                .subscribe(filters => {
+                    this.gamesListChange.emit(this._filterListService.applyFilterGamesList(filters));
+                });
 
-                setTimeout(() => {
-                    this.valueSpinner = 50
-                }, 4000);
+            setTimeout(() => {
+                this.valueSpinner = 50
+            }, 4000);
 
-                this.dataLoadedChange.emit(false);
+            this.dataLoadedChange.emit(false);
         });
     }
 
