@@ -79,21 +79,23 @@
                 Выйти из Яндекс Диск
             </button>
         } @else {
-            @if (isLoad$ | async) {
-                <mat-spinner [diameter]="50"></mat-spinner>
-            } @else {
-                <button
-                    class="mat-button spinner"
-                    color="accent"
-                    matFab
-                    extended
-                    matTooltip="Авторизоваться"
-                    [disabled]="!authForm.valid"
-                    (click)="login()"
-                >
-                    <mat-icon>login</mat-icon>
-                    Авторизоваться
-                </button>
+            @if (isLoad$ | async; as loadStatus) {
+                @if (loadStatus && loadStatus.isLoad) {
+                    <app-load-block [text]="loadStatus.status"></app-load-block>
+                } @else {
+                    <button
+                        class="mat-button"
+                        color="accent"
+                        matFab
+                        extended
+                        matTooltip="Авторизоваться"
+                        [disabled]="!authForm.valid"
+                        (click)="login()"
+                    >
+                        <mat-icon>login</mat-icon>
+                        Авторизоваться
+                    </button>
+                }
             }
         }
     </mat-card-actions>

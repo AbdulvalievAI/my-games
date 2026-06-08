@@ -1,0 +1,14 @@
+@use "../../styles/variables" as *;
+@use "../../styles/material-colors" as *;
+
+.load-block {
+    display: flex;
+    align-items: center;
+    border: 2px solid gray;
+    border-radius: 50px;
+    padding: $gap-size;
+
+    &__text {
+        margin-left: $gap-size;
+    }
+}

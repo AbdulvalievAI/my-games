@@ -12,11 +12,26 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { BehaviorSubject, catchError, EMPTY, Subject, takeUntil } from 'rxjs';
+import {
+    BehaviorSubject,
+    catchError,
+    EMPTY,
+    type Observable,
+    of,
+    Subject,
+    switchMap,
+    takeUntil,
+} from 'rxjs';
 
 import { AuthService } from '../../../services/api/auth.service';
 import { YdxDiskService } from '../../../services/api/yandex-disk.service';
+import { LoadBlockComponent } from "../../load-block/load-block.component";
 import type { IAuthForm } from './auth-dialog.interface';
+
+interface ILoadStatus {
+    isLoad: boolean;
+    status: string;
+}
 
 @Component({
     selector: 'app-auth-dialog',
@@ -43,6 +58,7 @@ import type { IAuthForm } from './auth-dialog.interface';
         ReactiveFormsModule,
         MatProgressSpinnerModule,
         AsyncPipe,
+        LoadBlockComponent
     ],
 })
 export class AuthDialogComponent implements OnInit, OnDestroy {
@@ -51,12 +67,13 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     private readonly _fb = inject(FormBuilder);
     private readonly _ydxDiskService = inject(YdxDiskService);
     private readonly _snackBar = inject(MatSnackBar);
+    private readonly _diskService = inject(YdxDiskService);
 
     public authForm: FormGroup<IAuthForm>;
     public disabledForm = true;
 
     private readonly _destroy$ = new Subject<void>();
-    public isLoad$ = new BehaviorSubject<boolean>(false);
+    public isLoad$ = new BehaviorSubject<ILoadStatus>({ isLoad: false, status: '' });
 
     public ngOnInit(): void {
         this._initForm();
@@ -80,51 +97,36 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
         }) as FormGroup<IAuthForm>;
     }
 
-    private _createTokenControl(token: string | null, disabled = false) {
-        return this._fb.control({ value: token, disabled }, Validators.required);
-    }
-
-    private _createCliendIdControl(clientId: string | null, disabled = false) {
-        return this._fb.control({ value: clientId, disabled }, [ Validators.required ]);
-    }
-
     public login() {
         if (this.authForm.valid) {
             const { clientId, token } = this.authForm.getRawValue();
 
             if (clientId && token) {
-                this.isLoad$.next(true);
-
-                this._ydxDiskService.checkAccess(token)
+                this._auth(token)
                     .pipe(
                         takeUntil(this._destroy$),
-                        catchError(error => {
-                            console.error(error);
-                            this._openSnackBar('⛔ Ошибка авторизации! ⛔');
-                            this.isLoad$.next(false);
+                        switchMap(() => this._checkExistsFolder(token)),
+                        switchMap((isExistFolder) => {
+                            if (isExistFolder) {
+                                return of(true);
+                            }
 
-                            return EMPTY;
+                            return this._createFolder(token);
                         }),
                     )
-                    .subscribe(isAccess => {
-                        if (isAccess) {
-                            if (clientId) {
-                                this.authService.saveCliendId(clientId);
-                            }
+                    .subscribe(() => {
+                        this.isLoad$.next({ isLoad: false, status: 'Успешно!' });
 
-                            if (token) {
-                                this.authService.saveToken(token);
-                            }
-
-                            this._initForm();
-
-                            this._openSnackBar('✅ Успешная авторизация! ✅');
-                        } else {
-                            console.error(isAccess);
-                            this._openSnackBar('⛔ Ошибка авторизации! ⛔');
+                        if (clientId) {
+                            this.authService.saveCliendId(clientId);
                         }
 
-                        this.isLoad$.next(false);
+                        if (token) {
+                            this.authService.saveToken(token);
+                        }
+
+                        this._initForm();
+                        this._openSnackBar('✅ Успешная авторизация! ✅');
                     });
             }
         }
@@ -147,5 +149,49 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
         this._snackBar.open(message, action, {
             duration: 5000
         });
+    }
+
+    private _createTokenControl(token: string | null, disabled = false) {
+        return this._fb.control({ value: token, disabled }, Validators.required);
+    }
+
+    private _createCliendIdControl(clientId: string | null, disabled = false) {
+        return this._fb.control({ value: clientId, disabled }, [ Validators.required ]);
+    }
+
+    private _auth(token: string): Observable<boolean> {
+        this.isLoad$.next({ isLoad: true, status: 'Авторизация...' });
+
+        return this._ydxDiskService.checkAccess(token)
+            .pipe(
+                catchError(error => {
+                    console.error(error);
+                    this._openSnackBar('⛔ Ошибка авторизации! ⛔');
+                    this.isLoad$.next({ isLoad: false, status: 'Ошибка.' });
+
+                    return EMPTY;
+                }),
+            )
+    }
+
+    private _checkExistsFolder(token: string): Observable<boolean> {
+        this.isLoad$.next({ isLoad: true, status: 'Проверка диска...' });
+
+        return this._diskService.checkExistsFolder(token);
+    }
+
+    private _createFolder(token: string): Observable<boolean> {
+        this.isLoad$.next({ isLoad: true, status: 'Создание папки...' });
+
+        return this._ydxDiskService.createFolder(token)
+            .pipe(
+                catchError(error => {
+                    console.error(error);
+                    this._openSnackBar('⛔ Ошибка создания папки! ⛔');
+                    this.isLoad$.next({ isLoad: false, status: 'Ошибка.' });
+
+                    return EMPTY;
+                }),
+            )
     }
 }

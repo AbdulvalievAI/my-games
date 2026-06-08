@@ -165,10 +165,10 @@ export class YdxDiskService implements OnDestroy {
             );
     }
 
-    public createFolder(): Observable<boolean> {
+    public createFolder(token?: string): Observable<boolean> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.FOLDER}`;
         const params = {
-            headers: this._createAuthHeaders(),
+            headers: this._createAuthHeaders(token),
             params: new HttpParams().set('path', yandexDiskConfig.folderPath)
         };
 
@@ -187,11 +187,11 @@ export class YdxDiskService implements OnDestroy {
             );
     }
 
-    public checkResourceExists(path: string): Observable<boolean> {
+    public checkExistsFolder(token?: string): Observable<boolean> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.FOLDER}`;
         const params = {
-            headers: this._createAuthHeaders(),
-            params: new HttpParams().set('path', path),
+            headers: this._createAuthHeaders(token),
+            params: new HttpParams().set('path', yandexDiskConfig.folderPath),
         };
 
         return this._http.get(url, params)
