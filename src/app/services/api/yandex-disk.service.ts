@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, map, type Observable, of, Subject, switchMap, takeUntil, throwError } from 'rxjs';
 
 import { yandexDiskConfig } from '../../config/yandex.config';
+import type { IResDownloadFile } from '../../types/api.interfaces';
 import type { IYdxDiskDownRes, IYdxDiskUpRes, IYdxErrorRes, IYdxFolderInfo, IYdxUserInfo } from '../../types/yandex-disk.interface';
 import { AuthService } from './auth.service';
 
@@ -78,7 +79,7 @@ export class YdxDiskService implements OnDestroy {
                 console.log('===> res', res);
             });
      */
-    public downloadFile<T>(typeFile: EPathFiles): Observable<T[]> {
+    public downloadFile<T>(typeFile: EPathFiles): Observable<IResDownloadFile<T>> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.DOWNLOAD}`;
         const params = {
             headers: this._createAuthHeaders(),
@@ -104,20 +105,34 @@ export class YdxDiskService implements OnDestroy {
                             throw new Error('Файл не содержит массив данных');
                         }
 
-                        return jsonData as T[];
-
+                        return {
+                            status: true,
+                            jsonData: jsonData,
+                        };
                     } catch (error) {
                         console.error(error);
                         this._snackBar.open(error as string, 'Закрыть', { duration: 5000 });
 
-                        return [];
+                        return {
+                            status: false,
+                            jsonData: [],
+                        };;
                     }
                 }),
                 catchError((error: IYdxErrorRes) => {
+                    if (error.status === 404) {
+                        const res: IResDownloadFile<T> = {
+                            status: false,
+                            jsonData: [],
+                        };
+
+                        return of(res);
+                    }
+
                     this._error(error);
 
                     return throwError(() => error);
-                }),
+                })
             );
     }
 

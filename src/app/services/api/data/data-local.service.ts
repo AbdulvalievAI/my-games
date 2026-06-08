@@ -22,19 +22,19 @@ export class DataLocalService implements IDataPointService {
 
     public createGame(game: IGame): Observable<IGame> {
         return this._toolsService.serverDelay(() => {
-            const gamesArr = this._getParseData<IGame>(this._keyGame);
+            const gamesList = this._getParseData<IGame>(this._keyGame);
 
-            gamesArr.push(game);
-            localStorage.setItem(this._keyGame, JSON.stringify(gamesArr));
+            gamesList.push(game);
+            localStorage.setItem(this._keyGame, JSON.stringify(gamesList));
 
             return cloneDeep(game);
         });
     }
 
     public getGameById(id: string): IGame | undefined {
-        const gamesArr = this._getParseData<IGame>(this._keyGame);
+        const gamesList = this._getParseData<IGame>(this._keyGame);
 
-        return gamesArr.find(gameItem => gameItem.id === id);
+        return gamesList.find(gameItem => gameItem.id === id);
     }
 
     public getGames(): Observable<IGame[]> {
@@ -45,15 +45,15 @@ export class DataLocalService implements IDataPointService {
 
     public updateGame(game: IGame): Observable<IGame> {
         return this._toolsService.serverDelay(() => {
-            const gamesArr = this._getParseData<IGame>(this._keyGame);
-            const findedGameIdx = gamesArr.findIndex(gameItem => gameItem.id === game.id);
+            const gamesList = this._getParseData<IGame>(this._keyGame);
+            const findedGameIdx = gamesList.findIndex(gameItem => gameItem.id === game.id);
 
             if (findedGameIdx === -1) {
                 throw new Error(`Не найдена игра с id ${game.id}`);
             }
 
-            gamesArr[findedGameIdx] = game;
-            localStorage.setItem(this._keyGame, JSON.stringify(gamesArr));
+            gamesList[findedGameIdx] = game;
+            localStorage.setItem(this._keyGame, JSON.stringify(gamesList));
 
             return cloneDeep(game);
         });
@@ -61,8 +61,8 @@ export class DataLocalService implements IDataPointService {
 
     public deleteGame(id: string): Observable<IServerMessage> {
         return this._toolsService.serverDelay(() => {
-            const gamesArr = this._getParseData<IGame>(this._keyGame);
-            const findedGameIdx = gamesArr.findIndex(gameItem => gameItem.id === id);
+            const gamesList = this._getParseData<IGame>(this._keyGame);
+            const findedGameIdx = gamesList.findIndex(gameItem => gameItem.id === id);
             const successMsg = {
                 "status": "success",
                 "message": `Объект c id ${id} успешно удалён`
@@ -72,36 +72,36 @@ export class DataLocalService implements IDataPointService {
                 return successMsg;
             }
 
-            gamesArr.splice(findedGameIdx, 1);
-            localStorage.setItem(this._keyGame, JSON.stringify(gamesArr));
+            gamesList.splice(findedGameIdx, 1);
+            localStorage.setItem(this._keyGame, JSON.stringify(gamesList));
 
             return successMsg;
         });
     }
 
     public searchGames(params: ISearchParam<IGame>[]): IGame[] | [] {
-        const gamesArr = this._getParseData<IGame>(this._keyGame);
+        const gamesList = this._getParseData<IGame>(this._keyGame);
 
-        return this._toolsService.filterGames(gamesArr, params);
+        return this._toolsService.filterGames(gamesList, params);
     }
 
     /* GameGroup */
 
     public createGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
         return this._toolsService.serverDelay(() => {
-            const gameGroupsArr = this._getParseData<IGameGroup>(this._keyGameGroups);
+            const gamesGroupsList = this._getParseData<IGameGroup>(this._keyGameGroups);
 
-            gameGroupsArr.push(gameGroup);
-            localStorage.setItem(this._keyGameGroups, JSON.stringify(gameGroupsArr));
+            gamesGroupsList.push(gameGroup);
+            localStorage.setItem(this._keyGameGroups, JSON.stringify(gamesGroupsList));
 
             return cloneDeep(gameGroup);
         });
     }
 
     public getGameGroupById(id: string): IGameGroup | undefined {
-        const gamesGroupsArr = this._getParseData<IGameGroup>(this._keyGameGroups);
+        const gamesGroupsList = this._getParseData<IGameGroup>(this._keyGameGroups);
 
-        return gamesGroupsArr.find(gGroupItem => gGroupItem.id === id);
+        return gamesGroupsList.find(gGroupItem => gGroupItem.id === id);
     }
 
     public getGameGroups(): Observable<IGameGroup[]> {
@@ -112,15 +112,15 @@ export class DataLocalService implements IDataPointService {
 
     public updateGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
         return this._toolsService.serverDelay(() => {
-            const gamesGroupsArr = this._getParseData<IGameGroup>(this._keyGameGroups);
-            const findedGameGroupsIdx = gamesGroupsArr.findIndex(gamesGroupItem => gamesGroupItem.id === gameGroup.id);
+            const gamesGroupsList = this._getParseData<IGameGroup>(this._keyGameGroups);
+            const findedGameGroupsIdx = gamesGroupsList.findIndex(gamesGroupItem => gamesGroupItem.id === gameGroup.id);
 
             if (findedGameGroupsIdx === -1) {
                 throw new Error(`Не найдена игра с id ${gameGroup.id}`);
             }
 
-            gamesGroupsArr[findedGameGroupsIdx] = gameGroup;
-            localStorage.setItem(this._keyGameGroups, JSON.stringify(gamesGroupsArr));
+            gamesGroupsList[findedGameGroupsIdx] = gameGroup;
+            localStorage.setItem(this._keyGameGroups, JSON.stringify(gamesGroupsList));
 
             return cloneDeep(gameGroup);
         });
@@ -128,8 +128,8 @@ export class DataLocalService implements IDataPointService {
 
     public deleteGameGroup(id: string): Observable<IServerMessage> {
         return this._toolsService.serverDelay(() => {
-            const gamesGroupsArr = this._getParseData<IGameGroup>(this._keyGameGroups);
-            const findedGamesGroupIdx = gamesGroupsArr.findIndex(gamesGroupItem => gamesGroupItem.id === id);
+            const gamesGroupsList = this._getParseData<IGameGroup>(this._keyGameGroups);
+            const findedGamesGroupIdx = gamesGroupsList.findIndex(gamesGroupItem => gamesGroupItem.id === id);
             const successMsg = {
                 "status": "success",
                 "message": `Объект c id ${id} успешно удалён`
@@ -139,8 +139,8 @@ export class DataLocalService implements IDataPointService {
                 return successMsg;
             }
 
-            gamesGroupsArr.splice(findedGamesGroupIdx, 1);
-            localStorage.setItem(this._keyGameGroups, JSON.stringify(gamesGroupsArr));
+            gamesGroupsList.splice(findedGamesGroupIdx, 1);
+            localStorage.setItem(this._keyGameGroups, JSON.stringify(gamesGroupsList));
 
             return successMsg;
         });

@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { catchError, EMPTY, forkJoin, Subject, takeUntil } from 'rxjs';
 
+import { DataService } from '../../services/api/data/data.service';
 import { GameGroupsService } from '../../services/api/game-groups.service';
 import { GamesService } from '../../services/api/games.service';
 import { PlatformsService } from '../../services/api/platforms.service';
@@ -60,6 +61,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     private readonly _fb = inject(FormBuilder);
     private readonly _dialogService = inject(DialogService);
     private readonly _gameGroupsService = inject(GameGroupsService);
+    private readonly _dataService = inject(DataService);
 
     public gameGroupsRef: IGameGroup[];
 
@@ -79,39 +81,17 @@ export class FilterComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.dataLoadedChange.emit(true);
 
-        forkJoin([
-            this._gamesService.getGames(),
-            this._gameGroupsService.getGameGroups(),
-            this._platformsService.getPlatforms(),
-        ])
-        .pipe(
-            takeUntil(this._destroy$),
-            catchError(error => {
-                console.error(error);
-                this._dialogService.openErrorDialog(error);
+        this._dataService.initData()
+            .pipe(
+                takeUntil(this._destroy$),
+                catchError(error => {
+                    console.error(error);
+                    this._dialogService.openErrorDialog(error);
 
-                return EMPTY;
-            }),
-        )
-        .subscribe(([ games, gameGroups, platforms ]) => {
-            this.gamesList = games;
-            this.gameGroupsRef = gameGroups;
-            this.platformList = platforms;
-
-            this._filterListService.initialize(this.gamesList);
-            this._initForm();
-
-            this._filterListService.filters$
-                .subscribe(filters => {
-                    this.gamesListChange.emit(this._filterListService.applyFilterGamesList(filters));
-                });
-
-            setTimeout(() => {
-                this.valueSpinner = 50
-            }, 4000);
-
-            this.dataLoadedChange.emit(false);
-        });
+                    return EMPTY;
+                }),
+            )
+            .subscribe(() => this._initFilter());
     }
 
     ngOnDestroy(): void {
@@ -147,6 +127,42 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     public get selectedPlatformValue(): IPlatform | null | undefined {
         return this.filterForm.value.platform;
+    }
+
+    private _initFilter(): void {
+        forkJoin([
+            this._gamesService.getGames(),
+            this._gameGroupsService.getGameGroups(),
+            this._platformsService.getPlatforms(),
+        ])
+        .pipe(
+            takeUntil(this._destroy$),
+            catchError(error => {
+                console.error(error);
+                this._dialogService.openErrorDialog(error);
+
+                return EMPTY;
+            }),
+        )
+        .subscribe(([ games, gameGroups, platforms ]) => {
+            this.gamesList = games;
+            this.gameGroupsRef = gameGroups;
+            this.platformList = platforms;
+
+            this._filterListService.initialize(this.gamesList);
+            this._initForm();
+
+            this._filterListService.filters$
+                .subscribe(filters => {
+                    this.gamesListChange.emit(this._filterListService.applyFilterGamesList(filters));
+                });
+
+            setTimeout(() => {
+                this.valueSpinner = 50
+            }, 4000);
+
+            this.dataLoadedChange.emit(false);
+        });
     }
 
     private _initForm(): void {

@@ -47,3 +47,8 @@ export interface IServerMessage {
 export interface IDataPointService extends IApiGames, IApiGameGroups, IApiPlatforms {
     initData?(): Observable<boolean>;
 }
+
+export interface IResDownloadFile<T> {
+    status: boolean;
+    jsonData: T[];
+}
