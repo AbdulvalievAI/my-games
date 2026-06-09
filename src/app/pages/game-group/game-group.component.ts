@@ -1,5 +1,5 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -66,7 +66,8 @@ import type { INewGameGroup } from './game-group.interface';
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
-        BtnListComponent
+        BtnListComponent,
+        DatePipe,
     ],
 })
 export class GameGroupComponent implements OnInit, OnDestroy {
@@ -162,15 +163,16 @@ export class GameGroupComponent implements OnInit, OnDestroy {
 
     public saveGame(): void {
         const formData = this.newGameGroupForm.getRawValue() as IGameGroup;
+        const mapFormData = this._mappingData(formData);
 
         this.isLoad$.next(true);
 
-        this._openSnackBar(formData.name);
+        this._openSnackBar(mapFormData.name);
 
         if (this.editGameGroup) {
-            this._updateGame(formData);
+            this._updateGame(mapFormData);
         } else {
-            this._createGame(formData);
+            this._createGame(mapFormData);
         }
     }
 
@@ -212,12 +214,14 @@ export class GameGroupComponent implements OnInit, OnDestroy {
             this.newGameGroupForm = this._fb.group({
                 id: [ this.editGameGroup.id, Validators.required ],
                 name: [ this.editGameGroup.name, Validators.required ],
+                dateEdit: [ new Date(this.editGameGroup.dateEdit).toISOString(), Validators.required ],
 
             });
         } else {
             this.newGameGroupForm = this._fb.group({
                 id: [ uuidv4(), Validators.required ],
                 name: [ '', Validators.required ],
+                dateEdit: [ new Date().toISOString(), Validators.required ],
             });
         }
 
@@ -263,5 +267,12 @@ export class GameGroupComponent implements OnInit, OnDestroy {
                 this.isLoad$.next(false);
                 this.explorerService.goToGameGroupsList();
             });
+    }
+
+    private _mappingData(newGameGroupData: IGameGroup): IGameGroup {
+        return {
+            ...newGameGroupData,
+            dateEdit: new Date().toISOString(),
+        };
     }
 }

@@ -75,6 +75,7 @@
 @if (newGameGroupForm) {
     <div class="block mb">
         <h1>{{ newGameGroupForm.value.name || "Название группы" }}</h1>
+        <h3>{{ newGameGroupForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
 
         <form [formGroup]="newGameGroupForm">
             <mat-form-field appearance="outline">

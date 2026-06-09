@@ -12,4 +12,5 @@ export interface IGame {
 export interface IGameGroup {
     id: string;
     name: string;
+    dateEdit: string;
 }
