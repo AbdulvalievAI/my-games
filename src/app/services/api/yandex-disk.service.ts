@@ -32,10 +32,10 @@ export class YdxDiskService implements OnDestroy {
         this._destroy$.complete();
     }
 
-    public uploadFile(file: File, typeFile: EPathFiles): Observable<boolean> {
+    public uploadFile(file: File, typeFile: EPathFiles, token?: string): Observable<boolean> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.UPLOAD}`;
         const params = {
-            headers: this._createAuthHeaders(),
+            headers: this._createAuthHeaders(token),
             params: {
                 path: this._getPathFile(typeFile),
                 overwrite: true,
@@ -79,10 +79,10 @@ export class YdxDiskService implements OnDestroy {
                 console.log('===> res', res);
             });
      */
-    public downloadFile<T>(typeFile: EPathFiles): Observable<IResDownloadFile<T>> {
+    public downloadFile<T>(typeFile: EPathFiles, token?: string): Observable<IResDownloadFile<T>> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.DOWNLOAD}`;
         const params = {
-            headers: this._createAuthHeaders(),
+            headers: this._createAuthHeaders(token),
             params: {
                 path: this._getPathFile(typeFile),
             },

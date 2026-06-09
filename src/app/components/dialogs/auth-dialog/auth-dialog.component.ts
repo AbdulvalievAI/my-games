@@ -16,6 +16,8 @@ import {
     BehaviorSubject,
     catchError,
     EMPTY,
+    forkJoin,
+    map,
     type Observable,
     of,
     Subject,
@@ -24,7 +26,10 @@ import {
 } from 'rxjs';
 
 import { AuthService } from '../../../services/api/auth.service';
-import { YdxDiskService } from '../../../services/api/yandex-disk.service';
+import { DataLocalService } from '../../../services/api/data/data-local.service';
+import { EPathFiles, YdxDiskService } from '../../../services/api/yandex-disk.service';
+import { FileService } from '../../../services/file.service';
+import type { IGame, IGameGroup } from '../../../types/games.interfaces';
 import { LoadBlockComponent } from "../../load-block/load-block.component";
 import type { IAuthForm } from './auth-dialog.interface';
 
@@ -40,6 +45,7 @@ interface ILoadStatus {
     providers: [
         AuthService,
         YdxDiskService,
+        FileService,
     ],
     imports: [
         MatFormFieldModule,
@@ -62,18 +68,22 @@ interface ILoadStatus {
     ],
 })
 export class AuthDialogComponent implements OnInit, OnDestroy {
-    public readonly dialogRef = inject(MatDialogRef<AuthDialogComponent>);
+    public readonly dialogRef: MatDialogRef<AuthDialogComponent> = inject(MatDialogRef<AuthDialogComponent>);
     public readonly authService = inject(AuthService);
     private readonly _fb = inject(FormBuilder);
     private readonly _ydxDiskService = inject(YdxDiskService);
     private readonly _snackBar = inject(MatSnackBar);
     private readonly _diskService = inject(YdxDiskService);
+    private readonly _dataLocalService = inject(DataLocalService);
+    private readonly _fileService = inject(FileService);
 
     public authForm: FormGroup<IAuthForm>;
     public disabledForm = true;
 
-    private readonly _destroy$ = new Subject<void>();
+    private _currentToken: string;
+
     public isLoad$ = new BehaviorSubject<ILoadStatus>({ isLoad: false, status: '' });
+    private readonly _destroy$ = new Subject<void>();
 
     public ngOnInit(): void {
         this._initForm();
@@ -102,10 +112,12 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
             const { clientId, token } = this.authForm.getRawValue();
 
             if (clientId && token) {
-                this._auth(token)
+                this._currentToken = token;
+
+                this._auth(this._currentToken)
                     .pipe(
                         takeUntil(this._destroy$),
-                        switchMap(() => this._checkExistsFolder(token)),
+                        switchMap(() => this._checkExistsFolder(this._currentToken)),
                         switchMap((isExistFolder) => {
                             if (isExistFolder) {
                                 return of(true);
@@ -113,6 +125,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
                             return this._createFolder(token);
                         }),
+                        switchMap(() => this._syncData()),
                     )
                     .subscribe(() => {
                         this.isLoad$.next({ isLoad: false, status: 'Успешно!' });
@@ -194,4 +207,123 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
                 }),
             )
     }
+
+    private _syncData(): Observable<boolean> {
+        this.isLoad$.next({ isLoad: true, status: 'Синхронизация данных...' });
+
+        return forkJoin([
+            this._dataLocalService.getGames(),
+            this._dataLocalService.getGameGroups(),
+        ])
+        .pipe(
+            takeUntil(this._destroy$),
+            switchMap(([ gamesLocal, gameGroupsLocal ]) => {
+                return forkJoin([
+                    this._syncGames(gamesLocal),
+                    this._syncGameGroups(gameGroupsLocal),
+                ]);
+            }),
+            map(() => true),
+            catchError(error => {
+                console.error(error);
+                this._openSnackBar('⛔ Ошибка сихронизации! ⛔');
+                this.isLoad$.next({ isLoad: false, status: 'Ошибка.' });
+
+                return EMPTY;
+            }),
+        );
+    }
+
+    private _syncGames(gamesLocal: IGame[]): Observable<boolean> {
+        if (gamesLocal.length) {
+            return this._diskService.downloadFile<IGame>(EPathFiles.GAMES, this._currentToken)
+                .pipe(
+                    takeUntil(this._destroy$),
+                    switchMap(gamesCloud => {
+                        if (gamesCloud.status) {
+                            const gamesMap = new Map<string, IGame>(
+                                gamesCloud.jsonData.map(gameItem => [ gameItem.id, gameItem ]),
+                            );
+
+                            gamesLocal.forEach(gameLocalItem => {
+                                const gameCloudItem = gamesMap.get(gameLocalItem.id);
+
+                                if (!gameCloudItem) {
+                                    gamesMap.set(gameLocalItem.id, gameLocalItem);
+                                } else {
+                                    const localDate = new Date(gameLocalItem.dateEdit);
+                                    const cloudDate = new Date(gameCloudItem.dateEdit);
+
+                                    if (localDate > cloudDate) {
+                                        gamesMap.set(gameLocalItem.id, gameLocalItem);
+                                    }
+                                }
+                            });
+
+                            const file = this._fileService.generateFile([ ...gamesMap.values() ]);
+
+                            return this._diskService.uploadFile(file, EPathFiles.GAMES, this._currentToken);
+                        } else {
+                            const file = this._fileService.generateFile(gamesLocal);
+
+                            return this._diskService.uploadFile(file, EPathFiles.GAMES, this._currentToken);
+                        }
+                    }),
+                    map(() => {
+                        this._dataLocalService.cleanGames();
+
+                        return true;
+                    }),
+                );
+        } else {
+            return of(true);
+        }
+    }
+
+    private _syncGameGroups(gameGroupsLocal: IGameGroup[]): Observable<boolean> {
+        if (gameGroupsLocal.length) {
+            return this._diskService.downloadFile<IGameGroup>(EPathFiles.GAMES_GROUPS, this._currentToken)
+                .pipe(
+                    takeUntil(this._destroy$),
+                    switchMap(gameGroupCloud => {
+                        if (gameGroupCloud.status) {
+                            const gameGroupMap = new Map<string, IGameGroup>(
+                                gameGroupCloud.jsonData.map(gameGroupItem => [ gameGroupItem.id, gameGroupItem ]),
+                            );
+
+                            gameGroupsLocal.forEach(gameGroupLocalItem => {
+                                const gameGroupCloudItem = gameGroupMap.get(gameGroupLocalItem.id);
+
+                                if (!gameGroupCloudItem) {
+                                    gameGroupMap.set(gameGroupLocalItem.id, gameGroupLocalItem);
+                                } else {
+                                    const localDate = new Date(gameGroupLocalItem.dateEdit);
+                                    const cloudDate = new Date(gameGroupCloudItem.dateEdit);
+
+                                    if (localDate > cloudDate) {
+                                        gameGroupMap.set(gameGroupLocalItem.id, gameGroupLocalItem);
+                                    }
+                                }
+                            });
+
+                            const file = this._fileService.generateFile([ ...gameGroupMap.values() ]);
+
+                            return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS, this._currentToken);
+                        } else {
+                            const file = this._fileService.generateFile(gameGroupsLocal);
+
+                            return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS, this._currentToken);
+                        }
+                    }),
+                    map(() => {
+                        this._dataLocalService.cleanGameGroups();
+
+                        return true;
+                    }),
+                );
+        } else {
+            return of(true);
+        }
+    }
 }
+

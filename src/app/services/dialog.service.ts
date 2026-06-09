@@ -17,6 +17,8 @@ export class DialogService {
     private readonly _dialog = inject(MatDialog);
 
     public openErrorDialog(error: Error | string): void {
+        this._dialog.closeAll();
+
         this._dialog.open(ErrorDialogComponent,
             {
                 width: '540px',
@@ -30,6 +32,8 @@ export class DialogService {
             return;
         }
 
+        this._dialog.closeAll();
+
         this._dialog.open(ImageDialogComponent,
             {
                 width: '50vh',
@@ -40,6 +44,8 @@ export class DialogService {
     }
 
     public openYesNoDialog(settings: MatDialogConfig<IYesNoDialogSettings>) {
+        this._dialog.closeAll();
+
         return this._dialog.open<YesNoDialogComponent, IYesNoDialogSettings>(
             YesNoDialogComponent,
             settings,
@@ -47,18 +53,24 @@ export class DialogService {
     }
 
     public openAuthDialog() {
+        this._dialog.closeAll();
+
         return this._dialog.open(
             AuthDialogComponent,
         );
     }
 
     public openThemeSwitcher() {
+        this._dialog.closeAll();
+
         return this._dialog.open(
             ThemeSwitcherComponent,
         );
     }
 
     public openDataDialog() {
+        this._dialog.closeAll();
+
         return this._dialog.open(
             DataDialogComponent,
         );

@@ -155,9 +155,25 @@ export class DataLocalService implements IDataPointService {
     }
 
     public getPlatformByType(type: EPlatform): IPlatform | undefined {
-        const platformsArr = this._getDataPlatforms();
+        const platformsList = this._getDataPlatforms();
 
-        return platformsArr.find(platformItem => platformItem.type === type);
+        return platformsList.find(platformItem => platformItem.type === type);
+    }
+
+    public existLocalData(): boolean {
+        const gamesList = this._getParseData<IGame>(this._keyGame);
+        const gamesGroupsList = this._getParseData<IGameGroup>(this._keyGameGroups);
+        const platformsList = this._getParseData(this._keyPlatforms);
+
+        return Boolean(gamesList.length || gamesGroupsList.length || platformsList.length);
+    }
+
+    public cleanGames() {
+        localStorage.removeItem(this._keyGame);
+    }
+
+    public cleanGameGroups() {
+        localStorage.removeItem(this._keyGameGroups);
     }
 
     private _getDataPlatforms(isMock = true): IPlatform[] {
