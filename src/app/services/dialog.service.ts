@@ -57,6 +57,10 @@ export class DialogService {
 
         return this._dialog.open(
             AuthDialogComponent,
+            {
+                hasBackdrop: true,
+                disableClose: true,
+            },
         );
     }
 

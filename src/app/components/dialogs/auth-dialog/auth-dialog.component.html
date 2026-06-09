@@ -11,6 +11,15 @@
                 </mat-icon>
             }
             Авторизация в Яндекс Диск
+
+            <button
+                matMiniFab
+                color="primary"
+                (click)="dialogRef.close()"
+                [disabled]="(isLoad$ | async)?.isLoad"
+            >
+                <mat-icon>close</mat-icon>
+            </button>
         </mat-card-title>
     </mat-card-header>
 

@@ -17,11 +17,16 @@ $mat-icon-size: 40px;
     .mat-mdc-fab[disabled] {
         background-color: $color-disabled !important;
     }
+
+    mat-card-header .mat-mdc-card-header-text {
+        width: 100%;
+    }
 }
 
 mat-card-title {
     display: flex;
     align-items: center;
+    width: 100%;
 
     .mat-icon {
         height: $mat-icon-size;
@@ -35,6 +40,10 @@ mat-card-title {
 
     .mat-icon.green {
         color: green;
+    }
+
+    button {
+        margin-left: auto;
     }
 }
 
