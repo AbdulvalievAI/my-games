@@ -75,6 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     public actionSettings(action: TActionSettings): void {
         if (action === 'syncData') {
+            this._dataService.isInitData = false;
             this._initData();
         }
     }
