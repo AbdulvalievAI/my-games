@@ -135,33 +135,11 @@ export class DataFakeApiService implements IDataPointService {
     public deleteGameGroup(id: string): Observable<IServerMessage> {
         return this._toolsService.serverDelay(() => {
             const gameGroupsList = this._gameGroups;
-            const gamesList = this._games;
-            const games: IGame[] = gamesList.filter(gameItem => {
-                if (!gameItem.groups?.length) {
-                    return false;
-                }
-
-                return gameItem.groups.includes(id);
-            });
-
-            if (games.length) {
-                games.forEach(gameItem => {
-                    if (gameItem.groups?.length === 1) {
-                        delete gameItem.groups;
-                    } else {
-                        const gameGroupIdx = gameGroupsList.findIndex(item => (gameItem.groups?.includes(item.id)));
-
-                        gameItem.groups?.splice(gameGroupIdx, 1);
-                    }
-                });
-            }
-
             const gameGroupIdx = gameGroupsList.findIndex(item => (item.id === id));
 
             gameGroupsList.splice(gameGroupIdx, 1);
 
             this._gameGroups = gameGroupsList;
-            this._games = gamesList;
 
             return {
                 "status": "success",

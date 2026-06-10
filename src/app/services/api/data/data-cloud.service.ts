@@ -152,7 +152,7 @@ export class DataCloudService implements IDataPointService {
 
         const file = this._fileService.generateFile(gameGroupsList);
 
-        return this._diskService.uploadFile(file, EPathFiles.GAMES)
+        return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS)
             .pipe(map(() => {
                 this._setMapGameGroup(gameGroup);
 
@@ -172,7 +172,7 @@ export class DataCloudService implements IDataPointService {
 
         const file = this._fileService.generateFile(gameGroupsList);
 
-        return this._diskService.uploadFile(file, EPathFiles.GAMES)
+        return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS)
             .pipe(map(() => {
                 this._gameGroupMap.delete(id);
 

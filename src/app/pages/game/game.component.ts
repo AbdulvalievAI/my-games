@@ -209,9 +209,13 @@ export class GameComponent implements OnInit, OnDestroy {
                     return [] as IGameGroup[];
                 }
 
-                return this.editGame?.groups.map(grId => {
-                    return this.gameGroupsList.find(grrItem => grrItem.id === grId);
-                }) as IGameGroup[];
+                const gameGroupsIds = this.gameGroupsList.map(grItem => grItem.id);
+
+                return this.editGame?.groups
+                    .filter(grId => gameGroupsIds.includes(grId))
+                    .map(grId => {
+                        return this.gameGroupsList.find(grrItem => grrItem.id === grId);
+                    }) as IGameGroup[];
             })();
 
             this.newGameForm = this._fb.group({
