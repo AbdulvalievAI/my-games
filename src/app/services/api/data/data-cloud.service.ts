@@ -1,13 +1,14 @@
 import { inject, Injectable } from "@angular/core";
 import { forkJoin, map, type Observable } from "rxjs";
 
+import { EYdxFileNames } from '../../../config/yandex.config';
 import { type EPlatform,platforms } from "../../../data/platforms";
 import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
 import type { IGame, IGameGroup } from "../../../types/games.interfaces";
 import type { IPlatform } from "../../../types/platforms.interfaces";
 import { FileService } from "../../file.service";
 import { type ISearchParam,ToolsService } from "../../tools.service";
-import { EPathFiles, YdxDiskService } from "../yandex-disk.service";
+import { YdxDiskService } from "../yandex-disk.service";
 
 @Injectable({
     providedIn: 'root'
@@ -23,9 +24,9 @@ export class DataCloudService implements IDataPointService {
 
     public initData(): Observable<boolean> {
         return forkJoin([
-            this._diskService.downloadFile<IGame>(EPathFiles.GAMES),
-            this._diskService.downloadFile<IGameGroup>(EPathFiles.GAMES_GROUPS),
-            /* this._diskService.downloadFile<IPlatform>(EPathFiles.PLATFORMS), */
+            this._diskService.downloadFile<IGame>(EYdxFileNames.GAMES),
+            this._diskService.downloadFile<IGameGroup>(EYdxFileNames.GAMES_GROUPS),
+            /* this._diskService.downloadFile<IPlatform>(EYdxFileNames.PLATFORMS), */
         ])
         .pipe(map(([ games, gameGroups/* , platforms */ ]) => {
             if (games.status) {
@@ -55,7 +56,7 @@ export class DataCloudService implements IDataPointService {
 
         const file = this._fileService.generateFile(gamesList);
 
-        return this._diskService.uploadFile(file, EPathFiles.GAMES)
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMES)
             .pipe(map(() => {
                 this._setMapGame(game);
 
@@ -83,7 +84,7 @@ export class DataCloudService implements IDataPointService {
 
         const file = this._fileService.generateFile(gamesList);
 
-        return this._diskService.uploadFile(file, EPathFiles.GAMES)
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMES)
             .pipe(map(() => {
                 this._setMapGame(game);
 
@@ -103,7 +104,7 @@ export class DataCloudService implements IDataPointService {
 
         const file = this._fileService.generateFile(gamesList);
 
-        return this._diskService.uploadFile(file, EPathFiles.GAMES)
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMES)
             .pipe(map(() => {
                 this._gamesMap.delete(id);
 
@@ -124,7 +125,7 @@ export class DataCloudService implements IDataPointService {
 
         const file = this._fileService.generateFile(gameGroupsList);
 
-        return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS)
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMES_GROUPS)
             .pipe(map(() => {
                 this._setMapGameGroup(gameGroup);
 
@@ -152,7 +153,7 @@ export class DataCloudService implements IDataPointService {
 
         const file = this._fileService.generateFile(gameGroupsList);
 
-        return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS)
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMES_GROUPS)
             .pipe(map(() => {
                 this._setMapGameGroup(gameGroup);
 
@@ -172,7 +173,7 @@ export class DataCloudService implements IDataPointService {
 
         const file = this._fileService.generateFile(gameGroupsList);
 
-        return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS)
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMES_GROUPS)
             .pipe(map(() => {
                 this._gameGroupMap.delete(id);
 

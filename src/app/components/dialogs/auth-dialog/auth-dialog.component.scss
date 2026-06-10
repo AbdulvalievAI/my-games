@@ -24,8 +24,6 @@ $mat-icon-size: 40px;
 }
 
 mat-card-title {
-    display: flex;
-    align-items: center;
     width: 100%;
 
     .mat-icon {
@@ -50,6 +48,11 @@ mat-card-title {
 .auth {
     &__header {
         margin-bottom: 20px;
+
+        mat-divider {
+            margin-top: $gap-size;
+            margin-bottom: $gap-size;
+        }
     }
     &__field {
         width: 100%;
@@ -70,7 +73,14 @@ mat-card-title {
     &__title {
         display: flex;
         align-items: center;
-        margin-top: $gap-size;
-        margin-bottom: $gap-size;
+    }
+}
+
+.info-list {
+    font-size: 16px;
+
+    &__title {
+        margin-right: $gap-size;
+        font-weight: bold;
     }
 }

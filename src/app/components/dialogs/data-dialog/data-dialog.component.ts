@@ -5,10 +5,10 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 
+import { EYdxFileNames } from '../../../config/yandex.config';
 import { GameGroupsService } from '../../../services/api/game-groups.service';
 import { GamesService } from '../../../services/api/games.service';
 import { PlatformsService } from '../../../services/api/platforms.service';
-import { EPathFiles } from '../../../services/api/yandex-disk.service';
 import { type FileGenerationOptions, FileService } from '../../../services/file.service';
 import { BtnListComponent } from '../../btn-list/btn-list.component';
 import type { IBtnConfig } from '../../btn-list/btn-list.interface';
@@ -107,7 +107,7 @@ export class DataDialogComponent implements OnDestroy {
                 }),
             )
             .subscribe(games => {
-                this._downloadFile(games, EPathFiles.GAMES);
+                this._downloadFile(games, EYdxFileNames.GAMES);
             });
     }
 
@@ -122,7 +122,7 @@ export class DataDialogComponent implements OnDestroy {
                 }),
             )
             .subscribe(platforms => {
-                this._downloadFile(platforms, EPathFiles.GAMES_GROUPS);
+                this._downloadFile(platforms, EYdxFileNames.GAMES_GROUPS);
             });
     }
 
@@ -137,7 +137,7 @@ export class DataDialogComponent implements OnDestroy {
                 }),
             )
             .subscribe(gameGroups => {
-                this._downloadFile(gameGroups, EPathFiles.PLATFORMS);
+                this._downloadFile(gameGroups, EYdxFileNames.PLATFORMS);
             });
     }
 

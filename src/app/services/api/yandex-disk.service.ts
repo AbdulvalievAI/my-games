@@ -3,16 +3,10 @@ import { inject, Injectable, type OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, map, type Observable, of, Subject, switchMap, takeUntil, throwError } from 'rxjs';
 
-import { yandexDiskConfig } from '../../config/yandex.config';
+import { EYdxFileNames, yandexDiskConfig } from '../../config/yandex.config';
 import type { IResDownloadFile } from '../../types/api.interfaces';
 import type { IYdxDiskDownRes, IYdxDiskUpRes, IYdxErrorRes, IYdxFolderInfo, IYdxUserInfo } from '../../types/yandex-disk.interface';
 import { AuthService } from './auth.service';
-
-export enum EPathFiles {
-    GAMES = 'db_games.json',
-    GAMES_GROUPS = 'db_games_groups.json',
-    PLATFORMS = 'db_platforms.json',
-}
 
 enum EUrls {
     FOLDER = 'resources',
@@ -34,7 +28,7 @@ export class YdxDiskService implements OnDestroy {
         this._destroy$.complete();
     }
 
-    public uploadFile(file: File, typeFile: EPathFiles, token?: string): Observable<boolean> {
+    public uploadFile(file: File, typeFile: EYdxFileNames, token?: string): Observable<boolean> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.UPLOAD}`;
         const params = {
             headers: this._createAuthHeaders(token),
@@ -81,7 +75,7 @@ export class YdxDiskService implements OnDestroy {
                 console.log('===> res', res);
             });
      */
-    public downloadFile<T>(typeFile: EPathFiles, token?: string): Observable<IResDownloadFile<T>> {
+    public downloadFile<T>(typeFile: EYdxFileNames, token?: string): Observable<IResDownloadFile<T>> {
         const url = `${yandexDiskConfig.diskUrl}${EUrls.DOWNLOAD}`;
         const params = {
             headers: this._createAuthHeaders(token),
@@ -233,16 +227,16 @@ export class YdxDiskService implements OnDestroy {
         });
     };
 
-    private _getPathFile(typeFile: EPathFiles): string {
+    private _getPathFile(typeFile: EYdxFileNames): string {
         switch (typeFile) {
-            case EPathFiles.GAMES: {
-                return `${yandexDiskConfig.folderPath}/${EPathFiles.GAMES}`;
+            case EYdxFileNames.GAMES: {
+                return `${yandexDiskConfig.folderPath}/${EYdxFileNames.GAMES}`;
             }
-            case EPathFiles.GAMES_GROUPS: {
-                return `${yandexDiskConfig.folderPath}/${EPathFiles.GAMES_GROUPS}`;
+            case EYdxFileNames.GAMES_GROUPS: {
+                return `${yandexDiskConfig.folderPath}/${EYdxFileNames.GAMES_GROUPS}`;
             }
-            case EPathFiles.PLATFORMS: {
-                return `${yandexDiskConfig.folderPath}/${EPathFiles.PLATFORMS}`;
+            case EYdxFileNames.PLATFORMS: {
+                return `${yandexDiskConfig.folderPath}/${EYdxFileNames.PLATFORMS}`;
             }
         }
     }

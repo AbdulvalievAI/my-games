@@ -5,6 +5,7 @@ import { FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, Validato
 import { MatButtonModule } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDivider } from "@angular/material/divider";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
@@ -23,9 +24,10 @@ import {
     takeUntil,
 } from 'rxjs';
 
+import { EYdxFileNames, yandexDiskConfig } from '../../../config/yandex.config';
 import { AuthService } from '../../../services/api/auth.service';
 import { DataLocalService } from '../../../services/api/data/data-local.service';
-import { EPathFiles, YdxDiskService } from '../../../services/api/yandex-disk.service';
+import { YdxDiskService } from '../../../services/api/yandex-disk.service';
 import { FileService } from '../../../services/file.service';
 import type { IGame, IGameGroup } from '../../../types/games.interfaces';
 import { LoadBlockComponent } from "../../load-block/load-block.component";
@@ -34,6 +36,11 @@ import type { IAuthForm, TAuthClosingAactivity } from './auth-dialog.interface';
 interface ILoadStatus {
     isLoad: boolean;
     status: string;
+}
+
+interface IInfoItem {
+    title: string;
+    text: string;
 }
 
 @Component({
@@ -56,6 +63,7 @@ interface ILoadStatus {
         ReactiveFormsModule,
         AsyncPipe,
         LoadBlockComponent,
+        MatDivider,
     ],
 })
 export class AuthDialogComponent implements OnInit, OnDestroy {
@@ -70,6 +78,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
     public authForm: FormGroup<IAuthForm>;
     public disabledForm = true;
+    public infoList: IInfoItem[] = [];
 
     private _currentToken: string;
 
@@ -77,6 +86,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     private readonly _destroy$ = new Subject<void>();
 
     public ngOnInit(): void {
+        this._initInfoList();
         this._initForm();
     }
 
@@ -227,7 +237,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
     private _syncGames(gamesLocal: IGame[]): Observable<boolean> {
         if (gamesLocal.length) {
-            return this._diskService.downloadFile<IGame>(EPathFiles.GAMES, this._currentToken)
+            return this._diskService.downloadFile<IGame>(EYdxFileNames.GAMES, this._currentToken)
                 .pipe(
                     takeUntil(this._destroy$),
                     switchMap(gamesCloud => {
@@ -253,11 +263,11 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
                             const file = this._fileService.generateFile([ ...gamesMap.values() ]);
 
-                            return this._diskService.uploadFile(file, EPathFiles.GAMES, this._currentToken);
+                            return this._diskService.uploadFile(file, EYdxFileNames.GAMES, this._currentToken);
                         } else {
                             const file = this._fileService.generateFile(gamesLocal);
 
-                            return this._diskService.uploadFile(file, EPathFiles.GAMES, this._currentToken);
+                            return this._diskService.uploadFile(file, EYdxFileNames.GAMES, this._currentToken);
                         }
                     }),
                     map(() => {
@@ -273,7 +283,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
     private _syncGameGroups(gameGroupsLocal: IGameGroup[]): Observable<boolean> {
         if (gameGroupsLocal.length) {
-            return this._diskService.downloadFile<IGameGroup>(EPathFiles.GAMES_GROUPS, this._currentToken)
+            return this._diskService.downloadFile<IGameGroup>(EYdxFileNames.GAMES_GROUPS, this._currentToken)
                 .pipe(
                     takeUntil(this._destroy$),
                     switchMap(gameGroupCloud => {
@@ -299,11 +309,11 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
                             const file = this._fileService.generateFile([ ...gameGroupMap.values() ]);
 
-                            return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS, this._currentToken);
+                            return this._diskService.uploadFile(file, EYdxFileNames.GAMES_GROUPS, this._currentToken);
                         } else {
                             const file = this._fileService.generateFile(gameGroupsLocal);
 
-                            return this._diskService.uploadFile(file, EPathFiles.GAMES_GROUPS, this._currentToken);
+                            return this._diskService.uploadFile(file, EYdxFileNames.GAMES_GROUPS, this._currentToken);
                         }
                     }),
                     map(() => {
@@ -315,6 +325,23 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
         } else {
             return of(true);
         }
+    }
+
+    private _initInfoList(): void {
+        this.infoList = [
+            {
+                title: 'Папка хранения данных:',
+                text: yandexDiskConfig.folderPath,
+            },
+            {
+                title: 'Название файла с играми:',
+                text: EYdxFileNames.GAMES,
+            },
+            {
+                title: 'Название файла с группами игр:',
+                text: EYdxFileNames.GAMES_GROUPS,
+            },
+        ];
     }
 }
 

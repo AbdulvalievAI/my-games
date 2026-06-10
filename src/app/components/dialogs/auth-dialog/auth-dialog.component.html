@@ -1,25 +1,42 @@
 <mat-card class="auth">
     <mat-card-header class="auth__header">
         <mat-card-title>
-            @if (authService.isAuthorized()) {
-                <mat-icon class="green mr" matTooltip="Авторизован">
-                    check_circle
-                </mat-icon>
-            } @else {
-                <mat-icon class="red mr" matTooltip="Не авторизован">
-                    error
-                </mat-icon>
-            }
-            Авторизация в Яндекс Диск
+            <div class="auth__title">
+                @if (authService.isAuthorized()) {
+                    <mat-icon class="green mr" matTooltip="Авторизован">
+                        check_circle
+                    </mat-icon>
+                } @else {
+                    <mat-icon class="red mr" matTooltip="Не авторизован">
+                        error
+                    </mat-icon>
+                }
+                Авторизация в Яндекс Диск
 
-            <button
-                matMiniFab
-                color="primary"
-                (click)="dialogRef.close()"
-                [disabled]="(isLoad$ | async)?.isLoad"
-            >
-                <mat-icon>close</mat-icon>
-            </button>
+                <button
+                    matMiniFab
+                    color="primary"
+                    (click)="dialogRef.close()"
+                    [disabled]="(isLoad$ | async)?.isLoad"
+                >
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="info-list">
+                @for (infoItem of infoList; track infoItem) {
+                    <div class="info-list__item">
+                        <span class="info-list__title">
+                            {{ infoItem.title }}
+                        </span>
+                        <span>{{ infoItem.text }}</span>
+                    </div>
+                }
+            </div>
+
+            <mat-divider></mat-divider>
         </mat-card-title>
     </mat-card-header>
 
