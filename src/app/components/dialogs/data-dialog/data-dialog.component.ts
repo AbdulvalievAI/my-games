@@ -8,6 +8,7 @@ import { catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 import { GameGroupsService } from '../../../services/api/game-groups.service';
 import { GamesService } from '../../../services/api/games.service';
 import { PlatformsService } from '../../../services/api/platforms.service';
+import { EPathFiles } from '../../../services/api/yandex-disk.service';
 import { type FileGenerationOptions, FileService } from '../../../services/file.service';
 import { BtnListComponent } from '../../btn-list/btn-list.component';
 import type { IBtnConfig } from '../../btn-list/btn-list.interface';
@@ -106,7 +107,7 @@ export class DataDialogComponent implements OnDestroy {
                 }),
             )
             .subscribe(games => {
-                this._downloadFile(games, 'GamesList');
+                this._downloadFile(games, EPathFiles.GAMES);
             });
     }
 
@@ -121,7 +122,7 @@ export class DataDialogComponent implements OnDestroy {
                 }),
             )
             .subscribe(platforms => {
-                this._downloadFile(platforms, 'PlatformsList');
+                this._downloadFile(platforms, EPathFiles.GAMES_GROUPS);
             });
     }
 
@@ -136,13 +137,13 @@ export class DataDialogComponent implements OnDestroy {
                 }),
             )
             .subscribe(gameGroups => {
-                this._downloadFile(gameGroups, 'GameGroups');
+                this._downloadFile(gameGroups, EPathFiles.PLATFORMS);
             });
     }
 
     private _downloadFile(data: unknown, name: string) {
          const options: FileGenerationOptions = {
-            filename: `${name}_${new Date().getTime()}.json`,
+            filename: `${new Date().getTime()}_${name}`,
         };
 
         const file = this._fileService.generateFile(data, options);
