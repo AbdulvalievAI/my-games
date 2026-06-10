@@ -1,4 +1,3 @@
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +13,6 @@ import type { IBtnConfig, IBtnListItem } from './btn-list.interface';
     standalone: true,
     imports: [
         MatListModule,
-        ScrollingModule,
         MatIconModule,
         MatButtonModule,
         MatTooltipModule,

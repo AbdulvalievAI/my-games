@@ -23,12 +23,7 @@
 
     @if (data) {
         <mat-card-actions align="end">
-            <button
-                matButton
-                color="warn"
-                matTooltip="Копировать текст ошибки"
-                (click)="copyTextError()"
-            >
+            <button matButton color="warn" (click)="copyTextError()">
                 <mat-icon>content_copy</mat-icon>
                 Копировать
             </button>

@@ -14,7 +14,6 @@ import {
 } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-error-dialog',
@@ -30,7 +29,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatIcon,
         MatCardActions,
         MatButtonModule,
-        MatTooltipModule,
     ],
 })
 export class ErrorDialogComponent {

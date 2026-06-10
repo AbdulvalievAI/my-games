@@ -17,7 +17,7 @@ import type { ISearchParam } from '../tools.service';
 import { DataService } from './data/data.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class GamesService implements OnDestroy {
     private readonly _dataService = inject(DataService);

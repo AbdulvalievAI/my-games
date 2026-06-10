@@ -5,7 +5,6 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 
-import { DataService } from '../../../services/api/data/data.service';
 import { GameGroupsService } from '../../../services/api/game-groups.service';
 import { GamesService } from '../../../services/api/games.service';
 import { PlatformsService } from '../../../services/api/platforms.service';
@@ -26,7 +25,6 @@ interface IDataList {
     providers: [
         PlatformsService,
         GameGroupsService,
-        FileService,
     ],
     imports: [
         MatCardHeader,
@@ -45,7 +43,6 @@ export class DataDialogComponent implements OnDestroy {
     private readonly _gameGroupsService = inject(GameGroupsService);
     private readonly _gamesService = inject(GamesService);
     private readonly _platformsService = inject(PlatformsService);
-    private readonly _dataService = inject(DataService);
     private readonly _fileService = inject(FileService);
 
     public readonly btnConfig: IBtnConfig = {

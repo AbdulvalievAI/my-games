@@ -2,13 +2,17 @@
     <div class="home__head">
         <app-header>
             <div modal-left>
-                <app-filter-list
-                    [(gamesList)]="gamesList"
-                    (dataLoadedChange)="dataLoaded($event)"
-                ></app-filter-list>
+                @if ((isLoad$ | async) === false) {
+                    <app-filter-list
+                        #filterComponent
+                        [(gamesList)]="gamesList"
+                        [gameGroupsList]="gameGroupsList"
+                        [platformList]="platformList"
+                    ></app-filter-list>
+                }
             </div>
             <div modal-right>
-                <app-settings></app-settings>
+                <app-settings (action)="actionSettings($event)"></app-settings>
 
                 <button
                     color="accent"
@@ -23,10 +27,10 @@
     </div>
 
     <div class="home__body">
-        @if (!isLoad) {
-            <app-games-list [gamesList]="gamesList"></app-games-list>
-        } @else {
+        @if (isLoad$ | async) {
             <mat-spinner [diameter]="75"></mat-spinner>
+        } @else {
+            <app-games-list [gamesList]="gamesList"></app-games-list>
         }
     </div>
 </div>

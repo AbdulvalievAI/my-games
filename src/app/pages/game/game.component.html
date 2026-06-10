@@ -207,7 +207,10 @@
                         </div>
                     </mat-select-trigger>
 
-                    @for (itemGameGroup of gameGroupsRef; track itemGameGroup) {
+                    @for (
+                        itemGameGroup of gameGroupsList;
+                        track itemGameGroup
+                    ) {
                         <mat-option [value]="itemGameGroup">
                             <div class="container-platform">
                                 {{ itemGameGroup.name }}

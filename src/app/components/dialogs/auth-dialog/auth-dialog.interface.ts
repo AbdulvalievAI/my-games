@@ -4,3 +4,5 @@ export interface IAuthForm {
     token?: FormControl<string | null>;
     clientId?: FormControl<string | null>;
 }
+
+export type TAuthClosingAactivity = 'syncData';

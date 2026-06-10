@@ -4,7 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import { yandexAuthConfig } from '../../config/yandex.config';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthService {
     public readonly http = inject(HttpClient);

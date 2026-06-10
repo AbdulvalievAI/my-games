@@ -8,8 +8,6 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -31,7 +29,7 @@ import { EPathFiles, YdxDiskService } from '../../../services/api/yandex-disk.se
 import { FileService } from '../../../services/file.service';
 import type { IGame, IGameGroup } from '../../../types/games.interfaces';
 import { LoadBlockComponent } from "../../load-block/load-block.component";
-import type { IAuthForm } from './auth-dialog.interface';
+import type { IAuthForm, TAuthClosingAactivity } from './auth-dialog.interface';
 
 interface ILoadStatus {
     isLoad: boolean;
@@ -42,11 +40,6 @@ interface ILoadStatus {
     selector: 'app-auth-dialog',
     templateUrl: './auth-dialog.component.html',
     styleUrls: [ './auth-dialog.component.scss' ],
-    providers: [
-        AuthService,
-        YdxDiskService,
-        FileService,
-    ],
     imports: [
         MatFormFieldModule,
         MatInputModule,
@@ -60,15 +53,13 @@ interface ILoadStatus {
         MatCardActions,
         MatDialogModule,
         MatTooltipModule,
-        MatSlideToggleModule,
         ReactiveFormsModule,
-        MatProgressSpinnerModule,
         AsyncPipe,
-        LoadBlockComponent
+        LoadBlockComponent,
     ],
 })
 export class AuthDialogComponent implements OnInit, OnDestroy {
-    public readonly dialogRef: MatDialogRef<AuthDialogComponent> = inject(MatDialogRef<AuthDialogComponent>);
+    public readonly dialogRef: MatDialogRef<AuthDialogComponent, TAuthClosingAactivity> = inject(MatDialogRef<AuthDialogComponent, TAuthClosingAactivity>);
     public readonly authService = inject(AuthService);
     private readonly _fb = inject(FormBuilder);
     private readonly _ydxDiskService = inject(YdxDiskService);
@@ -138,8 +129,8 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
                             this.authService.saveToken(token);
                         }
 
-                        this._initForm();
                         this._openSnackBar('✅ Успешная авторизация! ✅');
+                        this.dialogRef.close('syncData');
                     });
             }
         }
@@ -147,7 +138,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
     public logout() {
         this.authService.logout();
-        this._initForm();
+        this.dialogRef.close('syncData');
     }
 
     public openWindowToken() {

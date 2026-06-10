@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
+import { MatCard, MatCardContent,MatCardHeader, MatCardTitle } from '@angular/material/card';
 
 @Component({
     selector: 'app-empty-card',
@@ -7,7 +7,10 @@ import { MatCardModule } from '@angular/material/card';
     styleUrls: [ './empty-card.component.scss' ],
     standalone: true,
     imports: [
-        MatCardModule,
+        MatCardHeader,
+        MatCard,
+        MatCardTitle,
+        MatCardContent
     ],
 })
 export class EmptyCardComponent {

@@ -21,7 +21,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
@@ -54,7 +53,6 @@ interface IProgressName {
     styleUrls: [ './game.component.scss' ],
     standalone: true,
     providers: [
-        GamesService,
         PlatformsService,
         DialogService,
         ExplorerService,
@@ -74,7 +72,6 @@ interface IProgressName {
         MatProgressSpinnerModule,
         AsyncPipe,
         BtnListComponent,
-        MatSlideToggleModule,
     ],
 })
 export class GameComponent implements OnInit, OnDestroy {
@@ -102,7 +99,7 @@ export class GameComponent implements OnInit, OnDestroy {
         isLoadData: false,
         findedGames: [],
     };
-    public gameGroupsRef: IGameGroup[];
+    public gameGroupsList: IGameGroup[];
 
     ngOnInit(): void {
         this.isLoad$.next(true);
@@ -114,7 +111,7 @@ export class GameComponent implements OnInit, OnDestroy {
         ])
         .pipe(takeUntil(this._destroy$))
         .subscribe(([ params, gameGroups, platforms ]) => {
-            this.gameGroupsRef = gameGroups;
+            this.gameGroupsList = gameGroups;
             this.platformList = platforms;
 
             const id = params && params['id'];
@@ -213,7 +210,7 @@ export class GameComponent implements OnInit, OnDestroy {
                 }
 
                 return this.editGame?.groups.map(grId => {
-                    return this.gameGroupsRef.find(grrItem => grrItem.id === grId);
+                    return this.gameGroupsList.find(grrItem => grrItem.id === grId);
                 }) as IGameGroup[];
             })();
 

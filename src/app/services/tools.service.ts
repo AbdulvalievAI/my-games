@@ -8,7 +8,7 @@ export interface ISearchParam<T> {
 }
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ToolsService {
     private readonly _serverDelay = 1500;

@@ -17,7 +17,6 @@ import { LogoPlatformComponent } from "../logo-platform/logo-platform.component"
     standalone: true,
     providers: [
         PlatformsService,
-        GamesService,
         ExplorerService,
     ],
     imports: [

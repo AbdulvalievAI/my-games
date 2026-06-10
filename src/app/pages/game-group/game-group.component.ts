@@ -1,4 +1,3 @@
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import {
     ChangeDetectionStrategy,
@@ -13,7 +12,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -50,11 +48,8 @@ import type { INewGameGroup } from './game-group.interface';
         DialogService,
         ExplorerService,
         GameGroupsService,
-        GamesService,
     ],
     imports: [
-        MatListModule,
-        ScrollingModule,
         MatProgressSpinnerModule,
         MatIconModule,
         HeaderComponent,

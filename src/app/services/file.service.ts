@@ -6,7 +6,9 @@ export interface FileGenerationOptions {
     mimeType?: string;
 }
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class FileService {
     public generateFile<T>(data: T[] | T, options: FileGenerationOptions = {}): File {
         const {

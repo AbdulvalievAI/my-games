@@ -20,7 +20,9 @@ enum EUrls {
     DOWNLOAD = 'resources/download',
 }
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class YdxDiskService implements OnDestroy {
     private readonly _http = inject(HttpClient);
     private readonly _authService = inject(AuthService);

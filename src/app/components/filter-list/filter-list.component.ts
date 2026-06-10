@@ -17,13 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { catchError, EMPTY, forkJoin, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
-import { DataService } from '../../services/api/data/data.service';
-import { GameGroupsService } from '../../services/api/game-groups.service';
-import { GamesService } from '../../services/api/games.service';
-import { PlatformsService } from '../../services/api/platforms.service';
-import { DialogService } from '../../services/dialog.service';
 import type { IGame, IGameGroup } from '../../types/games.interfaces';
 import type { IPlatform } from '../../types/platforms.interfaces';
 import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
@@ -37,9 +32,6 @@ import { FilterListService } from './filter-list.service';
     standalone: true,
     providers: [
         FilterListService,
-        PlatformsService,
-        DialogService,
-        GameGroupsService,
     ],
     imports: [
         MatFormFieldModule,
@@ -55,43 +47,24 @@ import { FilterListService } from './filter-list.service';
     ],
 })
 export class FilterComponent implements OnInit, OnDestroy {
-    private readonly _gamesService = inject(GamesService);
-    private readonly _platformsService = inject(PlatformsService);
     private readonly _filterListService = inject(FilterListService);
     private readonly _fb = inject(FormBuilder);
-    private readonly _dialogService = inject(DialogService);
-    private readonly _gameGroupsService = inject(GameGroupsService);
-    private readonly _dataService = inject(DataService);
-
-    public gameGroupsRef: IGameGroup[];
 
     @Input() gamesList: IGame[] = [];
+    @Input() gameGroupsList: IGameGroup[];
+    @Input() platformList: IPlatform[] = [];
 
     @Output() gamesListChange: EventEmitter<IGame[]> = new EventEmitter<IGame[]>();
-    @Output() dataLoadedChange = new EventEmitter<boolean>();
 
     public filterForm: FormGroup<IFilterForm>;
     public valueSpinner = 0;
     public isSpinner = false;
-    public platformList: IPlatform[] = [];
 
     private _searchTimerId: ReturnType<typeof setTimeout> | null;
     private readonly _destroy$ = new Subject<void>();
 
     ngOnInit(): void {
-        this.dataLoadedChange.emit(true);
-
-        this._dataService.initData()
-            .pipe(
-                takeUntil(this._destroy$),
-                catchError(error => {
-                    console.error(error);
-                    this._dialogService.openErrorDialog(error);
-
-                    return EMPTY;
-                }),
-            )
-            .subscribe(() => this._initFilter());
+        this._initFilter();
     }
 
     ngOnDestroy(): void {
@@ -130,39 +103,17 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
 
     private _initFilter(): void {
-        forkJoin([
-            this._gamesService.getGames(),
-            this._gameGroupsService.getGameGroups(),
-            this._platformsService.getPlatforms(),
-        ])
-        .pipe(
-            takeUntil(this._destroy$),
-            catchError(error => {
-                console.error(error);
-                this._dialogService.openErrorDialog(error);
+        this._filterListService.initialize(this.gamesList);
+        this._initForm();
 
-                return EMPTY;
-            }),
-        )
-        .subscribe(([ games, gameGroups, platforms ]) => {
-            this.gamesList = games;
-            this.gameGroupsRef = gameGroups;
-            this.platformList = platforms;
+        this._filterListService.filters$
+            .subscribe(filters => {
+                this.gamesListChange.emit(this._filterListService.applyFilterGamesList(filters));
+            });
 
-            this._filterListService.initialize(this.gamesList);
-            this._initForm();
-
-            this._filterListService.filters$
-                .subscribe(filters => {
-                    this.gamesListChange.emit(this._filterListService.applyFilterGamesList(filters));
-                });
-
-            setTimeout(() => {
-                this.valueSpinner = 50
-            }, 4000);
-
-            this.dataLoadedChange.emit(false);
-        });
+        setTimeout(() => {
+            this.valueSpinner = 50
+        }, 4000);
     }
 
     private _initForm(): void {

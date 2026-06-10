@@ -5,6 +5,7 @@ import {
 } from "@angular/material/dialog";
 
 import { AuthDialogComponent } from "../components/dialogs/auth-dialog/auth-dialog.component";
+import type { TAuthClosingAactivity } from "../components/dialogs/auth-dialog/auth-dialog.interface";
 import { DataDialogComponent } from "../components/dialogs/data-dialog/data-dialog.component";
 import { ErrorDialogComponent } from "../components/dialogs/error-dialog/error-dialog.component";
 import { ImageDialogComponent } from "../components/dialogs/image-dialog/image-dialog.component";
@@ -55,7 +56,7 @@ export class DialogService {
     public openAuthDialog() {
         this._dialog.closeAll();
 
-        return this._dialog.open(
+        return this._dialog.open<AuthDialogComponent, unknown, TAuthClosingAactivity>(
             AuthDialogComponent,
             {
                 hasBackdrop: true,

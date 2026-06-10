@@ -50,7 +50,7 @@
                     {{ filterForm.value.group?.name }}
                 </mat-select-trigger>
 
-                @for (group of gameGroupsRef; track group) {
+                @for (group of gameGroupsList; track group) {
                     <mat-option [value]="group">
                         {{ group.name }}
                     </mat-option>
