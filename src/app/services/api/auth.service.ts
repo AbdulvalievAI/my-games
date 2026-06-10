@@ -9,7 +9,7 @@ import { yandexAuthConfig } from '../../config/yandex.config';
 export class AuthService {
     public readonly http = inject(HttpClient);
 
-    public readonly useFake = true;
+    public readonly useFake = false;
 
     private readonly _keyLsToken = 'yandex_token';
     private readonly _keyLsCliendId = 'client_id';
