@@ -122,7 +122,7 @@ export class DataDialogComponent implements OnDestroy {
                 }),
             )
             .subscribe(platforms => {
-                this._downloadFile(platforms, EYdxFileNames.GAMES_GROUPS);
+                this._downloadFile(platforms, EYdxFileNames.PLATFORMS);
             });
     }
 
@@ -137,7 +137,7 @@ export class DataDialogComponent implements OnDestroy {
                 }),
             )
             .subscribe(gameGroups => {
-                this._downloadFile(gameGroups, EYdxFileNames.PLATFORMS);
+                this._downloadFile(gameGroups, EYdxFileNames.GAMES_GROUPS);
             });
     }
 
