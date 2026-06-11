@@ -1,0 +1,16 @@
+@use "./material-colors" as *;
+
+@mixin icon-size($size) {
+    height: $size;
+    width: $size;
+    font-size: $size;
+    line-height: $size;
+}
+
+.mat-icon.red {
+    color: $color-warn;
+}
+
+.mat-icon.green {
+    color: green;
+}

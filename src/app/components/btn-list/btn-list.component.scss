@@ -1,8 +1,8 @@
 @use "../../styles/common" as *;
 @use "../../styles/variables" as *;
+@use "../../styles/icons" as *;
 
 $mat-btn-small-size: 34px;
-$mat-icon-small-size: 26px;
 
 .horizontal {
     display: flex;
@@ -41,10 +41,7 @@ $mat-icon-small-size: 26px;
             height: $mat-btn-small-size;
 
             .mat-icon {
-                height: $mat-icon-small-size;
-                width: $mat-icon-small-size;
-                font-size: $mat-icon-small-size;
-                line-height: $mat-icon-small-size;
+                @include icon-size(26px);
             }
         }
     }

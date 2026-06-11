@@ -7,6 +7,7 @@ export interface IGame {
     platforms: EPlatform[];
     dateEdit: string;
     groups?: IGameGroup['id'][];
+    completed?: boolean;
 }
 
 export interface IGameGroup {

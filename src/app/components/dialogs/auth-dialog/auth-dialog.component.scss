@@ -1,8 +1,7 @@
 @use "../../../styles/gaps" as *;
 @use "../../../styles/variables" as *;
 @use "../../../styles/material-colors" as *;
-
-$mat-icon-size: 40px;
+@use "../../../styles/icons" as *;
 
 ::ng-deep {
     .mat-button.black {
@@ -27,17 +26,7 @@ mat-card-title {
     width: 100%;
 
     .mat-icon {
-        height: $mat-icon-size;
-        width: $mat-icon-size;
-        font-size: $mat-icon-size;
-        line-height: $mat-icon-size;
-    }
-    .mat-icon.red {
-        color: $color-warn;
-    }
-
-    .mat-icon.green {
-        color: green;
+        @include icon-size(40px);
     }
 
     button {

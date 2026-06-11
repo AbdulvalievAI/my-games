@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
@@ -72,6 +73,7 @@ interface IProgressName {
         MatProgressSpinnerModule,
         AsyncPipe,
         BtnListComponent,
+        MatSlideToggleModule,
     ],
 })
 export class GameComponent implements OnInit, OnDestroy {
@@ -228,6 +230,7 @@ export class GameComponent implements OnInit, OnDestroy {
                     Validators.required
                 ],
                 gameGroups: [ gameGroupsValue ],
+                completed: [ Boolean(this.editGame.completed) ],
             });
         } else {
             this.newGameForm = this._fb.group({
@@ -237,6 +240,7 @@ export class GameComponent implements OnInit, OnDestroy {
                 logo: [ '', [ Validators.required, this._createPasswordStrengthValidator() ] ],
                 platforms: [ [] as IPlatform[], Validators.required ],
                 gameGroups: [ [] as IGameGroup[] ],
+                completed: [ false ],
             });
         }
 
@@ -302,6 +306,7 @@ export class GameComponent implements OnInit, OnDestroy {
             platforms: newGameData.platforms.map(item => item.type),
             dateEdit: new Date().toISOString(),
             groups: newGameData.gameGroups.map(item => item.id),
+            completed: Boolean(newGameData.completed),
         };
     }
 
@@ -338,7 +343,7 @@ export class GameComponent implements OnInit, OnDestroy {
         clear();
 
         this.progressName.interval = setInterval(() => {
-            if(this.progressName.interval && this.progressName.valueProgress === 100) {
+            if (this.progressName.interval && this.progressName.valueProgress === 100) {
                 clearInterval(this.progressName.interval);
                 this.progressName.isShowProgress = false;
                 this.progressName.isLoadData = true;

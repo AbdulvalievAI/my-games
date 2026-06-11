@@ -15,4 +15,5 @@ export interface INewGameForm {
     platforms: FormControl<IPlatform[] | null>;
     dateEdit: FormControl<string | null>;
     gameGroups: FormControl<IGameGroup[] | null>;
+    completed: FormControl<boolean | null>;
 }

@@ -1,8 +1,8 @@
 @use "../../styles/material-colors" as *;
 @use "../../styles/variables" as *;
+@use "../../styles/icons" as *;
 
 $mat-btn-small-size: 24px;
-$mat-icon-small-size: 16px;
 
 :host {
     width: 100%;
@@ -40,10 +40,7 @@ $mat-icon-small-size: 16px;
             }
 
             .mat-icon {
-                height: $mat-icon-small-size;
-                width: $mat-icon-small-size;
-                font-size: $mat-icon-small-size;
-                line-height: $mat-icon-small-size;
+                @include icon-size(16px);
             }
         }
     }

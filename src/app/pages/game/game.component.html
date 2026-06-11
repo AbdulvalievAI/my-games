@@ -90,6 +90,21 @@
         <h3>{{ newGameForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
 
         <form [formGroup]="newGameForm">
+            <p>
+                <mat-slide-toggle formControlName="completed">
+                    Игра пройдена
+                    @if (newGameForm.value.completed) {
+                        <mat-icon class="icon-completed green mr">
+                            check_circle
+                        </mat-icon>
+                    } @else {
+                        <mat-icon class="icon-completed red mr">
+                            close
+                        </mat-icon>
+                    }
+                </mat-slide-toggle>
+            </p>
+
             <mat-form-field appearance="outline">
                 <mat-label>Название игры</mat-label>
 
