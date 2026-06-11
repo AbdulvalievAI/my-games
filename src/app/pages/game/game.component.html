@@ -114,16 +114,16 @@
                     formControlName="name"
                 />
 
-                @if (progressName.isShowProgress) {
+                @if (similarGame.isShowProgress) {
                     <mat-progress-spinner
                         style="margin-right: 10px"
                         matSuffix
                         [diameter]="30"
                         [mode]="'determinate'"
-                        [value]="progressName.valueProgress"
+                        [value]="similarGame.valueProgress"
                     ></mat-progress-spinner>
                 }
-                @if (progressName.isLoadData) {
+                @if (similarGame.isLoadData) {
                     <mat-spinner
                         style="margin-right: 10px"
                         matSuffix
@@ -132,10 +132,9 @@
                 }
             </mat-form-field>
 
-            @if (progressName.findedGames.length) {
+            @if (similarGame.findedGames.length) {
                 <app-btn-list
-                    [buttonsList]="progressName.findedGames"
-                    [orientation]="'horizontal'"
+                    [buttonsList]="similarGame.findedGames"
                     (clickItem)="explorerService.goToGameEdit($event.id)"
                 ></app-btn-list>
             }

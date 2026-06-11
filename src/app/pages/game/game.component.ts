@@ -40,12 +40,14 @@ import type { IPlatform } from '../../types/platforms.interfaces';
 import type { IGame, IGameGroup } from './../../types/games.interfaces';
 import type { INewGameForm, INewGameFormValue } from './game.interface';
 
-interface IProgressName {
+interface ISimilarGame {
     valueProgress: number;
     interval: ReturnType<typeof setInterval> | null;
     isShowProgress: boolean;
     isLoadData: boolean;
     findedGames: IGame[] | [];
+    stepDelay: number,
+    sizeStepProgress: number,
 };
 
 @Component({
@@ -94,17 +96,15 @@ export class GameComponent implements OnInit, OnDestroy {
     public newGameForm: FormGroup<INewGameForm>;
     public platformList: IPlatform[] = [];
     public editGame: IGame | undefined;
-    public progressName: IProgressName = {
-        valueProgress: 0,
-        interval: null,
-        isShowProgress: false,
-        isLoadData: false,
-        findedGames: [],
-    };
+    public similarGame: ISimilarGame;
     public gameGroupsList: IGameGroup[];
 
     ngOnInit(): void {
         this.isLoad$.next(true);
+        this._setSimilarGame({
+            allDelay: 3000,
+            stepDelay: 1000,
+        });
 
         forkJoin([
             this._route.params.pipe(take(1)),
@@ -323,44 +323,61 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     private _fieldNameChangeHandler(name: string | null): void {
-        const clear = () => {
-            this.progressName.findedGames = [];
-            this.progressName.isShowProgress = true;
-            this.progressName.valueProgress = 0;
+        const clear = (isShowProgress: boolean) => {
+            this.similarGame.findedGames = [];
+            this.similarGame.isShowProgress = isShowProgress;
+            this.similarGame.valueProgress = 0;
 
-            if (this.progressName.interval) {
-                clearInterval(this.progressName.interval);
-                this.progressName.interval = null;
+            if (this.similarGame.interval) {
+                clearInterval(this.similarGame.interval);
+                this.similarGame.interval = null;
             }
         };
 
         if (!name || name.length < 3) {
-            clear();
+            clear(false);
 
             return;
+        } else {
+            clear(true);
         }
 
-        clear();
-
-        this.progressName.interval = setInterval(() => {
-            if (this.progressName.interval && this.progressName.valueProgress === 100) {
-                clearInterval(this.progressName.interval);
-                this.progressName.isShowProgress = false;
-                this.progressName.isLoadData = true;
+        this.similarGame.interval = setInterval(() => {
+            if (this.similarGame.interval && this.similarGame.valueProgress >= 100) {
+                clearInterval(this.similarGame.interval);
+                this.similarGame.isShowProgress = false;
+                this.similarGame.isLoadData = true;
                 this._cdr.detectChanges();
 
                 const games = this._gamesService.searchGamesByName(name);
 
                 if (games?.length) {
-                    this.progressName.findedGames = games.slice(0, 8);
+                    this.similarGame.findedGames = games.slice(0, 8);
                 }
 
-                this.progressName.isLoadData = false;
+                this.similarGame.isLoadData = false;
                 this._cdr.detectChanges();
             } else {
-                this.progressName.valueProgress += 20;
+                this.similarGame.valueProgress += this.similarGame.sizeStepProgress;
                 this._cdr.detectChanges();
             }
-        }, 1000);
+        }, this.similarGame.stepDelay);
+    }
+
+    private _setSimilarGame(settings: { allDelay: number, stepDelay: number }): void {
+        const allDelay = settings.allDelay;
+        const stepDelay = settings.stepDelay;
+        const allSteps = allDelay / stepDelay
+        const sizeStepProgress = Math.ceil(100 / allSteps);
+
+        this.similarGame = {
+            valueProgress: 0,
+            interval: null,
+            isShowProgress: false,
+            isLoadData: false,
+            findedGames: [],
+            stepDelay,
+            sizeStepProgress,
+        }
     }
 }
