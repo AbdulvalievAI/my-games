@@ -1,0 +1,24 @@
+<div class="btn-list-item">
+    <button
+        mat-list-item
+        class="mdc-list-item mat-mdc-list-item-interactive"
+        [matTooltip]="buttonData.name"
+        (click)="clickItem.emit(buttonData)"
+        [disabled]="disabled"
+    >
+        {{ buttonData.name }}
+    </button>
+
+    @if (btnConfig) {
+        <button
+            class="btn-list-item__right-btn"
+            mat-fab
+            [color]="btnConfig.color"
+            [matTooltip]="btnConfig.title"
+            [disabled]="disabled"
+            (click)="clickBtn.emit(buttonData)"
+        >
+            <mat-icon>{{ btnConfig.icon }}</mat-icon>
+        </button>
+    }
+</div>

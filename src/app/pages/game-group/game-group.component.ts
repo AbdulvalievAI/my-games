@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatActionList, MatListItem } from "@angular/material/list";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -29,7 +30,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { BtnListComponent } from "../../components/btn-list/btn-list.component";
-import type { IBtnConfig } from '../../components/btn-list/btn-list.interface';
+import type { IBtnConfig } from '../../components/btn-list-item/btn-list-item.interface';
 import { HeaderComponent } from "../../components/header/header.component";
 import { GameGroupsService } from '../../services/api/game-groups.service';
 import { GamesService } from '../../services/api/games.service';
