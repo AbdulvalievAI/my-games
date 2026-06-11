@@ -1,4 +1,7 @@
 @use "../../styles/variables" as *;
+@use "../../styles/icons" as *;
+
+$mat-btn-small-size: 34px;
 
 .horizontal {
     display: flex;
@@ -18,4 +21,21 @@
     border-radius: $border-radius;
     margin-bottom: $gap-size;
     padding: $gap-size;
+
+    &__item {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__right {
+        padding: 0;
+        width: $mat-btn-small-size;
+        height: $mat-btn-small-size;
+
+        .mat-icon {
+            @include icon-size(26px);
+        }
+    }
 }

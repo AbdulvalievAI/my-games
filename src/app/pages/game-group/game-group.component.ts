@@ -30,7 +30,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { BtnListComponent } from "../../components/btn-list/btn-list.component";
-import type { IBtnConfig } from '../../components/btn-list-item/btn-list-item.interface';
+import type { IBtnConfig } from '../../components/btn-list/btn-list.interface';
 import { HeaderComponent } from "../../components/header/header.component";
 import { GameGroupsService } from '../../services/api/game-groups.service';
 import { GamesService } from '../../services/api/games.service';

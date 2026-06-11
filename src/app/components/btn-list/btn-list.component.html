@@ -2,13 +2,27 @@
     <div class="btn-list">
         <mat-action-list [className]="orientation">
             @for (btn of buttonsList; track btn) {
-                <app-btn-list-item
-                    [buttonData]="btn"
-                    [btnConfig]="btnConfig"
-                    [disabled]="disabled"
-                    (clickItem)="clickItem.emit($event)"
-                    (clickBtn)="clickBtn.emit($event)"
-                ></app-btn-list-item>
+                <div class="btn-list__item">
+                    <mat-list-item
+                        (click)="clickItem.emit(btn)"
+                        [disabled]="disabled"
+                    >
+                        {{ btn.name }}
+                    </mat-list-item>
+
+                    @if (btnConfig) {
+                        <button
+                            class="btn-list__right"
+                            mat-fab
+                            [color]="btnConfig.color"
+                            [matTooltip]="btnConfig.title"
+                            [disabled]="disabled"
+                            (click)="clickBtn.emit(btn)"
+                        >
+                            <mat-icon>{{ btnConfig.icon }}</mat-icon>
+                        </button>
+                    }
+                </div>
             }
         </mat-action-list>
     </div>

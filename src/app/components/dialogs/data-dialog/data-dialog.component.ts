@@ -11,7 +11,7 @@ import { GamesService } from '../../../services/api/games.service';
 import { PlatformsService } from '../../../services/api/platforms.service';
 import { type FileGenerationOptions, FileService } from '../../../services/file.service';
 import { BtnListComponent } from '../../btn-list/btn-list.component';
-import type { IBtnConfig } from '../../btn-list-item/btn-list-item.interface';
+import type { IBtnConfig } from '../../btn-list/btn-list.interface';
 
 interface IDataList {
     id: string;
