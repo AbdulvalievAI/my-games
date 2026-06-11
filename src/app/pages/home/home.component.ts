@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { BehaviorSubject, catchError, EMPTY,forkJoin, Subject, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY,forkJoin, Subject, takeUntil } from 'rxjs';
 
 import { FilterComponent } from '../../components/filter-list/filter-list.component';
 import { GamesListComponent } from '../../components/games-list/games-list.component';
@@ -75,37 +75,51 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     public actionSettings(action: TActionSettings): void {
         if (action === 'syncData') {
-            this._dataService.isInitData = false;
-            this._initData();
+            this.isLoad$.next(true);
+
+            this._dataService.syncData()
+                .pipe(
+                    takeUntil(this._destroy$),
+                    catchError(error => {
+                        console.error(error);
+                        this._dialogService.openErrorDialog(error);
+
+                        this.isLoad$.next(false);
+
+                        return EMPTY;
+                    }),
+                )
+                .subscribe(() => {
+                    this._initData();
+                });
         }
     }
 
     private _initData(): void {
         this.isLoad$.next(true);
 
-        this._dataService.initData()
-            .pipe(
-                switchMap(() => forkJoin([
-                    this._gamesService.getGames(),
-                    this._gameGroupsService.getGameGroups(),
-                    this._platformsService.getPlatforms(),
-                ])),
-                takeUntil(this._destroy$),
-                catchError(error => {
-                    console.error(error);
-                    this._dialogService.openErrorDialog(error);
-
-                    this.isLoad$.next(false);
-
-                    return EMPTY;
-                }),
-            )
-            .subscribe(([ games, gameGroups, platforms ]) => {
-                this.gamesList = games;
-                this.gameGroupsList = gameGroups;
-                this.platformList = platforms;
+        forkJoin([
+            this._gamesService.getGames(),
+            this._gameGroupsService.getGameGroups(),
+            this._platformsService.getPlatforms(),
+        ])
+        .pipe(
+            takeUntil(this._destroy$),
+            catchError(error => {
+                console.error(error);
+                this._dialogService.openErrorDialog(error);
 
                 this.isLoad$.next(false);
-            });
+
+                return EMPTY;
+            }),
+        )
+        .subscribe(([ games, gameGroups, platforms ]) => {
+            this.gamesList = games;
+            this.gameGroupsList = gameGroups;
+            this.platformList = platforms;
+
+            this.isLoad$.next(false);
+        });
     }
 }

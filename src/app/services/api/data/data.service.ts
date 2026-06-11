@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import {  type Observable,of, tap } from "rxjs";
+import {  type Observable, } from "rxjs";
 
 import type { EPlatform } from "../../../data/platforms";
 import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
@@ -21,16 +21,6 @@ export class DataService {
     private readonly _dataFakeApiService = inject(DataFakeApiService);
     private readonly _toolsService = inject(ToolsService);
 
-    private _isInitData = false;
-
-    public set isInitData(value: boolean) {
-        this._isInitData = value;
-    }
-
-    public get isInitData(): boolean {
-        return this._isInitData;
-    }
-
     private get _pointService(): IDataPointService {
         if (this._authService.useFake) {
             return this._dataFakeApiService;
@@ -43,18 +33,9 @@ export class DataService {
         }
     }
 
-    public initData(): Observable<boolean> {
+    public syncData(): Observable<boolean> {
         if (this._pointService.initData) {
-            if (this._isInitData) {
-                return of(true);
-            }
-
-            return this._pointService.initData()
-                .pipe(
-                    tap(() => {
-                        this.isInitData = true;
-                    }),
-                );
+            return this._pointService.initData();
         } else {
             return this._toolsService.serverDelay(() => {
                 return true

@@ -1,1 +1,5 @@
-<router-outlet></router-outlet>
+@if (isLoad$ | async) {
+    <mat-spinner [diameter]="100" class="spin-load-data"></mat-spinner>
+} @else {
+    <router-outlet></router-outlet>
+}
