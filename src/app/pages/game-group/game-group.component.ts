@@ -36,7 +36,7 @@ import { GamesService } from '../../services/api/games.service';
 import { DialogService } from '../../services/dialog.service';
 import { ExplorerService } from '../../services/explorer.service';
 import type { IGame, IGameGroup } from '../../types/games.interfaces';
-import type { INewGameGroup } from './game-group.interface';
+import type { IGameGroupForm } from './game-group.interface';
 
 @Component({
     selector: 'app-game-group',
@@ -79,7 +79,7 @@ export class GameGroupComponent implements OnInit, OnDestroy {
     public readonly isLoadGame$ = new BehaviorSubject<boolean>(false);
     public gameGroupsList: IGameGroup[] = [];
     public gamesList: IGame[] = [];
-    public newGameGroupForm: FormGroup<INewGameGroup>;
+    public newGameGroupForm: FormGroup<IGameGroupForm>;
     public editGameGroup: IGameGroup | undefined;
     public readonly btnConfig: IBtnConfig = {
         title: 'Удалить из группы',

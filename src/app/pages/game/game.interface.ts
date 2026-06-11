@@ -3,12 +3,12 @@ import type { FormControl } from "@angular/forms";
 import type { IGame, IGameGroup } from "../../types/games.interfaces";
 import type { IPlatform } from "../../types/platforms.interfaces";
 
-export interface INewGameFormValue extends Omit<IGame, 'platforms'> {
+export interface IGameFormValue extends Omit<IGame, 'platforms'> {
     platforms: IPlatform[];
     gameGroups: IGameGroup[];
 }
 
-export interface INewGameForm {
+export interface IGameForm {
     id: FormControl<string | null>;
     name: FormControl<string | null>;
     logo: FormControl<string | null>;

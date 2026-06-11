@@ -38,7 +38,7 @@ import { DialogService } from '../../services/dialog.service';
 import { ExplorerService } from '../../services/explorer.service';
 import type { IPlatform } from '../../types/platforms.interfaces';
 import type { IGame, IGameGroup } from './../../types/games.interfaces';
-import type { INewGameForm, INewGameFormValue } from './game.interface';
+import type { IGameForm, IGameFormValue } from './game.interface';
 
 interface ISimilarGame {
     valueProgress: number;
@@ -93,7 +93,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private readonly _destroy$ = new Subject<void>();
     private readonly _searchTimerId: ReturnType<typeof setTimeout> | null;
 
-    public newGameForm: FormGroup<INewGameForm>;
+    public newGameForm: FormGroup<IGameForm>;
     public platformList: IPlatform[] = [];
     public editGame: IGame | undefined;
     public similarGame: ISimilarGame;
@@ -141,7 +141,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public saveGame(): void {
-        const formData = this.newGameForm.getRawValue() as INewGameFormValue;
+        const formData = this.newGameForm.getRawValue() as IGameFormValue;
         const newGame = this._mappingData(formData);
 
         this.isLoad$.next(true);
@@ -298,7 +298,7 @@ export class GameComponent implements OnInit, OnDestroy {
         }
     }
 
-    private _mappingData(newGameData: INewGameFormValue): IGame {
+    private _mappingData(newGameData: IGameFormValue): IGame {
         return {
             id: newGameData.id,
             name: newGameData.name,
