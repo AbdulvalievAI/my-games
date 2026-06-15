@@ -59,6 +59,26 @@ export class DataLocalService implements IDataPointService {
         });
     }
 
+    public updateGames(games: IGame[]): Observable<IGame[]> {
+        return this._toolsService.serverDelay(() => {
+            const gamesList = this._getParseData<IGame>(this._keyGame);
+
+            games.forEach(gameItem => {
+                const findedGameIdx = gamesList.findIndex(gameItem => gameItem.id === gameItem.id);
+
+                if (findedGameIdx === -1) {
+                    throw new Error(`Не найдена игра с id ${gameItem.id}`);
+                }
+
+                gamesList[findedGameIdx] = gameItem;
+            });
+
+            localStorage.setItem(this._keyGame, JSON.stringify(gamesList));
+
+            return cloneDeep(gamesList);
+        });
+    }
+
     public deleteGame(id: string): Observable<IServerMessage> {
         return this._toolsService.serverDelay(() => {
             const gamesList = this._getParseData<IGame>(this._keyGame);

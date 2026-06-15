@@ -8,7 +8,7 @@ import type { IPlatform } from "../../../types/platforms.interfaces";
 import { type ISearchParam,ToolsService } from "../../tools.service";
 import { AuthService } from "../auth.service";
 import { DataCloudService } from "./data-cloud.service";
-import { DataFakeApiService } from "./data-fake.service";
+/* import { DataFakeApiService } from "./data-fake.service"; */
 import { DataLocalService } from "./data-local.service";
 
 @Injectable({
@@ -18,13 +18,13 @@ export class DataService {
     private readonly _authService = inject(AuthService);
     private readonly _dataCloudService = inject(DataCloudService);
     private readonly _dataLocalService = inject(DataLocalService);
-    private readonly _dataFakeApiService = inject(DataFakeApiService);
+    /* private readonly _dataFakeApiService = inject(DataFakeApiService); */
     private readonly _toolsService = inject(ToolsService);
 
     private get _pointService(): IDataPointService {
-        if (this._authService.useFake) {
+/*         if (this._authService.useFake) {
             return this._dataFakeApiService;
-        }
+        } */
 
         if (this._authService.isAuthorized()) {
             return this._dataCloudService;
@@ -59,6 +59,10 @@ export class DataService {
 
     public updateGame(game: IGame): Observable<IGame> {
         return this._pointService.updateGame(game);
+    }
+
+    public updateGames(games: IGame[]): Observable<IGame[]> {
+        return this._pointService.updateGames(games);
     }
 
     public deleteGame(id: string): Observable<IServerMessage> {

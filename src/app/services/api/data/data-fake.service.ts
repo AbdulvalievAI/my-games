@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+/* import { inject, Injectable } from "@angular/core";
 import cloneDeep from "lodash-es/cloneDeep";
 import type { Observable } from "rxjs";
 
@@ -158,3 +158,4 @@ export class DataFakeApiService implements IDataPointService {
         return this._platforms.find(platformItem => platformItem.type === type);
     }
 }
+ */

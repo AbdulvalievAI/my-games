@@ -10,16 +10,14 @@
             <mat-icon>home</mat-icon>
         </button>
 
-        @if (this.newGameForm) {
+        @if (this.gameForm) {
             <button
                 mat-fab
                 color="primary"
                 matTooltip="Яндекс поиск"
                 class="mr"
                 (click)="
-                    explorerService.goToYandexSearch(
-                        this.newGameForm.value.name
-                    )
+                    explorerService.goToYandexSearch(this.gameForm.value.name)
                 "
             >
                 <mat-icon>public</mat-icon>
@@ -30,7 +28,7 @@
                 color="primary"
                 matTooltip="Яндекс картинки"
                 (click)="
-                    explorerService.goToYandexImage(this.newGameForm.value.name)
+                    explorerService.goToYandexImage(this.gameForm.value.name)
                 "
             >
                 <mat-icon>image</mat-icon>
@@ -52,7 +50,7 @@
                 color="warn"
                 matTooltip="Отчистить"
                 class="mr"
-                [disabled]="(isLoad$ | async) || !newGameForm"
+                [disabled]="(isLoad$ | async) || !gameForm"
                 (click)="resetField()"
             >
                 <mat-icon>cleaning_services</mat-icon>
@@ -65,7 +63,7 @@
                 color="warn"
                 matTooltip="Удалить"
                 class="mr"
-                [disabled]="(isLoad$ | async) || !newGameForm"
+                [disabled]="(isLoad$ | async) || !gameForm"
                 (click)="deleteGame()"
             >
                 <mat-icon>delete</mat-icon>
@@ -76,7 +74,7 @@
             mat-fab
             color="accent"
             matTooltip="Сохранить игру"
-            [disabled]="(isLoad$ | async) || !newGameForm || !newGameForm.valid"
+            [disabled]="(isLoad$ | async) || !gameForm || !gameForm.valid"
             (click)="saveGame()"
         >
             <mat-icon>save</mat-icon>
@@ -84,16 +82,16 @@
     </div>
 </app-header>
 
-@if (newGameForm) {
+@if (gameForm) {
     <div class="block">
-        <h1>{{ newGameForm.value.name || "Название игры" }}</h1>
-        <h3>{{ newGameForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
+        <h1>{{ gameForm.value.name || "Название игры" }}</h1>
+        <h3>{{ gameForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
 
-        <form [formGroup]="newGameForm">
+        <form [formGroup]="gameForm">
             <p>
                 <mat-slide-toggle formControlName="completed">
                     Игра пройдена
-                    @if (newGameForm.value.completed) {
+                    @if (gameForm.value.completed) {
                         <mat-icon class="icon-completed green mr">
                             check_circle
                         </mat-icon>
@@ -158,10 +156,8 @@
                     color="primary"
                     id="logo-block__view-log-btn"
                     matTooltip="Посмотреть лого"
-                    [disabled]="!newGameForm.value.logo"
-                    (click)="
-                        dialogService.openImageDialog(newGameForm.value.logo)
-                    "
+                    [disabled]="!gameForm.value.logo"
+                    (click)="dialogService.openImageDialog(gameForm.value.logo)"
                 >
                     <mat-icon>remove_red_eye</mat-icon>
                 </button>
@@ -174,7 +170,7 @@
                     <mat-select-trigger>
                         <div class="platforms-selected-list">
                             @for (
-                                platform2 of newGameForm.value.platforms;
+                                platform2 of gameForm.value.platforms;
                                 track platform2
                             ) {
                                 <div class="platforms-selected-item">
@@ -213,7 +209,7 @@
                     <mat-select-trigger>
                         <div>
                             @for (
-                                itemGameGroup of newGameForm.value.gameGroups;
+                                itemGameGroup of gameForm.value.gameGroups;
                                 track itemGameGroup
                             ) {
                                 {{ itemGameGroup.name }} |
@@ -236,12 +232,12 @@
         </form>
     </div>
 
-    @if (newGameForm.value.gameGroups?.length) {
+    @if (gameForm.value.gameGroups?.length) {
         <h2>Группы</h2>
 
         <div class="block mt">
             <app-btn-list
-                [buttonsList]="newGameForm.value.gameGroups"
+                [buttonsList]="gameForm.value.gameGroups"
                 (clickItem)="explorerService.goToGameGroupEdit($event.id)"
             ></app-btn-list>
         </div>

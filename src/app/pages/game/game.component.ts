@@ -93,7 +93,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private readonly _destroy$ = new Subject<void>();
     private readonly _searchTimerId: ReturnType<typeof setTimeout> | null;
 
-    public newGameForm: FormGroup<IGameForm>;
+    public gameForm: FormGroup<IGameForm>;
     public platformList: IPlatform[] = [];
     public editGame: IGame | undefined;
     public similarGame: ISimilarGame;
@@ -141,7 +141,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public saveGame(): void {
-        const formData = this.newGameForm.getRawValue() as IGameFormValue;
+        const formData = this.gameForm.getRawValue() as IGameFormValue;
         const newGame = this._mappingData(formData);
 
         this.isLoad$.next(true);
@@ -220,7 +220,7 @@ export class GameComponent implements OnInit, OnDestroy {
                     }) as IGameGroup[];
             })();
 
-            this.newGameForm = this._fb.group({
+            this.gameForm = this._fb.group({
                 id: [ this.editGame.id, Validators.required ],
                 dateEdit: [ new Date(this.editGame.dateEdit).toISOString(), Validators.required ],
                 name: [ this.editGame.name, Validators.required ],
@@ -233,7 +233,7 @@ export class GameComponent implements OnInit, OnDestroy {
                 completed: [ Boolean(this.editGame.completed) ],
             });
         } else {
-            this.newGameForm = this._fb.group({
+            this.gameForm = this._fb.group({
                 id: [ uuidv4(), Validators.required ],
                 dateEdit: [ new Date().toISOString(), Validators.required ],
                 name: [ '', Validators.required ],
@@ -316,7 +316,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     private _setValueChanges(): void {
         if (!this.editGame) {
-            this.newGameForm.get('name')?.valueChanges
+            this.gameForm.get('name')?.valueChanges
                 .pipe(takeUntil(this._destroy$))
                 .subscribe(this._fieldNameChangeHandler.bind(this));
         }

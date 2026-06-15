@@ -58,6 +58,11 @@ export class GamesService implements OnDestroy {
             .pipe(takeUntil(this._destroy$));
     }
 
+    public updateGames(games: IGame[]): Observable<IGame[]> {
+        return this._dataService.updateGames(games)
+            .pipe(takeUntil(this._destroy$));
+    }
+
     public deleteGame(id: string): Observable<IServerMessage> {
         return this._dataService.deleteGame(id)
             .pipe(takeUntil(this._destroy$));

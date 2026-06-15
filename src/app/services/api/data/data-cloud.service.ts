@@ -92,6 +92,27 @@ export class DataCloudService implements IDataPointService {
             }));
     }
 
+    public updateGames(games: IGame[]): Observable<IGame[]> {
+        const gamesList = this._getMapGames();
+
+        games.forEach(newGameItem => {
+            const gameIdx =  gamesList.findIndex(gameItem => gameItem.id === newGameItem.id);
+
+            gamesList[gameIdx] = newGameItem;
+        });
+
+        const file = this._fileService.generateFile(gamesList);
+
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMES)
+            .pipe(map(() => {
+                games.forEach(gameItem => {
+                    this._setMapGame(gameItem);
+                });
+
+                return gamesList;
+            }));
+    }
+
     public deleteGame(id: string): Observable<IServerMessage> {
         const gamesList = this._getMapGames();
         const gameIdx =  gamesList.findIndex(gameItem => gameItem.id === id);

@@ -14,6 +14,8 @@ export interface IApiGames {
     getGames(): Observable<IGame[]>;
     /** Обновить данные игры */
     updateGame(game: IGame): Observable<IGame>;
+    /** Обновить данные нескольких игр сразу */
+    updateGames(games: IGame[]): Observable<IGame[]>;
     /** Удалить игру */
     deleteGame(id: string): Observable<IServerMessage>;
     /** Поиск игры по параметрам */

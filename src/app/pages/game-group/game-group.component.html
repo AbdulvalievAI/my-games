@@ -35,7 +35,7 @@
                 color="warn"
                 matTooltip="Отчистить"
                 class="mr"
-                [disabled]="(isLoad$ | async) || !newGameGroupForm"
+                [disabled]="(isLoad$ | async) || !gameGroupForm"
                 (click)="resetField()"
             >
                 <mat-icon>cleaning_services</mat-icon>
@@ -48,8 +48,8 @@
                 color="warn"
                 matTooltip="Удалить"
                 class="mr"
-                [disabled]="(isLoad$ | async) || !newGameGroupForm"
-                (click)="deleteGame()"
+                [disabled]="(isLoad$ | async) || !gameGroupForm"
+                (click)="deleteGameGroup()"
             >
                 <mat-icon>delete</mat-icon>
             </button>
@@ -61,23 +61,21 @@
             aria-label="Сохранить группу"
             matTooltip="Сохранить группу"
             [disabled]="
-                (isLoad$ | async) ||
-                !newGameGroupForm ||
-                !newGameGroupForm.valid
+                (isLoad$ | async) || !gameGroupForm || !gameGroupForm.valid
             "
-            (click)="saveGame()"
+            (click)="saveGameGroup()"
         >
             <mat-icon>save</mat-icon>
         </button>
     </div>
 </app-header>
 
-@if (newGameGroupForm) {
+@if (gameGroupForm) {
     <div class="block mb">
-        <h1>{{ newGameGroupForm.value.name || "Название группы" }}</h1>
-        <h3>{{ newGameGroupForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
+        <h1>{{ gameGroupForm.value.name || "Название группы" }}</h1>
+        <h3>{{ gameGroupForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
 
-        <form [formGroup]="newGameGroupForm">
+        <form [formGroup]="gameGroupForm">
             <mat-form-field appearance="outline">
                 <mat-label>Название группы</mat-label>
 
@@ -87,20 +85,74 @@
                     formControlName="name"
                 />
             </mat-form-field>
+
+            @if ((isLoad$ | async) === false) {
+                <h2>Поиск игр</h2>
+
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Поиск игры</mat-label>
+
+                    <input
+                        matInput
+                        placeholder="Поиск игры"
+                        formControlName="searchGame"
+                    />
+                </mat-form-field>
+
+                <mat-action-list class="games-list">
+                    @for (game of foundGamesList; track game) {
+                        <div class="games-list__item">
+                            <mat-list-item
+                                (click)="explorerService.goToGameEdit(game.id)"
+                            >
+                                {{ game.name }}
+                            </mat-list-item>
+
+                            <button
+                                class="games-list__right"
+                                mat-fab
+                                color="accent"
+                                [matTooltip]="'Добавить игру в группу'"
+                                (click)="selectGame(game)"
+                            >
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    }
+                </mat-action-list>
+            }
+
+            <h2>Игры в группе</h2>
+
+            <mat-action-list class="games-list">
+                @if (gameGroupForm.value.games?.length) {
+                    @for (game of gameGroupForm.value.games; track game) {
+                        <div class="games-list__item">
+                            <mat-list-item
+                                (click)="explorerService.goToGameEdit(game.id)"
+                            >
+                                {{ game.name }}
+                            </mat-list-item>
+
+                            <button
+                                class="games-list__right"
+                                mat-fab
+                                color="warn"
+                                [matTooltip]="'Удалить из списка'"
+                                (click)="deleteGame(game)"
+                                [disabled]="isLoad$ | async"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    }
+                } @else {
+                    <p class="empty">
+                        Пока тут пусто. В поле "Поиск игр" ввдите название игры
+                        и выберите нужную из списка.
+                    </p>
+                }
+            </mat-action-list>
         </form>
-    </div>
-}
-
-@if (gamesList.length) {
-    <h2>Игры</h2>
-
-    <div class="block btn-list">
-        <app-btn-list
-            [buttonsList]="gamesList"
-            [btnConfig]="btnConfig"
-            (clickItem)="explorerService.goToGameEdit($event.id)"
-            (clickBtn)="deleteGroupFromGame($event)"
-            [disabled]="isLoadGame$.value"
-        ></app-btn-list>
     </div>
 }

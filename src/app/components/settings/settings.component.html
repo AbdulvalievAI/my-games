@@ -1,6 +1,16 @@
 <button
     color="primary"
     mat-fab
+    matTooltip="Группы игр"
+    class="mr"
+    (click)="explorerService.goToGameGroupsList()"
+>
+    <mat-icon>group</mat-icon>
+</button>
+
+<button
+    color="primary"
+    mat-fab
     [matMenuTriggerFor]="menu"
     aria-label="Настройки"
     matTooltip="Настройки"
@@ -19,15 +29,6 @@
             (click)="dialogService.openDataDialog()"
         >
             <mat-icon>insert_drive_file</mat-icon>
-        </button>
-
-        <button
-            color="primary"
-            mat-mini-fab
-            matTooltip="Группы игр"
-            (click)="explorerService.goToGameGroupsList()"
-        >
-            <mat-icon>group</mat-icon>
         </button>
 
         <button
