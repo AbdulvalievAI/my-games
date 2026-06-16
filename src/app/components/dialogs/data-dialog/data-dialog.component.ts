@@ -1,15 +1,19 @@
-import { Component, inject, type OnDestroy } from '@angular/core';
+import { Component, type ElementRef, inject, type OnDestroy, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCard, MatCardActions,MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 
 import { EYdxFileNames } from '../../../config/yandex.config';
+import { AuthService } from '../../../services/api/auth.service';
+import { DataLocalService } from '../../../services/api/data/data-local.service';
 import { GameGroupsService } from '../../../services/api/game-groups.service';
 import { GamesService } from '../../../services/api/games.service';
 import { PlatformsService } from '../../../services/api/platforms.service';
 import { type FileGenerationOptions, FileService } from '../../../services/file.service';
+import type { IGame, IGameGroup } from '../../../types/games.interfaces';
 import { BtnListComponent } from '../../btn-list/btn-list.component';
 import type { IBtnConfig } from '../../btn-list/btn-list.interface';
 
@@ -41,30 +45,52 @@ interface IDataList {
 })
 export class DataDialogComponent implements OnDestroy {
     public readonly dialogRef = inject(MatDialogRef<DataDialogComponent>);
+    public readonly authService = inject(AuthService);
     private readonly _gameGroupsService = inject(GameGroupsService);
     private readonly _gamesService = inject(GamesService);
     private readonly _platformsService = inject(PlatformsService);
     private readonly _fileService = inject(FileService);
+    private readonly _snackBar = inject(MatSnackBar);
+    private readonly _dataLocalService = inject(DataLocalService);
 
-    public readonly btnConfig: IBtnConfig = {
+    @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
+    public readonly btnDownloadConfig: IBtnConfig = {
         title: 'Скачать файл',
         color: 'accent',
         icon: 'download',
     };
-    public readonly dataList: IDataList[] = [
+    public readonly btnUploadConfig: IBtnConfig = {
+        title: 'Выбрать файл с данными',
+        color: 'accent',
+        icon: 'upload',
+    };
+    public readonly downloadList: IDataList[] = [
         {
-            id: '1',
+            id: 'games',
             name: 'Список игр',
         },
         {
-            id: '2',
+            id: 'platforms',
             name: 'Список платформ',
         },
         {
-            id: '3',
+            id: 'gameGroups',
             name: 'Список групп',
         },
     ];
+    public readonly uploadList: IDataList[] = [
+        {
+            id: 'games',
+            name: 'Список игр',
+        },
+        {
+            id: 'gameGroups',
+            name: 'Список групп',
+        },
+    ];
+
+    private _selectedUploadId: IDataList['id'];
 
     private readonly _destroy$ = new Subject<void>();
 
@@ -79,21 +105,27 @@ export class DataDialogComponent implements OnDestroy {
         this._downloadGameGroups();
     }
 
-    public selectData(data: IDataList): void {
-        switch(data.id) {
-            case '1': {
+    public selectDownloadData(data: IDataList): void {
+        switch (data.id) {
+            case 'games': {
                 this._downloadGames();
                 break;
             }
-            case '2': {
+            case 'platforms': {
                 this._downloadPlatforms();
                 break;
             }
-            case '3': {
+            case 'gameGroups': {
                 this._downloadGameGroups();
                 break;
             }
         }
+    }
+
+    public selectUploaddData(data: IDataList): void {
+        this._selectedUploadId = data.id;
+
+        this.fileInput.nativeElement.click();
     }
 
     private _downloadGames(): void {
@@ -142,12 +174,84 @@ export class DataDialogComponent implements OnDestroy {
     }
 
     private _downloadFile(data: unknown, name: string) {
-         const options: FileGenerationOptions = {
+        const options: FileGenerationOptions = {
             filename: `${new Date().getTime()}_${name}`,
         };
 
         const file = this._fileService.generateFile(data, options);
 
-        this._fileService.triggerDownload(file);
+        this._fileService.downloadFile(file);
+    }
+
+    public onFileChange(event: Event): void {
+        const input = event.target as HTMLInputElement;
+
+        if (input.files && input.files.length > 0) {
+            this._onSelectUploadFile(input.files[0])
+        }
+    }
+
+    private _onSelectUploadFile(file: File) {
+        this._readJsonFile(file)
+            .then(data => {
+                switch(this._selectedUploadId) {
+                    case 'games': {
+                        const isCorrect = this._gamesService.checkStructure(data as IGame[]);
+
+                        if (isCorrect) {
+                            this._dataLocalService.setGames(data as IGame[]);
+
+                            this._openSnackBar('УСПЕШНО! Игры проверены и загружены, обновите страницу!');
+                        } else {
+                            this._openSnackBar('ОШИБКА! Структура данных игр не верна!');
+                        }
+
+                        break;
+                    }
+                    case 'gameGroups': {
+                        const isCorrect = this._gameGroupsService.checkStructure(data as IGameGroup[]);
+
+                        if (isCorrect) {
+                            this._dataLocalService.setGameGroups(data as IGameGroup[]);
+
+                            this._openSnackBar('УСПЕШНО! Группы проверены и загружены, обновите страницу!');
+                        } else {
+                            this._openSnackBar('ОШИБКА! Структура данных групп не верна!');
+                        }
+
+                        break;
+                    }
+                }
+            });
+    }
+
+    private _readJsonFile(file: File): Promise<unknown[]> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                try {
+                    const result = JSON.parse(reader.result as string);
+
+                    resolve(result);
+                } catch (err) {
+                    console.error('Ошибка парсинга:', err);
+                    reject(err);
+                }
+            };
+
+            reader.onerror = () => {
+                console.error('Ошибка чтения файла:', reader.error);
+                reject(reader.error);
+            };
+
+            reader.readAsText(file);
+        });
+    }
+
+    private _openSnackBar(message: string, action = 'Закрыть'): void {
+        this._snackBar.open(message, action, {
+            duration: 5000
+        });
     }
 }

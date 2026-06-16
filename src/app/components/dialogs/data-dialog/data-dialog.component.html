@@ -1,20 +1,46 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title> Выгрузка даных </mat-card-title>
-    </mat-card-header>
+<div class="data-dialog">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Выгрузка даных</mat-card-title>
+        </mat-card-header>
 
-    <mat-card-content class="mt mb">
-        <app-btn-list
-            [buttonsList]="dataList"
-            [btnConfig]="btnConfig"
-            (clickBtn)="selectData($event)"
-        ></app-btn-list>
-    </mat-card-content>
+        <mat-card-content class="mt mb">
+            <app-btn-list
+                [buttonsList]="downloadList"
+                [btnConfig]="btnDownloadConfig"
+                (clickBtn)="selectDownloadData($event)"
+            ></app-btn-list>
+        </mat-card-content>
 
-    <mat-card-actions align="end">
-        <button matFab extended color="accent" (click)="downloadAllFiles()">
-            <mat-icon>content_copy</mat-icon>
-            Скачать всё
-        </button>
-    </mat-card-actions>
-</mat-card>
+        <mat-card-actions align="end">
+            <button matFab extended color="accent" (click)="downloadAllFiles()">
+                <mat-icon>content_copy</mat-icon>
+                Скачать всё
+            </button>
+        </mat-card-actions>
+    </mat-card>
+
+    @if (!authService.isAuthorized()) {
+        <mat-card class="ml">
+            <mat-card-header>
+                <mat-card-title>Загрузка JSON‑файла</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="mt mb">
+                <app-btn-list
+                    [buttonsList]="uploadList"
+                    [btnConfig]="btnUploadConfig"
+                    (clickBtn)="selectUploaddData($event)"
+                ></app-btn-list>
+
+                <input
+                    type="file"
+                    #fileInput
+                    (change)="onFileChange($event)"
+                    accept=".json"
+                    style="display: none"
+                />
+            </mat-card-content>
+        </mat-card>
+    }
+</div>

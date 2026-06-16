@@ -1,1 +1,7 @@
 @use "../../../styles/gaps" as *;
+@use "../../../styles/variables" as *;
+
+.data-dialog {
+    display: flex;
+    padding: $gap-size;
+}

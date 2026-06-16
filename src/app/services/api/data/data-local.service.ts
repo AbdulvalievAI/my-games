@@ -105,6 +105,10 @@ export class DataLocalService implements IDataPointService {
         return this._toolsService.filterGames(gamesList, params);
     }
 
+    public setGames(games: IGame[]): void {
+        localStorage.setItem(this._keyGame, JSON.stringify(games));
+    }
+
     /* GameGroup */
 
     public createGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
@@ -164,6 +168,10 @@ export class DataLocalService implements IDataPointService {
 
             return successMsg;
         });
+    }
+
+    public setGameGroups(gameGroups: IGameGroup[]): void {
+        localStorage.setItem(this._keyGameGroups, JSON.stringify(gameGroups));
     }
 
     /* Platforms */

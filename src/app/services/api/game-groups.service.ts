@@ -3,6 +3,7 @@ import {
     Injectable,
     type OnDestroy,
 } from '@angular/core';
+import isEqual from 'lodash-es/isEqual';
 import {
     type Observable,
     Subject,
@@ -46,5 +47,20 @@ export class GameGroupsService implements OnDestroy {
     public deleteGameGroup(id: string): Observable<IServerMessage> {
         return this._dataService.deleteGameGroup(id)
             .pipe(takeUntil(this._destroy$));
+    }
+
+    public checkStructure(gameGroups: IGameGroup[]): boolean {
+        const templateKeys: (keyof IGameGroup)[] = [ 'id', 'name', 'dateEdit' ];
+        const mapKeys = (gameGroupKeys: (keyof IGameGroup)[]) => {
+            return gameGroupKeys.filter(key => templateKeys.includes(key));
+        };
+        const resCheck = gameGroups.filter(gameGroupItem => {
+            const gameItemKeys = mapKeys(Object.keys(gameGroupItem) as (keyof IGameGroup)[]);
+            const isCorrect = isEqual(templateKeys.sort(), gameItemKeys.sort());
+
+            return !isCorrect;
+        });
+
+        return !resCheck.length;
     }
 }

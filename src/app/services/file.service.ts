@@ -35,7 +35,7 @@ export class FileService {
         return new File([ content ], filename, { type: mimeType });
     }
 
-    public triggerDownload(file: File): void {
+    public downloadFile(file: File): void {
         const url = URL.createObjectURL(file);
         const link = document.createElement('a');
 

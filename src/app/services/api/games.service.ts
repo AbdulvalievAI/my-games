@@ -4,6 +4,7 @@ import {
     type OnDestroy,
 } from '@angular/core';
 import cloneDeep from 'lodash-es/cloneDeep';
+import isEqual from 'lodash-es/isEqual';
 import {
     type Observable,
     Subject,
@@ -129,6 +130,19 @@ export class GamesService implements OnDestroy {
 
         return this.updateGame(newGame);
     }
+
+    public checkStructure(games: IGame[]): boolean {
+        const templateKeys: (keyof IGame)[] = [ 'dateEdit', 'id', 'logo', 'name', 'platforms' ]
+        const mapKeys = (gameKeys: (keyof IGame)[]) => {
+            return gameKeys.filter(key => templateKeys.includes(key));
+        };
+        const resCheck = games.filter(gameItem => {
+            const gameItemKeys = mapKeys(Object.keys(gameItem) as (keyof IGame)[]);
+            const isCorrect = isEqual(templateKeys.sort(), gameItemKeys.sort());
+
+            return !isCorrect;
+        });
+
+        return !resCheck.length;
+    }
 }
-
-
