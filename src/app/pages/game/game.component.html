@@ -10,15 +10,13 @@
             <mat-icon>home</mat-icon>
         </button>
 
-        @if (this.gameForm) {
+        @if (form) {
             <button
                 mat-fab
                 color="primary"
                 matTooltip="Яндекс поиск"
                 class="mr"
-                (click)="
-                    explorerService.goToYandexSearch(this.gameForm.value.name)
-                "
+                (click)="explorerService.goToYandexSearch(form.value.name)"
             >
                 <mat-icon>public</mat-icon>
             </button>
@@ -27,9 +25,7 @@
                 mat-fab
                 color="primary"
                 matTooltip="Яндекс картинки"
-                (click)="
-                    explorerService.goToYandexImage(this.gameForm.value.name)
-                "
+                (click)="explorerService.goToYandexImage(form.value.name)"
             >
                 <mat-icon>image</mat-icon>
             </button>
@@ -50,7 +46,7 @@
                 color="warn"
                 matTooltip="Отчистить"
                 class="mr"
-                [disabled]="(isLoad$ | async) || !gameForm"
+                [disabled]="(isLoad$ | async) || !form"
                 (click)="resetField()"
             >
                 <mat-icon>cleaning_services</mat-icon>
@@ -63,7 +59,7 @@
                 color="warn"
                 matTooltip="Удалить"
                 class="mr"
-                [disabled]="(isLoad$ | async) || !gameForm"
+                [disabled]="(isLoad$ | async) || !form"
                 (click)="deleteGame()"
             >
                 <mat-icon>delete</mat-icon>
@@ -74,7 +70,7 @@
             mat-fab
             color="accent"
             matTooltip="Сохранить игру"
-            [disabled]="(isLoad$ | async) || !gameForm || !gameForm.valid"
+            [disabled]="(isLoad$ | async) || !form || !form.valid"
             (click)="saveGame()"
         >
             <mat-icon>save</mat-icon>
@@ -82,16 +78,16 @@
     </div>
 </app-header>
 
-@if (gameForm) {
+@if (form) {
     <div class="block">
-        <h1>{{ gameForm.value.name || "Название игры" }}</h1>
-        <h3>{{ gameForm.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
+        <h1>{{ form.value.name || "Название игры" }}</h1>
+        <h3>{{ form.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
 
-        <form [formGroup]="gameForm">
+        <form [formGroup]="form">
             <p>
                 <mat-slide-toggle formControlName="completed">
                     Игра пройдена
-                    @if (gameForm.value.completed) {
+                    @if (form.value.completed) {
                         <mat-icon class="icon-completed green mr">
                             check_circle
                         </mat-icon>
@@ -156,21 +152,21 @@
                     color="primary"
                     id="logo-block__view-log-btn"
                     matTooltip="Посмотреть лого"
-                    [disabled]="!gameForm.value.logo"
-                    (click)="dialogService.openImageDialog(gameForm.value.logo)"
+                    [disabled]="!form.value.logo"
+                    (click)="dialogService.openImageDialog(form.value.logo)"
                 >
                     <mat-icon>remove_red_eye</mat-icon>
                 </button>
             </div>
 
             <mat-form-field appearance="outline">
-                <mat-label>Платформа</mat-label>
+                <mat-label>Платформы</mat-label>
 
                 <mat-select formControlName="platforms" multiple>
                     <mat-select-trigger>
                         <div class="platforms-selected-list">
                             @for (
-                                platform2 of gameForm.value.platforms;
+                                platform2 of form.value.platforms;
                                 track platform2
                             ) {
                                 <div class="platforms-selected-item">
@@ -203,13 +199,63 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
+                <mat-label>Аккаунты</mat-label>
+
+                <mat-select formControlName="accounts" multiple>
+                    <mat-select-trigger>
+                        <div class="platforms-selected-list">
+                            @for (
+                                accountItem of form.value.accounts;
+                                track accountItem
+                            ) {
+                                <div class="platforms-selected-item">
+                                    <app-logo-platform
+                                        [data]="
+                                            platformsService.getPlatformByType(
+                                                accountItem.platform
+                                            )
+                                        "
+                                    ></app-logo-platform>
+
+                                    <span class="name-platform">
+                                        {{ accountItem.name }}
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    </mat-select-trigger>
+
+                    @for (
+                        accountItem of gamingAccountsList;
+                        track accountItem
+                    ) {
+                        <mat-option [value]="accountItem">
+                            <div class="container-platform">
+                                <app-logo-platform
+                                    [data]="
+                                        platformsService.getPlatformByType(
+                                            accountItem.platform
+                                        )
+                                    "
+                                ></app-logo-platform>
+
+                                <span class="name-platform">
+                                    {{ accountItem.name }}
+                                </span>
+                            </div>
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
                 <mat-label>Группы</mat-label>
 
                 <mat-select formControlName="gameGroups" multiple>
                     <mat-select-trigger>
                         <div>
                             @for (
-                                itemGameGroup of gameForm.value.gameGroups;
+                                itemGameGroup of form.value.gameGroups;
                                 track itemGameGroup
                             ) {
                                 {{ itemGameGroup.name }} |
@@ -232,13 +278,24 @@
         </form>
     </div>
 
-    @if (gameForm.value.gameGroups?.length) {
+    @if (form.value.gameGroups?.length) {
         <h2>Группы</h2>
 
         <div class="block mt">
             <app-btn-list
-                [buttonsList]="gameForm.value.gameGroups"
+                [buttonsList]="form.value.gameGroups"
                 (clickItem)="explorerService.goToGameGroupEdit($event.id)"
+            ></app-btn-list>
+        </div>
+    }
+
+    @if (form.value.accounts?.length) {
+        <h2>Аккаунты</h2>
+
+        <div class="block mt">
+            <app-btn-list
+                [buttonsList]="form.value.accounts"
+                (clickItem)="explorerService.goToGamingAccountEdit($event.id)"
             ></app-btn-list>
         </div>
     }

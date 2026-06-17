@@ -5,6 +5,7 @@ import type { Observable } from "rxjs";
 import { type EPlatform,platforms } from "../../../data/platforms";
 import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
 import type { IGame, IGameGroup } from "../../../types/games.interfaces";
+import type { IGamingAccount } from "../../../types/gaming-accounts.interfaces";
 import type { IPlatform } from "../../../types/platforms.interfaces";
 import { type ISearchParam, ToolsService } from "../../tools.service";
 
@@ -17,6 +18,7 @@ export class DataLocalService implements IDataPointService {
     private readonly _keyGame = 'games_list';
     private readonly _keyPlatforms = 'platforms_list';
     private readonly _keyGameGroups = 'game_groups_list';
+    private readonly _keyGamingAccounts = 'gaming_accounts_list';
 
     /* Game */
 
@@ -109,7 +111,11 @@ export class DataLocalService implements IDataPointService {
         localStorage.setItem(this._keyGame, JSON.stringify(games));
     }
 
-    /* GameGroup */
+    public cleanGames() {
+        localStorage.removeItem(this._keyGame);
+    }
+
+    /* Games Groups */
 
     public createGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
         return this._toolsService.serverDelay(() => {
@@ -137,13 +143,13 @@ export class DataLocalService implements IDataPointService {
     public updateGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
         return this._toolsService.serverDelay(() => {
             const gamesGroupsList = this._getParseData<IGameGroup>(this._keyGameGroups);
-            const findedGameGroupsIdx = gamesGroupsList.findIndex(gamesGroupItem => gamesGroupItem.id === gameGroup.id);
+            const findedGroupIdx = gamesGroupsList.findIndex(gamesGroupItem => gamesGroupItem.id === gameGroup.id);
 
-            if (findedGameGroupsIdx === -1) {
-                throw new Error(`Не найдена игра с id ${gameGroup.id}`);
+            if (findedGroupIdx === -1) {
+                throw new Error(`Не найдена группа с id ${gameGroup.id}`);
             }
 
-            gamesGroupsList[findedGameGroupsIdx] = gameGroup;
+            gamesGroupsList[findedGroupIdx] = gameGroup;
             localStorage.setItem(this._keyGameGroups, JSON.stringify(gamesGroupsList));
 
             return cloneDeep(gameGroup);
@@ -174,6 +180,10 @@ export class DataLocalService implements IDataPointService {
         localStorage.setItem(this._keyGameGroups, JSON.stringify(gameGroups));
     }
 
+    public cleanGameGroups() {
+        localStorage.removeItem(this._keyGameGroups);
+    }
+
     /* Platforms */
 
     public getPlatforms(): Observable<IPlatform[]> {
@@ -188,20 +198,73 @@ export class DataLocalService implements IDataPointService {
         return platformsList.find(platformItem => platformItem.type === type);
     }
 
-    public existLocalData(): boolean {
-        const gamesList = this._getParseData<IGame>(this._keyGame);
-        const gamesGroupsList = this._getParseData<IGameGroup>(this._keyGameGroups);
-        const platformsList = this._getParseData(this._keyPlatforms);
+    /* Gaming Accounts */
 
-        return Boolean(gamesList.length || gamesGroupsList.length || platformsList.length);
+    public createGamingAccount(gamingAccount: IGamingAccount): Observable<IGamingAccount> {
+        return this._toolsService.serverDelay(() => {
+            const gamingAccountsList = this._getParseData<IGamingAccount>(this._keyGamingAccounts);
+
+            gamingAccountsList.push(gamingAccount);
+            localStorage.setItem(this._keyGamingAccounts, JSON.stringify(gamingAccountsList));
+
+            return cloneDeep(gamingAccount);
+        });
     }
 
-    public cleanGames() {
-        localStorage.removeItem(this._keyGame);
+    public getGamingAccountById(id: string): IGamingAccount | undefined {
+        const gamingAccountList = this._getParseData<IGamingAccount>(this._keyGamingAccounts);
+
+        return gamingAccountList.find(gAccountItem => gAccountItem.id === id);
     }
 
-    public cleanGameGroups() {
-        localStorage.removeItem(this._keyGameGroups);
+    public getGamingAccounts(): Observable<IGamingAccount[]> {
+        return this._toolsService.serverDelay(() => {
+            return this._getParseData<IGamingAccount>(this._keyGamingAccounts);
+        });
+    }
+
+    public updateGamingAccount(gamingAccount: IGamingAccount): Observable<IGamingAccount> {
+        return this._toolsService.serverDelay(() => {
+            const gamingAccountList = this._getParseData<IGamingAccount>(this._keyGamingAccounts);
+            const findedAccountIdx = gamingAccountList.findIndex(gAccountItem => gAccountItem.id === gamingAccount.id);
+
+            if (findedAccountIdx === -1) {
+                throw new Error(`Не найдена игра с id ${gamingAccount.id}`);
+            }
+
+            gamingAccountList[findedAccountIdx] = gamingAccount;
+            localStorage.setItem(this._keyGamingAccounts, JSON.stringify(gamingAccountList));
+
+            return cloneDeep(gamingAccount);
+        });
+    }
+
+    public deleteGamingAccount(id: string): Observable<IServerMessage> {
+        return this._toolsService.serverDelay(() => {
+            const gamingAccountList = this._getParseData<IGamingAccount>(this._keyGamingAccounts);
+            const findedAccountIdx = gamingAccountList.findIndex(gAccountItem => gAccountItem.id === id);
+            const successMsg = {
+                "status": "success",
+                "message": `Объект c id ${id} успешно удалён`
+            };
+
+            if (findedAccountIdx === -1) {
+                return successMsg;
+            }
+
+            gamingAccountList.splice(findedAccountIdx, 1);
+            localStorage.setItem(this._keyGamingAccounts, JSON.stringify(gamingAccountList));
+
+            return successMsg;
+        });
+    }
+
+    public setGamingAccounts(gamingAccounts: IGamingAccount[]): void {
+        localStorage.setItem(this._keyGamingAccounts, JSON.stringify(gamingAccounts));
+    }
+
+    public cleanGamingAccounts() {
+        localStorage.removeItem(this._keyGamingAccounts);
     }
 
     private _getDataPlatforms(isMock = true): IPlatform[] {

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { yandexDiskConfig } from '../config/yandex.config';
+
 export interface FileGenerationOptions {
     filename?: string;
     format?: 'json' | 'csv';
@@ -10,7 +12,7 @@ export interface FileGenerationOptions {
     providedIn: 'root'
 })
 export class FileService {
-    public generateFile<T>(data: T[] | T, options: FileGenerationOptions = {}): File {
+    public generateFile<T>(data: T[], options: FileGenerationOptions = {}): File {
         const {
             filename = 'data.json',
             format = 'json',
@@ -18,6 +20,10 @@ export class FileService {
         } = options;
 
         let content: string;
+
+        if (!data.length) {
+            data = (yandexDiskConfig.emptyFileContent as T) as T[];
+        }
 
         switch (format) {
             case 'json':

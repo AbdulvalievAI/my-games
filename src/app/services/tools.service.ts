@@ -11,7 +11,7 @@ export interface ISearchParam<T> {
     providedIn: 'root'
 })
 export class ToolsService {
-    private readonly _serverDelay = 1500;
+    private readonly _serverDelay = 0;
 
     public serverDelay<T>(callback: () => T, serverDelay?: number): Observable<T> {
         return new Observable<T>(subscriber => {

@@ -13,11 +13,11 @@
         <button
             mat-fab
             color="primary"
-            matTooltip="Группы игр"
+            matTooltip="Список игровых аккаунтов"
             class="mr"
-            (click)="explorerService.goToGameGroupsList()"
+            (click)="explorerService.goToGamingAccountsList()"
         >
-            <mat-icon>workspaces</mat-icon>
+            <mat-icon>group</mat-icon>
         </button>
     </div>
 
@@ -29,7 +29,7 @@
             ></mat-spinner>
         }
 
-        @if (!editGameGroup) {
+        @if (!editGamingAccount) {
             <button
                 mat-fab
                 color="warn"
@@ -42,14 +42,14 @@
             </button>
         }
 
-        @if (editGameGroup) {
+        @if (editGamingAccount) {
             <button
                 mat-fab
                 color="warn"
                 matTooltip="Удалить"
                 class="mr"
                 [disabled]="(isLoad$ | async) || !form"
-                (click)="deleteGameGroup()"
+                (click)="deleteGamingAccount()"
             >
                 <mat-icon>delete</mat-icon>
             </button>
@@ -58,9 +58,9 @@
         <button
             mat-fab
             color="accent"
-            matTooltip="Сохранить группу"
+            matTooltip="Сохранить игровой аккаунт"
             [disabled]="(isLoad$ | async) || !form || !form.valid"
-            (click)="saveGameGroup()"
+            (click)="saveGamingAccount()"
         >
             <mat-icon>save</mat-icon>
         </button>
@@ -69,18 +69,48 @@
 
 @if (form) {
     <div class="block mb">
-        <h1>{{ form.value.name || "Название группы" }}</h1>
+        <h1>{{ form.value.name || "Имя аккаунта" }}</h1>
         <h3>{{ form.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
 
         <form [formGroup]="form">
             <mat-form-field appearance="outline">
-                <mat-label>Название группы</mat-label>
+                <mat-label>Имя аккаунта</mat-label>
 
                 <input
                     matInput
-                    placeholder="Название группы"
+                    placeholder="Имя аккаунта"
                     formControlName="name"
                 />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Платформа</mat-label>
+
+                <mat-select formControlName="platform">
+                    <mat-select-trigger>
+                        <app-logo-platform
+                            [data]="form.value.platform"
+                        ></app-logo-platform>
+
+                        <span class="name-platform">
+                            {{ form.value.platform?.name }}
+                        </span>
+                    </mat-select-trigger>
+
+                    @for (platform of platformList; track platform) {
+                        <mat-option [value]="platform">
+                            <div class="container-platform">
+                                <app-logo-platform
+                                    [data]="platform"
+                                ></app-logo-platform>
+
+                                <span class="name-platform">
+                                    {{ platform.name }}
+                                </span>
+                            </div>
+                        </mat-option>
+                    }
+                </mat-select>
             </mat-form-field>
 
             @if ((isLoad$ | async) === false) {
@@ -119,7 +149,7 @@
                 </mat-action-list>
             }
 
-            <h2>Игры в группе</h2>
+            <h2>Игры аккаунта</h2>
 
             <mat-action-list class="games-list">
                 @if (form.value.games?.length) {

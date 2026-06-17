@@ -21,6 +21,8 @@ export class ExplorerService {
         this._router.navigate([ '/home' ]);
     }
 
+    /* Games */
+
     public goToAddGame(): void {
         this._router.navigate([ '/game' ]);
     }
@@ -35,6 +37,8 @@ export class ExplorerService {
         );
         window.open(url, '_blank');
     }
+
+    /* Games Groups */
 
     public goToGameGroupsList(): void {
         this._router.navigate([ '/gameGroupsList' ]);
@@ -55,11 +59,37 @@ export class ExplorerService {
         window.open(url, '_blank');
     }
 
+    /* Gaming Accounts */
+
+    public goToGamingAccountsList(): void {
+        this._router.navigate([ '/gamingAccountsList' ]);
+    }
+
+    public goToAddGamingAccount(): void {
+        this._router.navigate([ '/gamingAccount' ]);
+
+    }
+
+    public goToGamingAccountEdit(id: string): void {
+        this._router.navigate(this._getPathGamingAccounEdit(id));
+    }
+
+    public openBlankGamingAccountEdit(id: string): void {
+        const url = this._router.serializeUrl(
+            this._router.createUrlTree(this._getPathGamingAccounEdit(id)),
+        );
+        window.open(url, '_blank');
+    }
+
     private _getPathGameEdit(id: string) {
         return [ '/game', id ];
     }
 
     private _getPathGameGroupEdit(id: string) {
         return [ '/gameGroup', id ];
+    }
+
+    private _getPathGamingAccounEdit(id: string) {
+        return [ '/gamingAccount', id ];
     }
 }

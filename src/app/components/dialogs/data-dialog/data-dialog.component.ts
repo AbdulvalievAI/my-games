@@ -11,9 +11,11 @@ import { AuthService } from '../../../services/api/auth.service';
 import { DataLocalService } from '../../../services/api/data/data-local.service';
 import { GameGroupsService } from '../../../services/api/game-groups.service';
 import { GamesService } from '../../../services/api/games.service';
+import { GamingAccountsService } from '../../../services/api/gaming-accounts.service';
 import { PlatformsService } from '../../../services/api/platforms.service';
 import { type FileGenerationOptions, FileService } from '../../../services/file.service';
 import type { IGame, IGameGroup } from '../../../types/games.interfaces';
+import type { IGamingAccount } from '../../../types/gaming-accounts.interfaces';
 import { BtnListComponent } from '../../btn-list/btn-list.component';
 import type { IBtnConfig } from '../../btn-list/btn-list.interface';
 
@@ -30,6 +32,7 @@ interface IDataList {
     providers: [
         PlatformsService,
         GameGroupsService,
+        GamingAccountsService,
     ],
     imports: [
         MatCardHeader,
@@ -49,6 +52,7 @@ export class DataDialogComponent implements OnDestroy {
     private readonly _gameGroupsService = inject(GameGroupsService);
     private readonly _gamesService = inject(GamesService);
     private readonly _platformsService = inject(PlatformsService);
+    private readonly _gamingAccountsService = inject(GamingAccountsService);
     private readonly _fileService = inject(FileService);
     private readonly _snackBar = inject(MatSnackBar);
     private readonly _dataLocalService = inject(DataLocalService);
@@ -78,6 +82,10 @@ export class DataDialogComponent implements OnDestroy {
             id: 'gameGroups',
             name: 'Список групп',
         },
+        {
+            id: 'gamingAccounts',
+            name: 'Список игровых аккаунтов',
+        },
     ];
     public readonly uploadList: IDataList[] = [
         {
@@ -87,6 +95,10 @@ export class DataDialogComponent implements OnDestroy {
         {
             id: 'gameGroups',
             name: 'Список групп',
+        },
+        {
+            id: 'gamingAccounts',
+            name: 'Список игровых аккаунтов',
         },
     ];
 
@@ -117,6 +129,10 @@ export class DataDialogComponent implements OnDestroy {
             }
             case 'gameGroups': {
                 this._downloadGameGroups();
+                break;
+            }
+            case 'gamingAccounts': {
+                this._downloadGamingAccounts();
                 break;
             }
         }
@@ -173,7 +189,22 @@ export class DataDialogComponent implements OnDestroy {
             });
     }
 
-    private _downloadFile(data: unknown, name: string) {
+    private _downloadGamingAccounts(): void {
+        this._gamingAccountsService.getGamingAccounts()
+            .pipe(
+                takeUntil(this._destroy$),
+                catchError(error => {
+                    console.error(error);
+
+                    return EMPTY;
+                }),
+            )
+            .subscribe(gamingAccounts => {
+                this._downloadFile(gamingAccounts, EYdxFileNames.GAMING_ACCOUNTS);
+            });
+    }
+
+    private _downloadFile<T>(data: T[], name: string) {
         const options: FileGenerationOptions = {
             filename: `${new Date().getTime()}_${name}`,
         };
@@ -217,6 +248,19 @@ export class DataDialogComponent implements OnDestroy {
                             this._openSnackBar('УСПЕШНО! Группы проверены и загружены, обновите страницу!');
                         } else {
                             this._openSnackBar('ОШИБКА! Структура данных групп не верна!');
+                        }
+
+                        break;
+                    }
+                    case 'gamingAccounts': {
+                        const isCorrect = this._gamingAccountsService.checkStructure(data as IGamingAccount[]);
+
+                        if (isCorrect) {
+                            this._dataLocalService.setGamingAccounts(data as IGamingAccount[]);
+
+                            this._openSnackBar('УСПЕШНО! Аккаунты проверены и загружены, обновите страницу!');
+                        } else {
+                            this._openSnackBar('ОШИБКА! Структура данных аккаунтов не верна!');
                         }
 
                         break;

@@ -1,5 +1,5 @@
-@if (filterForm) {
-    <form [formGroup]="filterForm">
+@if (form) {
+    <form [formGroup]="form">
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Поиск игры</mat-label>
 
@@ -18,11 +18,11 @@
             <mat-select formControlName="platform">
                 <mat-select-trigger>
                     <app-logo-platform
-                        [data]="filterForm.value.platform"
+                        [data]="form.value.platform"
                     ></app-logo-platform>
 
                     <span class="name-platform">
-                        {{ filterForm.value.platform?.name }}
+                        {{ form.value.platform?.name }}
                     </span>
                 </mat-select-trigger>
 
@@ -47,7 +47,7 @@
 
             <mat-select formControlName="group">
                 <mat-select-trigger>
-                    {{ filterForm.value.group?.name }}
+                    {{ form.value.group?.name }}
                 </mat-select-trigger>
 
                 @for (group of gameGroupsList; track group) {

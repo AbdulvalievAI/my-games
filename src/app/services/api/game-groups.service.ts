@@ -55,8 +55,8 @@ export class GameGroupsService implements OnDestroy {
             return gameGroupKeys.filter(key => templateKeys.includes(key));
         };
         const resCheck = gameGroups.filter(gameGroupItem => {
-            const gameItemKeys = mapKeys(Object.keys(gameGroupItem) as (keyof IGameGroup)[]);
-            const isCorrect = isEqual(templateKeys.sort(), gameItemKeys.sort());
+            const itemKeys = mapKeys(Object.keys(gameGroupItem) as (keyof IGameGroup)[]);
+            const isCorrect = isEqual(templateKeys.sort(), itemKeys.sort());
 
             return !isCorrect;
         });

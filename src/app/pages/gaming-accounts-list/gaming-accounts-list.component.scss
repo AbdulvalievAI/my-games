@@ -1,0 +1,25 @@
+@use "../../styles/list" as *;
+@use "../../styles/gaps" as *;
+@use "../../styles/variables" as *;
+
+mat-spinner {
+    margin: auto;
+}
+
+.item {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: $gap-size;
+
+    &__logos-wrapper {
+        display: flex;
+        margin-left: auto;
+    }
+
+    &__logo-wrapper {
+        width: 54px;
+        height: 54px;
+        margin-left: $gap-size;
+    }
+}

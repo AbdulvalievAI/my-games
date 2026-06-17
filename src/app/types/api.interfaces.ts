@@ -3,6 +3,7 @@ import type { Observable } from "rxjs";
 import type { EPlatform } from "../data/platforms";
 import type { ISearchParam } from "../services/tools.service";
 import type { IGame, IGameGroup } from "./games.interfaces";
+import type { IGamingAccount } from "./gaming-accounts.interfaces";
 import type { IPlatform } from "./platforms.interfaces";
 
 export interface IApiGames {
@@ -41,12 +42,25 @@ export interface IApiPlatforms {
     getPlatformByType(type: EPlatform): IPlatform | undefined;
 }
 
+export interface IApiGamingAccounts {
+    /** Создать игровой аккаунт */
+    createGamingAccount(gamingAccount: IGamingAccount): Observable<IGamingAccount>;
+    /** Получить игровой аккаунт по ID */
+    getGamingAccountById(id: string): IGamingAccount | undefined;
+    /** Получить весь игровых аккаунтов */
+    getGamingAccounts(): Observable<IGamingAccount[]>;
+    /** Обновить данные игрового аккаунта */
+    updateGamingAccount(gamingAccount: IGamingAccount): Observable<IGamingAccount>;
+    /** Удалить игровой аккаунт */
+    deleteGamingAccount(id: string): Observable<IServerMessage>;
+}
+
 export interface IServerMessage {
     status: string;
     message: string;
 }
 
-export interface IDataPointService extends IApiGames, IApiGameGroups, IApiPlatforms {
+export interface IDataPointService extends IApiGames, IApiGameGroups, IApiPlatforms, IApiGamingAccounts {
     initData?(): Observable<boolean>;
 }
 

@@ -76,7 +76,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     private readonly _dataLocalService = inject(DataLocalService);
     private readonly _fileService = inject(FileService);
 
-    public authForm: FormGroup<IAuthForm>;
+    public form: FormGroup<IAuthForm>;
     public disabledForm = true;
     public infoList: IInfoItem[] = [];
 
@@ -102,15 +102,15 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
         const token = this.authService.getToken();
         const clientId = this.authService.getCliendId();
 
-        this.authForm = this._fb.group({
+        this.form = this._fb.group({
             token: this._createTokenControl(token, this.disabledForm),
             clientId: this._createCliendIdControl(clientId, this.disabledForm),
         }) as FormGroup<IAuthForm>;
     }
 
     public login() {
-        if (this.authForm.valid) {
-            const { clientId, token } = this.authForm.getRawValue();
+        if (this.form.valid) {
+            const { clientId, token } = this.form.getRawValue();
 
             if (clientId && token) {
                 this._currentToken = token;
@@ -152,7 +152,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     }
 
     public openWindowToken() {
-        const clientId = this.authForm.value.clientId;
+        const clientId = this.form.value.clientId;
 
         if (clientId) {
             this.authService.openWindowToken(clientId);

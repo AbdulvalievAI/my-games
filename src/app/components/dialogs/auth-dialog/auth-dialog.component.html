@@ -41,8 +41,8 @@
     </mat-card-header>
 
     <mat-card-content>
-        <form [formGroup]="authForm">
-            @if (!!this.authForm.get("clientId")) {
+        <form [formGroup]="form">
+            @if (!!form.get("clientId")) {
                 <mat-form-field
                     appearance="outline"
                     subscriptSizing="dynamic"
@@ -58,7 +58,7 @@
                 </mat-form-field>
             }
 
-            @if (!!this.authForm.get("token")) {
+            @if (!!form.get("token")) {
                 <mat-form-field
                     appearance="outline"
                     subscriptSizing="dynamic"
@@ -80,7 +80,7 @@
                             matFab
                             extended
                             class="mat-button black"
-                            [disabled]="!authForm.controls.clientId?.valid"
+                            [disabled]="!form.controls.clientId?.valid"
                             (click)="openWindowToken()"
                         >
                             <img
@@ -114,7 +114,7 @@
                         color="accent"
                         matFab
                         extended
-                        [disabled]="!authForm.valid"
+                        [disabled]="!form.valid"
                         (click)="login()"
                     >
                         <mat-icon>login</mat-icon>

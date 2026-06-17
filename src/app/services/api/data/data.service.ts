@@ -4,6 +4,7 @@ import {  type Observable, } from "rxjs";
 import type { EPlatform } from "../../../data/platforms";
 import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
 import type { IGame, IGameGroup } from "../../../types/games.interfaces";
+import type { IGamingAccount } from "../../../types/gaming-accounts.interfaces";
 import type { IPlatform } from "../../../types/platforms.interfaces";
 import { type ISearchParam,ToolsService } from "../../tools.service";
 import { AuthService } from "../auth.service";
@@ -73,7 +74,7 @@ export class DataService {
         return this._pointService.searchGames(params);
     }
 
-    /* GameGroup */
+    /* Games Groups */
 
     public createGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
         return this._pointService.createGameGroup(gameGroup);
@@ -103,5 +104,27 @@ export class DataService {
 
     public getPlatformByType(type: EPlatform): IPlatform | undefined {
         return this._pointService.getPlatformByType(type);
+    }
+
+    /* Gaming Accounts */
+
+    public createGamingAccount(gamingAccount: IGamingAccount): Observable<IGamingAccount> {
+        return this._pointService.createGamingAccount(gamingAccount);
+    }
+
+    public getGamingAccountById(id: string): IGamingAccount | undefined {
+        return this._pointService.getGamingAccountById(id);
+    }
+
+    public getGamingAccounts(): Observable<IGamingAccount[]> {
+        return this._pointService.getGamingAccounts();
+    }
+
+    public updateGamingAccount(gamingAccount: IGamingAccount): Observable<IGamingAccount> {
+        return this._pointService.updateGamingAccount(gamingAccount);
+    }
+
+    public deleteGamingAccount(id: string): Observable<IServerMessage> {
+        return this._pointService.deleteGamingAccount(id);
     }
 }

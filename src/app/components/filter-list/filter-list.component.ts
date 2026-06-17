@@ -56,7 +56,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     @Output() gamesListChange: EventEmitter<IGame[]> = new EventEmitter<IGame[]>();
 
-    public filterForm: FormGroup<IFilterForm>;
+    public form: FormGroup<IFilterForm>;
     public valueSpinner = 0;
     public isSpinner = false;
 
@@ -91,15 +91,15 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
 
     public clearFilters(): void {
-        this.filterForm.get('search')?.setValue(null);
-        this.filterForm.get('platform')?.setValue(null);
-        this.filterForm.get('group')?.setValue(null);
+        this.form.get('search')?.setValue(null);
+        this.form.get('platform')?.setValue(null);
+        this.form.get('group')?.setValue(null);
 
         this._changeFilter();
     }
 
     public get selectedPlatformValue(): IPlatform | null | undefined {
-        return this.filterForm.value.platform;
+        return this.form.value.platform;
     }
 
     private _initFilter(): void {
@@ -117,23 +117,23 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
 
     private _initForm(): void {
-        this.filterForm = this._fb.group({
+        this.form = this._fb.group({
             search: new FormControl<string | null>(null),
             platform: new FormControl<IPlatform | null>(null),
             group: new FormControl<IGameGroup | null>(null),
         });
 
-        this.filterForm.get('search')?.valueChanges
+        this.form.get('search')?.valueChanges
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => this.onSearch());
 
-        this.filterForm.get('platform')?.valueChanges
+        this.form.get('platform')?.valueChanges
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => {
                 this._changeFilter();
             });
 
-        this.filterForm.get('group')?.valueChanges
+        this.form.get('group')?.valueChanges
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => {
                 this._changeFilter();
@@ -141,7 +141,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
 
     private _changeFilter(): void {
-        const formValue = this.filterForm.getRawValue();
+        const formValue = this.form.getRawValue();
         const filters: IFilters = {};
 
         if (formValue.search) {

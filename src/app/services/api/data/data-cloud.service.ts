@@ -5,6 +5,7 @@ import { EYdxFileNames } from '../../../config/yandex.config';
 import { type EPlatform,platforms } from "../../../data/platforms";
 import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
 import type { IGame, IGameGroup } from "../../../types/games.interfaces";
+import type { IGamingAccount } from "../../../types/gaming-accounts.interfaces";
 import type { IPlatform } from "../../../types/platforms.interfaces";
 import { FileService } from "../../file.service";
 import { type ISearchParam,ToolsService } from "../../tools.service";
@@ -21,22 +22,19 @@ export class DataCloudService implements IDataPointService {
     private _gamesMap: Map<string, IGame>
     private _gameGroupMap: Map<string, IGameGroup>;
     private _platformsMap: Map<string, IPlatform>;
+    private _gamingAccountsMap: Map<string, IGamingAccount>;
 
     public initData(): Observable<boolean> {
         return forkJoin([
             this._diskService.downloadFile<IGame>(EYdxFileNames.GAMES),
             this._diskService.downloadFile<IGameGroup>(EYdxFileNames.GAMES_GROUPS),
+            this._diskService.downloadFile<IGamingAccount>(EYdxFileNames.GAMING_ACCOUNTS),
             /* this._diskService.downloadFile<IPlatform>(EYdxFileNames.PLATFORMS), */
         ])
-        .pipe(map(([ games, gameGroups/* , platforms */ ]) => {
-            if (games.status) {
-                this._setMapGames(games.jsonData);
-            }
-
-            if (gameGroups.status) {
-                this._setMapGameGroups(gameGroups.jsonData);
-            }
-
+        .pipe(map(([ games, gameGroups, gamingAccounts/* , platforms */ ]) => {
+            this._setMapGames(games?.jsonData || []);
+            this._setMapGameGroups(gameGroups?.jsonData || []);
+            this._setMapGamingAccounts(gamingAccounts?.jsonData || []);
             this._setMapPlatforms(platforms);
 
             /* if (platforms.status) {
@@ -47,7 +45,7 @@ export class DataCloudService implements IDataPointService {
         }));
     }
 
-    // Game
+    /* Games */
 
     public createGame(game: IGame): Observable<IGame> {
         const gamesList = this._getMapGames();
@@ -139,6 +137,8 @@ export class DataCloudService implements IDataPointService {
         return this._toolsService.filterGames(gamesList, params);
     }
 
+    /* Games Groups */
+
     public createGameGroup(gameGroup: IGameGroup): Observable<IGameGroup> {
         const gameGroupsList = this._getMapGameGroups();
 
@@ -208,7 +208,7 @@ export class DataCloudService implements IDataPointService {
         return platformsList.find(platformItem => platformItem.type === type);
     }
 
-    // Platforms
+    /* Platforms */
 
     public getPlatforms(): Observable<IPlatform[]> {
         return this._toolsService.serverDelay(() => {
@@ -216,7 +216,74 @@ export class DataCloudService implements IDataPointService {
         }, 1);
     }
 
-    // Maps
+    /* Gaming Accounts */
+
+    public createGamingAccount(gamingAccount: IGamingAccount): Observable<IGamingAccount> {
+        const gamingAccountsList = this._getMapGamingAccounts();
+
+        gamingAccountsList.push(gamingAccount);
+
+        const file = this._fileService.generateFile(gamingAccountsList);
+
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMING_ACCOUNTS)
+            .pipe(map(() => {
+                this._setMapGamingAccount(gamingAccount);
+
+                return gamingAccount;
+            }));
+    }
+
+    public getGamingAccountById(id: string): IGamingAccount | undefined {
+        const gamingAccountsList = this._getMapGamingAccounts();
+
+        return gamingAccountsList.find(gAccount => gAccount.id === id);
+    }
+
+    public getGamingAccounts(): Observable<IGamingAccount[]> {
+        return this._toolsService.serverDelay(() => {
+            return this._getMapGamingAccounts();
+        }, 1);
+    }
+
+    public updateGamingAccount(gamingAccount: IGamingAccount): Observable<IGamingAccount> {
+        const gamingAccountsList = this._getMapGamingAccounts();
+        const accountIdx =  gamingAccountsList.findIndex(gAccount => gAccount.id === gamingAccount.id);
+
+        gamingAccountsList[accountIdx] = gamingAccount;
+
+        const file = this._fileService.generateFile(gamingAccountsList);
+
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMING_ACCOUNTS)
+            .pipe(map(() => {
+                this._setMapGamingAccount(gamingAccount);
+
+                return gamingAccount;
+            }));
+    }
+
+    public deleteGamingAccount(id: string): Observable<IServerMessage> {
+        const gamingAccountsList = this._getMapGamingAccounts();
+        const accountIdx =  gamingAccountsList.findIndex(gAccount => gAccount.id === id);
+        const successMsg = {
+            "status": "success",
+            "message": `Объект c id ${id} успешно удалён`
+        };
+
+        gamingAccountsList.splice(accountIdx, 1);
+
+        const file = this._fileService.generateFile(gamingAccountsList);
+
+        return this._diskService.uploadFile(file, EYdxFileNames.GAMING_ACCOUNTS)
+            .pipe(map(() => {
+                this._gamingAccountsMap.delete(id);
+
+                return successMsg;
+            }));
+    }
+
+    /* Maps */
+
+    /* Map Games */
 
     private _setMapGames(games: IGame[]): void {
         this._gamesMap = new Map(
@@ -229,8 +296,10 @@ export class DataCloudService implements IDataPointService {
     }
 
     private _getMapGames(): IGame[] {
-        return [ ...this._gamesMap.values() ];
+        return this._gamesMap && [ ...this._gamesMap.values() ] || [];
     }
+
+    /* Map Game Groups */
 
     private _setMapGameGroups(gameGroups: IGameGroup[]): void {
         this._gameGroupMap = new Map(
@@ -243,8 +312,10 @@ export class DataCloudService implements IDataPointService {
     }
 
     private _getMapGameGroups(): IGameGroup[] {
-        return this._gameGroupMap && [ ...this._gameGroupMap.values() ];
+        return this._gameGroupMap && [ ...this._gameGroupMap.values() ] || [];
     }
+
+    /* Map Platforms */
 
     private _setMapPlatforms(platforms: IPlatform[]): void {
         this._platformsMap = new Map(
@@ -254,5 +325,21 @@ export class DataCloudService implements IDataPointService {
 
     private _getMapPlatforms(): IPlatform[] {
         return [ ...this._platformsMap.values() ];
+    }
+
+    /* Map Gaming Accounts */
+
+    private _setMapGamingAccounts(gamingAccounts: IGamingAccount[]): void {
+        this._gamingAccountsMap = new Map(
+            gamingAccounts.map(gAccount => [ gAccount.id, gAccount ])
+        );
+    }
+
+    private _setMapGamingAccount(gamingAccount: IGamingAccount): void {
+        this._gamingAccountsMap.set(gamingAccount.id, gamingAccount);
+    }
+
+    private _getMapGamingAccounts(): IGamingAccount[] {
+        return this._gamingAccountsMap && [ ...this._gamingAccountsMap.values() ] || [];
     }
 }

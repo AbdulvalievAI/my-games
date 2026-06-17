@@ -7,13 +7,14 @@ import {
     type OnDestroy,
     type OnInit,
 } from '@angular/core';
-import { FormBuilder, type FormGroup,ReactiveFormsModule,Validators } from '@angular/forms';
+import { FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatActionList, MatListItem } from "@angular/material/list";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatOption, MatSelectModule, MatSelectTrigger } from "@angular/material/select";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
@@ -23,33 +24,40 @@ import {
     catchError,
     EMPTY,
     filter,
+    forkJoin,
     type Observable,
     of,
     Subject,
     switchMap,
+    take,
     takeUntil,
     tap,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { HeaderComponent } from "../../components/header/header.component";
-import { GameGroupsService } from '../../services/api/game-groups.service';
+import { LogoPlatformComponent } from "../../components/logo-platform/logo-platform.component";
 import { GamesService } from '../../services/api/games.service';
+import { GamingAccountsService } from '../../services/api/gaming-accounts.service';
+import { PlatformsService } from '../../services/api/platforms.service';
 import { DialogService } from '../../services/dialog.service';
 import { ExplorerService } from '../../services/explorer.service';
-import type { IGame, IGameGroup } from '../../types/games.interfaces';
-import type { IGameGroupForm, IGameGroupFormValue } from './game-group.interface';
+import type { IGame } from '../../types/games.interfaces';
+import type { IGamingAccount } from '../../types/gaming-accounts.interfaces';
+import type { IPlatform } from '../../types/platforms.interfaces';
+import type { IGamingAccountForm, IGamingAccountFormValue } from './gaming-account.interface';
 
 @Component({
-    selector: 'app-game-group',
-    templateUrl: './game-group.component.html',
-    styleUrls: [ './game-group.component.scss' ],
+    selector: 'app-gaming-account',
+    templateUrl: './gaming-account.component.html',
+    styleUrls: [ './gaming-account.component.scss' ],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         DialogService,
         ExplorerService,
-        GameGroupsService,
+        GamingAccountsService,
+        PlatformsService,
     ],
     imports: [
         MatProgressSpinnerModule,
@@ -66,24 +74,31 @@ import type { IGameGroupForm, IGameGroupFormValue } from './game-group.interface
         DatePipe,
         MatActionList,
         MatListItem,
+        MatSelectTrigger,
+        LogoPlatformComponent,
+        MatOption,
+        FormsModule,
+        MatSelectModule,
     ],
 })
-export class GameGroupComponent implements OnInit, OnDestroy {
+export class GamingAccountComponent implements OnInit, OnDestroy {
     public readonly explorerService = inject(ExplorerService);
-    private readonly _gameGroupsService = inject(GameGroupsService);
+    private readonly _gamingAccountsService = inject(GamingAccountsService);
     private readonly _dialogService = inject(DialogService);
     private readonly _cdr = inject(ChangeDetectorRef);
     private readonly _route = inject(ActivatedRoute);
     private readonly _fb = inject(FormBuilder);
     private readonly _snackBar = inject(MatSnackBar);
     private readonly _gamesService = inject(GamesService);
+    private readonly _platformsService = inject(PlatformsService);
 
     public readonly isLoad$ = new BehaviorSubject<boolean>(false);
 
     public gamesList: IGame[] = [];
-    public form: FormGroup<IGameGroupForm>;
-    public editGameGroup: IGameGroup | undefined;
+    public form: FormGroup<IGamingAccountForm>;
+    public editGamingAccount: IGamingAccount | undefined;
     public foundGamesList: IGame[] = [];
+    public platformList: IPlatform[] = [];
 
     private _searchTimerId: ReturnType<typeof setTimeout> | null;
 
@@ -92,9 +107,14 @@ export class GameGroupComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.isLoad$.next(true);
 
-        this._route.params
+        forkJoin([
+            this._route.params.pipe(take(1)),
+            this._platformsService.getPlatforms(),
+        ])
             .pipe(takeUntil(this._destroy$))
-            .subscribe(params => {
+            .subscribe(([ params, platforms ]) => {
+                this.platformList = platforms;
+
                 const id = params && params['id'];
 
                 if (id) {
@@ -120,10 +140,10 @@ export class GameGroupComponent implements OnInit, OnDestroy {
         this._initForm();
     }
 
-    public deleteGameGroup(): void {
+    public deleteGamingAccount(): void {
         const dialogRef = this._dialogService.openYesNoDialog({
             data: {
-                textDialog: 'Удалить группу игр?',
+                textDialog: 'Удалить игровой аккаунт?',
                 yesTextButton: 'УДАЛИТЬ',
                 noTextButton: 'Отмена',
             },
@@ -132,11 +152,11 @@ export class GameGroupComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed()
             .pipe(
                 takeUntil(this._destroy$),
-                filter(result => !!result && !!this.editGameGroup?.id),
+                filter(result => !!result && !!this.editGamingAccount?.id),
                 tap(() => {
                     this.isLoad$.next(true);
                 }),
-                switchMap(() => this._gameGroupsService.deleteGameGroup(this.editGameGroup?.id as string)),
+                switchMap(() => this._gamingAccountsService.deleteGamingAccount(this.editGamingAccount?.id as string)),
                 catchError(error => {
                     console.error(error);
                     this._dialogService.openErrorDialog(error);
@@ -149,38 +169,38 @@ export class GameGroupComponent implements OnInit, OnDestroy {
                 this.isLoad$.next(false);
 
                 if (result.status === 'success') {
-                    this._openSnackBar(`${this.editGameGroup?.name} удалено`);
-                    this.explorerService.goToGameGroupsList();
+                    this._openSnackBar(`${this.editGamingAccount?.name} удалено`);
+                    this.explorerService.goToGamingAccountsList();
                 }
             });
     }
 
-    public saveGameGroup(): void {
-        const formData = this.form.getRawValue() as IGameGroupFormValue;
-        const mapGroupData = this._mappingGroupData(formData);
+    public saveGamingAccount(): void {
+        const formData = this.form.getRawValue() as IGamingAccountFormValue;
+        const mapAccountData = this._mappingGamingAccountData(formData);
         const mapGames = this._mappingGames(this.gamesList, formData);
 
-        this._sendData(mapGroupData, mapGames);
+        this._sendData(mapAccountData, mapGames);
     }
 
-    private _sendData(groupData: IGameGroup, gamesList: IGame[]): void {
+    private _sendData(accountData: IGamingAccount, gamesList: IGame[]): void {
         this.isLoad$.next(true);
 
-        const gameGroupObservable: Observable<IGameGroup> = (() => {
-            const isChange = this._checkChangeGroup(this.editGameGroup, groupData);
+        const gameAccountObservable: Observable<IGamingAccount> = (() => {
+            const isChange = this._checkGamingAccount(this.editGamingAccount, accountData);
 
             if (!isChange) {
-                return of(groupData);
+                return of(accountData);
             }
 
-            if (this.editGameGroup) {
-                return this._updateGameGroup(groupData);
+            if (this.editGamingAccount) {
+                return this._updateGamingAccount(accountData);
             } else {
-                return this._createGameGroup(groupData);
+                return this._createGamingAccount(accountData);
             }
         })();
 
-        gameGroupObservable
+        gameAccountObservable
             .pipe(
                 takeUntil(this._destroy$),
                 switchMap(() => {
@@ -201,7 +221,7 @@ export class GameGroupComponent implements OnInit, OnDestroy {
             )
             .subscribe(() => {
                 this.isLoad$.next(false);
-                this.explorerService.goToGameGroupsList();
+                this.explorerService.goToGamingAccountsList();
             });
     }
 
@@ -260,8 +280,8 @@ export class GameGroupComponent implements OnInit, OnDestroy {
     }
 
     private _initEdit(id: string): void {
-        this.editGameGroup = this._gameGroupsService.getGameGroupById(id);
-        this.gamesList = this._gamesService.searchGamesByGroup(id);
+        this.editGamingAccount = this._gamingAccountsService.getGamingAccountById(id);
+        this.gamesList = this._gamesService.searchGamesByAccount(id);
 
         this._initForm();
         this.isLoad$.next(false);
@@ -269,21 +289,29 @@ export class GameGroupComponent implements OnInit, OnDestroy {
 
     private _initForm(): void {
         const gamesList = cloneDeep(this.gamesList);
+        const platform = () => {
+            if (this.editGamingAccount?.platform) {
+                return this._platformsService.getPlatformByType(this.editGamingAccount.platform) || null;
+            }
 
-        if (this.editGameGroup) {
+            return null;
+        }
+
+        if (this.editGamingAccount) {
             this.form = this._fb.group({
-                id: [ this.editGameGroup.id, Validators.required ],
-                name: [ this.editGameGroup.name, Validators.required ],
-                dateEdit: [ new Date(this.editGameGroup.dateEdit).toISOString(), Validators.required ],
+                id: [ this.editGamingAccount.id, Validators.required ],
+                name: [ this.editGamingAccount.name, Validators.required ],
+                dateEdit: [ new Date(this.editGamingAccount.dateEdit).toISOString(), Validators.required ],
                 searchGame: [ '' ],
                 games: [ gamesList ],
-
+                platform: [ platform(), Validators.required ],
             });
         } else {
             this.form = this._fb.group({
                 id: [ uuidv4(), Validators.required ],
                 name: [ '', Validators.required ],
                 dateEdit: [ new Date().toISOString(), Validators.required ],
+                platform: [ platform(), Validators.required ],
                 searchGame: [ '' ],
                 games: [ gamesList ],
             });
@@ -300,8 +328,8 @@ export class GameGroupComponent implements OnInit, OnDestroy {
         this._snackBar.open(message, 'OK', { duration: 5000 });
     }
 
-    private _updateGameGroup(group: IGameGroup): Observable<IGameGroup> {
-        return this._gameGroupsService.updateGameGroup(group)
+    private _updateGamingAccount(account: IGamingAccount): Observable<IGamingAccount> {
+        return this._gamingAccountsService.updateGamingAccount(account)
             .pipe(
                 takeUntil(this._destroy$),
                 catchError(error => {
@@ -314,8 +342,8 @@ export class GameGroupComponent implements OnInit, OnDestroy {
             );
     }
 
-    private _createGameGroup(group: IGameGroup): Observable<IGameGroup> {
-        return this._gameGroupsService.createGameGroup(group)
+    private _createGamingAccount(account: IGamingAccount): Observable<IGamingAccount> {
+        return this._gamingAccountsService.createGamingAccount(account)
             .pipe(
                 takeUntil(this._destroy$),
                 catchError(error => {
@@ -329,48 +357,49 @@ export class GameGroupComponent implements OnInit, OnDestroy {
 
     }
 
-    private _mappingGroupData(newGameGroupData: IGameGroupFormValue): IGameGroup {
+    private _mappingGamingAccountData(newAccountData: IGamingAccountFormValue): IGamingAccount {
         return {
-            id: newGameGroupData.id,
-            name: newGameGroupData.name,
-            dateEdit: newGameGroupData.dateEdit,
+            id: newAccountData.id,
+            name: newAccountData.name,
+            dateEdit: newAccountData.dateEdit,
+            platform: newAccountData.platform.type,
         };
     }
 
-    private _mappingGames(gamesList: IGame[], newGameGroupData: IGameGroupFormValue): IGame[] {
-        const games = this._getChangeGames(gamesList, newGameGroupData);
+    private _mappingGames(gamesList: IGame[], newAccountData: IGamingAccountFormValue): IGame[] {
+        const games = this._getChangeGames(gamesList, newAccountData);
 
         games.deleted.forEach(gameItem => {
-            if (gameItem.groups) {
-                const groupIdx = gameItem.groups.findIndex(groupId => groupId === newGameGroupData.id);
+            if (gameItem.accounts) {
+                const accountIdx = gameItem.accounts.findIndex(accountId => accountId === newAccountData.id);
 
-                if (groupIdx !== -1) {
-                    gameItem.groups.splice(groupIdx, 1);
+                if (accountIdx !== -1) {
+                    gameItem.accounts.splice(accountIdx, 1);
                 }
             }
         });
 
         games.new.forEach(gameItem => {
-            if (!gameItem.groups) {
-                gameItem.groups = [];
+            if (!gameItem.accounts) {
+                gameItem.accounts = [];
             }
 
-            gameItem.groups.push(newGameGroupData.id);
+            gameItem.accounts.push(newAccountData.id);
         });
 
         return [ ...games.deleted, ...games.new ];
     }
 
-    private _getChangeGames(gamesList: IGame[], newGameGroupData: IGameGroupFormValue): { new: IGame[], deleted: IGame[] } {
-        if (this.editGameGroup) {
+    private _getChangeGames(gamesList: IGame[], newAccountData: IGamingAccountFormValue): { new: IGame[], deleted: IGame[] } {
+        if (this.editGamingAccount) {
             const currentGamesIds = gamesList.map(gameItem => gameItem.id);
-            const formGamesIds = newGameGroupData.games?.map(gameItem => gameItem.id) || [];
+            const formGamesIds = newAccountData.games?.map(gameItem => gameItem.id) || [];
 
             const deletedGamesIds = currentGamesIds.filter(id => !formGamesIds.includes(id));
             const newGamesIds = formGamesIds.filter(id => !currentGamesIds.includes(id));
 
             const deletedGames = cloneDeep(gamesList).filter(gameItem => deletedGamesIds.includes(gameItem.id));
-            const newGames = newGameGroupData.games?.filter(gameItem => newGamesIds.includes(gameItem.id));
+            const newGames = newAccountData.games?.filter(gameItem => newGamesIds.includes(gameItem.id));
 
             return {
                 new: newGames || [],
@@ -378,19 +407,23 @@ export class GameGroupComponent implements OnInit, OnDestroy {
             };
         } else {
             return {
-                new: newGameGroupData.games || [],
+                new: newAccountData.games || [],
                 deleted: [],
             };
         }
     }
 
-    private _checkChangeGroup(editData: IGameGroup | undefined, newData: IGameGroupFormValue): boolean {
+    private _checkGamingAccount(editData: IGamingAccount | undefined, newData: IGamingAccount): boolean {
         if (!editData) {
             return true;
         }
 
         if (editData.name !== newData.name) {
-            return true
+            return true;
+        }
+
+        if (editData.platform !== newData.platform) {
+            return true;
         }
 
         return false;

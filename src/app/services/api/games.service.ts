@@ -93,6 +93,18 @@ export class GamesService implements OnDestroy {
         return this._dataService.searchGames(searchParams);
     }
 
+    public searchGamesByAccount(idAccount: string): IGame[] | [] {
+        const searchParams: ISearchParam<IGame>[] = [
+            {
+                field: 'accounts',
+                operator: 'eq',
+                value: idAccount,
+            },
+        ];
+
+        return this._dataService.searchGames(searchParams);
+    }
+
     public deleteGroupFromGame(idGame: string, idGroup: string): Observable<IGame> {
         const game = this.getGameById(idGame);
 
@@ -132,13 +144,13 @@ export class GamesService implements OnDestroy {
     }
 
     public checkStructure(games: IGame[]): boolean {
-        const templateKeys: (keyof IGame)[] = [ 'dateEdit', 'id', 'logo', 'name', 'platforms' ]
+        const templateKeys: (keyof IGame)[] = [ 'dateEdit', 'id', 'logo', 'name', 'platforms' ];
         const mapKeys = (gameKeys: (keyof IGame)[]) => {
             return gameKeys.filter(key => templateKeys.includes(key));
         };
         const resCheck = games.filter(gameItem => {
-            const gameItemKeys = mapKeys(Object.keys(gameItem) as (keyof IGame)[]);
-            const isCorrect = isEqual(templateKeys.sort(), gameItemKeys.sort());
+            const itemKeys = mapKeys(Object.keys(gameItem) as (keyof IGame)[]);
+            const isCorrect = isEqual(templateKeys.sort(), itemKeys.sort());
 
             return !isCorrect;
         });

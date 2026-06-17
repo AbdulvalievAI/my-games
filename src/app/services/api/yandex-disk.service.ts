@@ -95,10 +95,10 @@ export class YdxDiskService implements OnDestroy {
                 ),
                 map(fileContent => {
                     try {
-                        const jsonData = JSON.parse(fileContent);
+                        let jsonData = JSON.parse(fileContent);
 
-                        if (!Array.isArray(jsonData)) {
-                            throw new Error('Файл не содержит массив данных');
+                        if (jsonData === yandexDiskConfig.emptyFileContent) {
+                            jsonData = [];
                         }
 
                         return {
@@ -237,6 +237,9 @@ export class YdxDiskService implements OnDestroy {
             }
             case EYdxFileNames.PLATFORMS: {
                 return `${yandexDiskConfig.folderPath}/${EYdxFileNames.PLATFORMS}`;
+            }
+            case EYdxFileNames.GAMING_ACCOUNTS: {
+                return `${yandexDiskConfig.folderPath}/${EYdxFileNames.GAMING_ACCOUNTS}`;
             }
         }
     }

@@ -14,7 +14,11 @@
                         {{ data }}
                     }
                     @case ('object') {
-                        {{ data.stack }}
+                        @if (data.stack) {
+                            {{ data.stack }}
+                        } @else if (data.message) {
+                            {{ data.message }}
+                        }
                     }
                 }
             </code>

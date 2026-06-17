@@ -1,0 +1,31 @@
+@use "../../styles/common" as *;
+@use "../../styles/page-edit" as *;
+@use "../../styles/gaps" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/icons" as *;
+@use "../../styles/platform-field" as *;
+
+$mat-btn-small-size: 34px;
+
+.games-list {
+    &__item {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__right {
+        padding: 0;
+        width: $mat-btn-small-size;
+        height: $mat-btn-small-size;
+
+        .mat-icon {
+            @include icon-size(26px);
+        }
+    }
+}
+
+.empty {
+    justify-self: center;
+}

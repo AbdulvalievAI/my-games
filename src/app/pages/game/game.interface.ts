@@ -1,11 +1,18 @@
 import type { FormControl } from "@angular/forms";
 
-import type { IGame, IGameGroup } from "../../types/games.interfaces";
+import type { IGameGroup } from "../../types/games.interfaces";
+import type { IGamingAccount } from "../../types/gaming-accounts.interfaces";
 import type { IPlatform } from "../../types/platforms.interfaces";
 
-export interface IGameFormValue extends Omit<IGame, 'platforms'> {
+export interface IGameFormValue {
+    id: string;
+    name: string;
+    logo: string;
+    dateEdit: string;
+    completed: boolean;
     platforms: IPlatform[];
     gameGroups: IGameGroup[];
+    accounts: IGamingAccount[];
 }
 
 export interface IGameForm {
@@ -16,4 +23,5 @@ export interface IGameForm {
     dateEdit: FormControl<string | null>;
     gameGroups: FormControl<IGameGroup[] | null>;
     completed: FormControl<boolean | null>;
+    accounts: FormControl<IGamingAccount[] | null>;
 }

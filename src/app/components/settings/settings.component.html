@@ -1,11 +1,21 @@
 <button
     color="primary"
     mat-fab
+    matTooltip="Игровые аккаунты"
+    class="mr"
+    (click)="explorerService.goToGamingAccountsList()"
+>
+    <mat-icon>group</mat-icon>
+</button>
+
+<button
+    color="primary"
+    mat-fab
     matTooltip="Группы игр"
     class="mr"
     (click)="explorerService.goToGameGroupsList()"
 >
-    <mat-icon>group</mat-icon>
+    <mat-icon>workspaces</mat-icon>
 </button>
 
 <button
