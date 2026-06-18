@@ -102,7 +102,7 @@ export class DataService {
         return this._pointService.getPlatforms();
     }
 
-    public getPlatformByType(type: EPlatform): IPlatform | undefined {
+    public getPlatformByType(type: EPlatform | undefined): IPlatform | undefined {
         return this._pointService.getPlatformByType(type);
     }
 

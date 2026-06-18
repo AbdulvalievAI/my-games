@@ -27,7 +27,7 @@ export class PlatformsService implements OnDestroy {
         return platformList.filter(item => ids.includes(item.type));
     }
 
-    public getPlatformByType(type: EPlatform): IPlatform | undefined {
+    public getPlatformByType(type: EPlatform | undefined): IPlatform | undefined {
         return this._dataService.getPlatformByType(type);
     }
 }

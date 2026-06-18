@@ -57,9 +57,52 @@
                 }
             </mat-select>
         </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Аккаунт</mat-label>
+
+            <mat-select formControlName="account">
+                <mat-select-trigger>
+                    <app-logo-platform
+                        [data]="
+                            platformsService.getPlatformByType(
+                                form.value.account?.platform
+                            )
+                        "
+                    ></app-logo-platform>
+
+                    <span class="name-platform">
+                        {{ form.value.account?.name }}
+                    </span>
+                </mat-select-trigger>
+
+                @for (account of accountsList; track account) {
+                    <mat-option [value]="account">
+                        <div class="container-platform">
+                            <app-logo-platform
+                                [data]="
+                                    platformsService.getPlatformByType(
+                                        account.platform
+                                    )
+                                "
+                            ></app-logo-platform>
+
+                            <span class="name-platform">
+                                {{ account.name }}
+                            </span>
+                        </div>
+                    </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-slide-toggle formControlName="completed" class="ml">
+            {{ form.value.completed ? "Пройденные" : "Все" }}
+        </mat-slide-toggle>
     </form>
 
     <button
+        class="ml"
         color="warn"
         mat-mini-fab
         extended

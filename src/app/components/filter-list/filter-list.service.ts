@@ -4,8 +4,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import type { IGame, IGameGroup } from '../../types/games.interfaces';
-import type { IPlatform } from '../../types/platforms.interfaces';
+import type { IGame } from '../../types/games.interfaces';
 import type { IFilters } from './filter-list.interface';
 
 @Injectable()
@@ -31,9 +30,11 @@ export class FilterListService implements OnDestroy {
 
     public applyFilterGamesList(filters: IFilters): IGame[] {
         let resultGamesList: IGame[] = this._defaultGamesList;
-        const search = filters.search as string;
-        const platform = filters.platform as IPlatform;
-        const group = filters.group as IGameGroup;
+        const search = filters.search;
+        const platform = filters.platform;
+        const group = filters.group;
+        const account = filters.account;
+        const completed = filters.completed;
 
         if (search) {
             resultGamesList = resultGamesList.filter(game => game.name.toLowerCase().includes(search));
@@ -45,6 +46,14 @@ export class FilterListService implements OnDestroy {
 
         if (group) {
             resultGamesList = resultGamesList.filter(game => game.groups?.includes(group.id));
+        }
+
+        if (account) {
+            resultGamesList = resultGamesList.filter(game => game.accounts?.includes(account.id));
+        }
+
+        if (completed) {
+            resultGamesList = resultGamesList.filter(game => game.completed);
         }
 
         this._sortByAlphabet(resultGamesList);

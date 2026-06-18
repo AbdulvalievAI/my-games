@@ -16,10 +16,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subject, takeUntil } from 'rxjs';
 
+import { PlatformsService } from '../../services/api/platforms.service';
 import type { IGame, IGameGroup } from '../../types/games.interfaces';
+import type { IGamingAccount } from '../../types/gaming-accounts.interfaces';
 import type { IPlatform } from '../../types/platforms.interfaces';
 import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
 import type { IFilterForm, IFilters } from './filter-list.interface';
@@ -32,6 +35,7 @@ import { FilterListService } from './filter-list.service';
     standalone: true,
     providers: [
         FilterListService,
+        PlatformsService,
     ],
     imports: [
         MatFormFieldModule,
@@ -43,16 +47,19 @@ import { FilterListService } from './filter-list.service';
         MatTooltipModule,
         MatSelectModule,
         ReactiveFormsModule,
-        LogoPlatformComponent
+        LogoPlatformComponent,
+        MatSlideToggle
     ],
 })
 export class FilterComponent implements OnInit, OnDestroy {
+    public readonly platformsService = inject(PlatformsService);
     private readonly _filterListService = inject(FilterListService);
     private readonly _fb = inject(FormBuilder);
 
     @Input() gamesList: IGame[] = [];
     @Input() gameGroupsList: IGameGroup[];
     @Input() platformList: IPlatform[] = [];
+    @Input() accountsList: IGamingAccount[] = [];
 
     @Output() gamesListChange: EventEmitter<IGame[]> = new EventEmitter<IGame[]>();
 
@@ -94,6 +101,8 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.form.get('search')?.setValue(null);
         this.form.get('platform')?.setValue(null);
         this.form.get('group')?.setValue(null);
+        this.form.get('account')?.setValue(null);
+        this.form.get('completed')?.setValue(false);
 
         this._changeFilter();
     }
@@ -121,6 +130,8 @@ export class FilterComponent implements OnInit, OnDestroy {
             search: new FormControl<string | null>(null),
             platform: new FormControl<IPlatform | null>(null),
             group: new FormControl<IGameGroup | null>(null),
+            account: new FormControl<IGamingAccount | null>(null),
+            completed: new FormControl<boolean>(false),
         });
 
         this.form.get('search')?.valueChanges
@@ -134,6 +145,18 @@ export class FilterComponent implements OnInit, OnDestroy {
             });
 
         this.form.get('group')?.valueChanges
+            .pipe(takeUntil(this._destroy$))
+            .subscribe(() => {
+                this._changeFilter();
+            });
+
+        this.form.get('account')?.valueChanges
+            .pipe(takeUntil(this._destroy$))
+            .subscribe(() => {
+                this._changeFilter();
+            });
+
+        this.form.get('completed')?.valueChanges
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => {
                 this._changeFilter();
@@ -154,6 +177,14 @@ export class FilterComponent implements OnInit, OnDestroy {
 
         if (formValue.group) {
             filters.group = { ...formValue.group };
+        }
+
+        if (formValue.account) {
+            filters.account = { ...formValue.account };
+        }
+
+        if (formValue.completed) {
+            filters.completed = formValue.completed;
         }
 
         this._filterListService.filters$

@@ -192,7 +192,7 @@ export class DataLocalService implements IDataPointService {
         });
     }
 
-    public getPlatformByType(type: EPlatform): IPlatform | undefined {
+    public getPlatformByType(type: EPlatform | undefined): IPlatform | undefined {
         const platformsList = this._getDataPlatforms();
 
         return platformsList.find(platformItem => platformItem.type === type);

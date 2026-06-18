@@ -1,5 +1,6 @@
 @use "../../styles/variables" as *;
 @use "../../styles/platform-field" as *;
+@use "../../styles/gaps" as *;
 
 :host {
     display: flex;

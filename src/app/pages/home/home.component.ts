@@ -20,10 +20,12 @@ import type { TActionSettings } from '../../components/settings/settings.interfa
 import { DataService } from '../../services/api/data/data.service';
 import { GameGroupsService } from '../../services/api/game-groups.service';
 import { GamesService } from '../../services/api/games.service';
+import { GamingAccountsService } from '../../services/api/gaming-accounts.service';
 import { PlatformsService } from '../../services/api/platforms.service';
 import { DialogService } from '../../services/dialog.service';
 import { ExplorerService } from '../../services/explorer.service';
 import type { IGame, IGameGroup } from '../../types/games.interfaces';
+import type { IGamingAccount } from '../../types/gaming-accounts.interfaces';
 import type { IPlatform } from '../../types/platforms.interfaces';
 
 @Component({
@@ -36,6 +38,7 @@ import type { IPlatform } from '../../types/platforms.interfaces';
         DialogService,
         PlatformsService,
         GameGroupsService,
+        GamingAccountsService,
     ],
     imports: [
         FilterComponent,
@@ -55,12 +58,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly _gamesService = inject(GamesService);
     private readonly _platformsService = inject(PlatformsService);
     private readonly _gameGroupsService = inject(GameGroupsService);
+    private readonly _gamingAccountsService = inject(GamingAccountsService);
     private readonly _dataService = inject(DataService);
 
     public isLoad$ = new BehaviorSubject<boolean>(true);
     public gamesList: IGame[] = [];
     public gameGroupsList: IGameGroup[] = [];
     public platformList: IPlatform[] = [];
+    public accountsList: IGamingAccount[] = [];
 
     private readonly _destroy$ = new Subject<void>();
 
@@ -102,6 +107,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this._gamesService.getGames(),
             this._gameGroupsService.getGameGroups(),
             this._platformsService.getPlatforms(),
+            this._gamingAccountsService.getGamingAccounts(),
         ])
         .pipe(
             takeUntil(this._destroy$),
@@ -114,10 +120,11 @@ export class HomeComponent implements OnInit, OnDestroy {
                 return EMPTY;
             }),
         )
-        .subscribe(([ games, gameGroups, platforms ]) => {
+        .subscribe(([ games, gameGroups, platforms, accounts ]) => {
             this.gamesList = games;
             this.gameGroupsList = gameGroups;
             this.platformList = platforms;
+            this.accountsList = accounts;
 
             this.isLoad$.next(false);
         });

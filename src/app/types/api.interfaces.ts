@@ -39,7 +39,7 @@ export interface IApiGameGroups {
 export interface IApiPlatforms {
     /** Получить список весь игровых платформ */
     getPlatforms(): Observable<IPlatform[]>;
-    getPlatformByType(type: EPlatform): IPlatform | undefined;
+    getPlatformByType(type: EPlatform | undefined): IPlatform | undefined;
 }
 
 export interface IApiGamingAccounts {
