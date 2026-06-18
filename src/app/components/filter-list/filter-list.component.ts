@@ -25,7 +25,7 @@ import type { IGame, IGameGroup } from '../../types/games.interfaces';
 import type { IGamingAccount } from '../../types/gaming-accounts.interfaces';
 import type { IPlatform } from '../../types/platforms.interfaces';
 import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
-import type { IFilterForm, IFilters } from './filter-list.interface';
+import type { IFilterForm, TQueueFilters, TTypesFilters } from './filter-list.interface';
 import { FilterListService } from './filter-list.service';
 
 @Component({
@@ -69,6 +69,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     private _searchTimerId: ReturnType<typeof setTimeout> | null;
     private readonly _destroy$ = new Subject<void>();
+    private _queueFilters: TQueueFilters = {};
 
     ngOnInit(): void {
         this._initFilter();
@@ -93,7 +94,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
         this.valueSpinner = 0;
         this._searchTimerId = setTimeout(() => {
-            this._changeFilter();
+            this._changeFilter('search');
         }, 500);
     }
 
@@ -141,54 +142,91 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.form.get('platform')?.valueChanges
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => {
-                this._changeFilter();
+                this._changeFilter('platform');
             });
 
         this.form.get('group')?.valueChanges
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => {
-                this._changeFilter();
+                this._changeFilter('group');
             });
 
         this.form.get('account')?.valueChanges
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => {
-                this._changeFilter();
+                this._changeFilter('account');
             });
 
         this.form.get('completed')?.valueChanges
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => {
-                this._changeFilter();
+                this._changeFilter('completed');
             });
     }
 
-    private _changeFilter(): void {
+    private _changeFilter(keyFilter?: TTypesFilters): void {
         const formValue = this.form.getRawValue();
-        const filters: IFilters = {};
+        const queue = new Date().getTime();
 
-        if (formValue.search) {
-            filters.search = formValue.search.toLocaleLowerCase();
-        }
+        switch (keyFilter) {
+            case 'search': {
+                const value = formValue[keyFilter];
 
-        if (formValue.platform) {
-            filters.platform = { ...formValue.platform };
-        }
+                if (value) {
+                    this._queueFilters[keyFilter] = { queue, value };
+                } else {
+                    delete this._queueFilters[keyFilter];
+                }
+                break;
+            }
+            case 'platform': {
+                const value = formValue[keyFilter];
 
-        if (formValue.group) {
-            filters.group = { ...formValue.group };
-        }
+                if (value) {
+                    this._queueFilters[keyFilter] = { queue, value };
+                } else {
+                    delete this._queueFilters[keyFilter];
+                }
+                break;
+            }
+            case 'group': {
+                const value = formValue[keyFilter];
 
-        if (formValue.account) {
-            filters.account = { ...formValue.account };
-        }
+                if (value) {
+                    this._queueFilters[keyFilter] = { queue, value };
+                } else {
+                    delete this._queueFilters[keyFilter];
+                }
+                break;
+            }
+            case 'account': {
+                const value = formValue[keyFilter];
 
-        if (formValue.completed) {
-            filters.completed = formValue.completed;
+                if (value) {
+                    this._queueFilters[keyFilter] = { queue, value };
+                } else {
+                    delete this._queueFilters[keyFilter];
+                }
+                break;
+            }
+            case 'completed': {
+                const value = formValue[keyFilter];
+
+                if (value) {
+                    this._queueFilters[keyFilter] = { queue, value };
+                } else {
+                    delete this._queueFilters[keyFilter];
+                }
+                break;
+            }
+            default: {
+                this._queueFilters = {};
+                break;
+            }
         }
 
         this._filterListService.filters$
-            .next(filters);
+            .next(this._queueFilters);
 
         this.isSpinner = false;
     }

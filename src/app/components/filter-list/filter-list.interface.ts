@@ -19,3 +19,28 @@ export interface IFilters {
     account?: IGamingAccount | null;
     completed?: boolean;
 }
+
+export type TTypesFilters = 'search' | 'platform' | 'group' | 'account' | 'completed';
+
+export interface TQueueFilters {
+    search?: {
+        queue: number;
+        value: string;
+    };
+    platform?: {
+        queue: number;
+        value: IPlatform;
+    };
+    group?: {
+        queue: number;
+        value: IGameGroup;
+    };
+    account?: {
+        queue: number;
+        value: IGamingAccount;
+    };
+    completed?: {
+        queue: number;
+        value: boolean;
+    };
+}
