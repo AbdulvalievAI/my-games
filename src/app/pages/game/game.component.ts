@@ -29,6 +29,7 @@ import { BehaviorSubject, catchError, EMPTY, filter, forkJoin, Subject, switchMa
 import { v4 as uuidv4 } from 'uuid';
 
 import { BtnListComponent } from "../../components/btn-list/btn-list.component";
+import { EmptyLogoComponent } from "../../components/empty-logo/empty-logo.component";
 import { HeaderComponent } from "../../components/header/header.component";
 import { LogoPlatformComponent } from "../../components/logo-platform/logo-platform.component";
 import { GameGroupsService } from '../../services/api/game-groups.service';
@@ -79,6 +80,7 @@ interface ISimilarGame {
         AsyncPipe,
         BtnListComponent,
         MatSlideToggleModule,
+        EmptyLogoComponent,
     ],
 })
 export class GameComponent implements OnInit, OnDestroy {
@@ -117,20 +119,20 @@ export class GameComponent implements OnInit, OnDestroy {
             this.platformsService.getPlatforms(),
             this._gamingAccountsService.getGamingAccounts(),
         ])
-        .pipe(takeUntil(this._destroy$))
-        .subscribe(([ params, gameGroups, platforms, gamingAccounts ]) => {
-            this.gameGroupsList = gameGroups;
-            this.platformList = platforms;
-            this.gamingAccountsList = gamingAccounts;
+            .pipe(takeUntil(this._destroy$))
+            .subscribe(([ params, gameGroups, platforms, gamingAccounts ]) => {
+                this.gameGroupsList = gameGroups;
+                this.platformList = platforms;
+                this.gamingAccountsList = gamingAccounts;
 
-            const id = params && params['id'];
+                const id = params && params['id'];
 
-            if (id) {
-                this._initEdit(params['id']);
-            } else {
-                this._initCreate();
-            }
-        });
+                if (id) {
+                    this._initEdit(params['id']);
+                } else {
+                    this._initCreate();
+                }
+            });
     }
 
     ngOnDestroy(): void {

@@ -80,8 +80,19 @@
 
 @if (form) {
     <div class="block">
-        <h1>{{ form.value.name || "Название игры" }}</h1>
-        <h3>{{ form.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
+        <div class="game-header">
+            <div class="game-header__left">
+                <h1>{{ form.value.name || "Название игры" }}</h1>
+                <h3>{{ form.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
+            </div>
+            <div class="game-header__right">
+                @if (form.value.logo) {
+                    <img [src]="form.value.logo" [alt]="form.value.logo" />
+                } @else {
+                    <app-empty-logo [textSize]="'100px'"></app-empty-logo>
+                }
+            </div>
+        </div>
 
         <form [formGroup]="form">
             <p>
@@ -133,31 +144,15 @@
                 ></app-btn-list>
             }
 
-            <div class="logo-block">
-                <mat-form-field
-                    appearance="outline"
-                    class="logo-block__logo-field"
-                >
-                    <mat-label>Ссылка на лого</mat-label>
+            <mat-form-field appearance="outline">
+                <mat-label>Ссылка на лого</mat-label>
 
-                    <input
-                        matInput
-                        placeholder="Ссылка на лого"
-                        formControlName="logo"
-                    />
-                </mat-form-field>
-
-                <button
-                    mat-fab
-                    color="primary"
-                    id="logo-block__view-log-btn"
-                    matTooltip="Посмотреть лого"
-                    [disabled]="!form.value.logo"
-                    (click)="dialogService.openImageDialog(form.value.logo)"
-                >
-                    <mat-icon>remove_red_eye</mat-icon>
-                </button>
-            </div>
+                <input
+                    matInput
+                    placeholder="Ссылка на лого"
+                    formControlName="logo"
+                />
+            </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>Платформы</mat-label>

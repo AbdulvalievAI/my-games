@@ -1,5 +1,11 @@
 <div class="game-item" (click)="explorerService.goToGameEdit(gameData.id)">
-    <div class="game-item__num">{{ index + 1 }}</div>
+    <div class="game-item__logo">
+        @if (gameData.logo) {
+            <img [src]="gameData.logo" [alt]="gameData.logo" />
+        } @else {
+            <app-empty-logo></app-empty-logo>
+        }
+    </div>
 
     @if (gameData.completed) {
         <mat-icon class="game-item__completed green"> check_circle </mat-icon>

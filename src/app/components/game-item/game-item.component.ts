@@ -8,6 +8,7 @@ import { GamesService } from "../../services/api/games.service";
 import { PlatformsService } from "../../services/api/platforms.service";
 import { ExplorerService } from "../../services/explorer.service";
 import type { IGame } from "../../types/games.interfaces";
+import { EmptyLogoComponent } from "../empty-logo/empty-logo.component";
 import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
 
 @Component({
@@ -24,6 +25,7 @@ import { LogoPlatformComponent } from "../logo-platform/logo-platform.component"
         MatIconModule,
         MatButtonModule,
         MatTooltipModule,
+        EmptyLogoComponent,
     ],
 })
 export class GameItemComponent {
@@ -33,7 +35,6 @@ export class GameItemComponent {
     private readonly _snackBar = inject(MatSnackBar);
 
     @Input() gameData: IGame = this._gamesService.mockGame;
-    @Input() index = 0;
 
     public copyName(event: PointerEvent): void {
         event.stopPropagation();

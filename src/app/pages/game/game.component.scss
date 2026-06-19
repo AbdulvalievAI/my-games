@@ -11,18 +11,6 @@
     }
 }
 
-.logo-block {
-    display: flex;
-
-    mat-form-field {
-        width: -webkit-fill-available;
-    }
-
-    button {
-        margin-left: $gap-size;
-    }
-}
-
 .container-platform {
     display: flex;
     align-items: center;
@@ -47,4 +35,22 @@
 
 .icon-completed {
     @include icon-size(40px);
+}
+
+.game-header {
+    display: flex;
+    position: relative;
+
+    &__right {
+        position: absolute;
+        right: 0;
+        height: 175px;
+        overflow: hidden;
+        border-radius: $border-radius;
+
+        img {
+            object-fit: cover;
+            height: 100%;
+        }
+    }
 }
