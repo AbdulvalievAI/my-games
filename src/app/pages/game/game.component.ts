@@ -247,7 +247,7 @@ export class GameComponent implements OnInit, OnDestroy {
                 id: [ this.editGame.id, Validators.required ],
                 dateEdit: [ new Date(this.editGame.dateEdit).toISOString(), Validators.required ],
                 name: [ this.editGame.name, Validators.required ],
-                logo: [ this.editGame.logo, [ Validators.required, this._createPasswordStrengthValidator() ] ],
+                logo: [ this.editGame.logo, [ Validators.required, this._logoValidator() ] ],
                 platforms: [
                     this.platformsService.getPlatformsByTypes(this.platformList, this.editGame.platforms),
                     Validators.required
@@ -261,7 +261,7 @@ export class GameComponent implements OnInit, OnDestroy {
                 id: [ uuidv4(), Validators.required ],
                 dateEdit: [ new Date().toISOString(), Validators.required ],
                 name: [ '', Validators.required ],
-                logo: [ '', [ Validators.required, this._createPasswordStrengthValidator() ] ],
+                logo: [ '', [ Validators.required, this._logoValidator() ] ],
                 platforms: [ [] as IPlatform[], Validators.required ],
                 gameGroups: [ [] as IGameGroup[] ],
                 completed: [ false ],
@@ -310,7 +310,7 @@ export class GameComponent implements OnInit, OnDestroy {
             });
     }
 
-    private _createPasswordStrengthValidator(): ValidatorFn {
+    private _logoValidator(): ValidatorFn {
         return (control: AbstractControl): ValidationErrors | null => {
             if (control.value) {
                 const value: string = control.value as string;
