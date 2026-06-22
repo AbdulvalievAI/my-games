@@ -83,7 +83,17 @@
         <div class="game-header">
             <div class="game-header__left">
                 <h1>{{ form.value.name || "Название игры" }}</h1>
-                <h3>{{ form.value.dateEdit | date: "dd.MM.yy HH:mm" }}</h3>
+
+                @if (editGame) {
+                    <h3>
+                        Дата создания:
+                        {{ form.value.dateCreate | date: "dd.MM.yy HH:mm" }}
+                    </h3>
+                    <h3 class="mt">
+                        Дата изменения:
+                        {{ form.value.dateEdit | date: "dd.MM.yy HH:mm" }}
+                    </h3>
+                }
             </div>
             <div class="game-header__right">
                 @if (form.value.logo) {

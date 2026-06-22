@@ -214,6 +214,16 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     private _initForm(): void {
+        const dateCreate = (() => {
+            if (this.editGame?.dateCreate) {
+                return new Date(this.editGame?.dateCreate).toISOString();
+            } else if (this.editGame?.dateEdit) {
+                return new Date(this.editGame?.dateEdit).toISOString();
+            } else {
+                return new Date().toISOString();
+            }
+        })();
+
         if (this.editGame) {
             const gameGroupsValue = ((): IGameGroup[] => {
                 if (!this.editGame?.groups?.length) {
@@ -243,9 +253,18 @@ export class GameComponent implements OnInit, OnDestroy {
                     }) as IGamingAccount[];
             })();
 
+            const dateEdit = (() => {
+                if (this.editGame?.dateEdit) {
+                    return new Date(this.editGame?.dateEdit).toISOString();
+                } else {
+                    return new Date().toISOString();
+                }
+            })();
+
             this.form = this._fb.group({
                 id: [ this.editGame.id, Validators.required ],
-                dateEdit: [ new Date(this.editGame.dateEdit).toISOString(), Validators.required ],
+                dateCreate: [ dateCreate, Validators.required ],
+                dateEdit: [ dateEdit, Validators.required ],
                 name: [ this.editGame.name, Validators.required ],
                 logo: [ this.editGame.logo, [ Validators.required, this._logoValidator() ] ],
                 platforms: [
@@ -259,7 +278,8 @@ export class GameComponent implements OnInit, OnDestroy {
         } else {
             this.form = this._fb.group({
                 id: [ uuidv4(), Validators.required ],
-                dateEdit: [ new Date().toISOString(), Validators.required ],
+                dateCreate: [ dateCreate, Validators.required ],
+                dateEdit: [ dateCreate, Validators.required ],
                 name: [ '', Validators.required ],
                 logo: [ '', [ Validators.required, this._logoValidator() ] ],
                 platforms: [ [] as IPlatform[], Validators.required ],
@@ -329,7 +349,8 @@ export class GameComponent implements OnInit, OnDestroy {
             name: newGameData.name,
             logo: newGameData.logo,
             platforms: newGameData.platforms.map(item => item.type),
-            dateEdit: new Date().toISOString(),
+            dateCreate: newGameData.dateCreate || new Date().toISOString(),
+            dateEdit: newGameData.dateEdit || new Date().toISOString(),
             groups: newGameData.gameGroups.map(item => item.id),
             completed: Boolean(newGameData.completed),
             accounts: newGameData.accounts.map(item => item.id),

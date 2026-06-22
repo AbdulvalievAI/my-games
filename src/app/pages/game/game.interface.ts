@@ -8,7 +8,8 @@ export interface IGameFormValue {
     id: string;
     name: string;
     logo: string;
-    dateEdit: string;
+    dateCreate?: string;
+    dateEdit?: string;
     completed: boolean;
     platforms: IPlatform[];
     gameGroups: IGameGroup[];
@@ -20,6 +21,7 @@ export interface IGameForm {
     name: FormControl<string | null>;
     logo: FormControl<string | null>;
     platforms: FormControl<IPlatform[] | null>;
+    dateCreate: FormControl<string | null>;
     dateEdit: FormControl<string | null>;
     gameGroups: FormControl<IGameGroup[] | null>;
     completed: FormControl<boolean | null>;

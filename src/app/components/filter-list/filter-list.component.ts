@@ -25,7 +25,7 @@ import type { IGame, IGameGroup } from '../../types/games.interfaces';
 import type { IGamingAccount } from '../../types/gaming-accounts.interfaces';
 import type { IPlatform } from '../../types/platforms.interfaces';
 import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
-import type { IFilterForm, TQueueFilters, TTypesFilters } from './filter-list.interface';
+import type { IFilterForm, ISortItem, TQueueFilters, TTypesFilters } from './filter-list.interface';
 import { FilterListService } from './filter-list.service';
 
 @Component({
@@ -53,7 +53,7 @@ import { FilterListService } from './filter-list.service';
 })
 export class FilterComponent implements OnInit, OnDestroy {
     public readonly platformsService = inject(PlatformsService);
-    private readonly _filterListService = inject(FilterListService);
+    public readonly filterListService = inject(FilterListService);
     private readonly _fb = inject(FormBuilder);
 
     @Input() gamesList: IGame[] = [];
@@ -103,6 +103,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.form.get('platform')?.setValue(null);
         this.form.get('group')?.setValue(null);
         this.form.get('account')?.setValue(null);
+        this.form.get('sort')?.setValue(this.filterListService.defaultSort);
         this.form.get('completed')?.setValue(false);
 
         this._changeFilter();
@@ -113,12 +114,12 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
 
     private _initFilter(): void {
-        this._filterListService.initialize(this.gamesList);
+        this.filterListService.initialize(this.gamesList);
         this._initForm();
 
-        this._filterListService.filters$
+        this.filterListService.filters$
             .subscribe(filters => {
-                this.gamesListChange.emit(this._filterListService.applyFilterGamesList(filters));
+                this.gamesListChange.emit(this.filterListService.applyFilterGamesList(filters));
             });
 
         setTimeout(() => {
@@ -132,6 +133,7 @@ export class FilterComponent implements OnInit, OnDestroy {
             platform: new FormControl<IPlatform | null>(null),
             group: new FormControl<IGameGroup | null>(null),
             account: new FormControl<IGamingAccount | null>(null),
+            sort: new FormControl<ISortItem>(this.filterListService.defaultSort),
             completed: new FormControl<boolean>(false),
         });
 
@@ -155,6 +157,12 @@ export class FilterComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._destroy$))
             .subscribe(() => {
                 this._changeFilter('account');
+            });
+
+        this.form.get('sort')?.valueChanges
+            .pipe(takeUntil(this._destroy$))
+            .subscribe(() => {
+                this._changeFilter('sort');
             });
 
         this.form.get('completed')?.valueChanges
@@ -209,6 +217,16 @@ export class FilterComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
+            case 'sort': {
+                const value = formValue[keyFilter];
+
+                if (value) {
+                    this._queueFilters[keyFilter] = { queue, value };
+                } else {
+                    delete this._queueFilters[keyFilter];
+                }
+                break;
+            }
             case 'completed': {
                 const value = formValue[keyFilter];
 
@@ -225,7 +243,7 @@ export class FilterComponent implements OnInit, OnDestroy {
             }
         }
 
-        this._filterListService.filters$
+        this.filterListService.filters$
             .next(this._queueFilters);
 
         this.isSpinner = false;

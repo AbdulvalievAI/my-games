@@ -6,6 +6,7 @@ export interface IGame {
     name: string;
     logo: string;
     platforms: EPlatform[];
+    dateCreate?: string;
     dateEdit: string;
     groups?: IGameGroup['id'][];
     completed?: boolean;

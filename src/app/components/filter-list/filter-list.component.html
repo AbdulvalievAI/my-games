@@ -96,6 +96,23 @@
             </mat-select>
         </mat-form-field>
 
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Сортировка списка</mat-label>
+
+            <mat-select formControlName="sort">
+                <mat-select-trigger>
+                    {{ form.value.sort?.name }}
+                </mat-select-trigger>
+
+                @for (sortItem of filterListService.sortList; track sortItem) {
+                    <mat-option [value]="sortItem">
+                        <mat-icon matSuffix>{{ sortItem.icon }}</mat-icon>
+                        {{ sortItem.name }}
+                    </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
         <mat-slide-toggle formControlName="completed" class="ml">
             {{ form.value.completed ? "Пройденные" : "Все" }}
         </mat-slide-toggle>
