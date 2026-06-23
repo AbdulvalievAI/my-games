@@ -5,6 +5,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
 import { GamesService } from "../../services/api/games.service";
+import { GamingAccountsService } from "../../services/api/gaming-accounts.service";
 import { PlatformsService } from "../../services/api/platforms.service";
 import { ExplorerService } from "../../services/explorer.service";
 import type { IGame } from "../../types/games.interfaces";
@@ -19,6 +20,7 @@ import { LogoPlatformComponent } from "../logo-platform/logo-platform.component"
     providers: [
         PlatformsService,
         ExplorerService,
+        GamingAccountsService,
     ],
     imports: [
         LogoPlatformComponent,
@@ -33,6 +35,7 @@ export class GameItemComponent {
     public readonly explorerService = inject(ExplorerService);
     private readonly _gamesService = inject(GamesService);
     private readonly _snackBar = inject(MatSnackBar);
+    public readonly gamingAccountsService = inject(GamingAccountsService);
 
     @Input() gameData: IGame = this._gamesService.mockGame;
 

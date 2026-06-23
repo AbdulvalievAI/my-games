@@ -35,14 +35,30 @@
         {{ gameData.name }}
     </div>
 
-    <div class="game-item__logos-wrapper">
-        @for (platformType of gameData.platforms; track platformType) {
-            <div class="game-item__logo-wrapper">
-                <app-logo-platform
-                    [data]="platformsService.getPlatformByType(platformType)"
-                    [width]="'100%'"
-                ></app-logo-platform>
+    <div class="game-item__right">
+        @if (gameData.accounts?.length) {
+            <div class="game-item__accounts">
+                @for (accountId of gameData.accounts; track accountId) {
+                    <span>{{
+                        this.gamingAccountsService.getGamingAccountById(
+                            accountId
+                        )?.name || " "
+                    }}</span>
+                }
             </div>
         }
+
+        <div class="game-item__platforms">
+            @for (platformType of gameData.platforms; track platformType) {
+                <div class="game-item__logo-wrapper">
+                    <app-logo-platform
+                        [data]="
+                            platformsService.getPlatformByType(platformType)
+                        "
+                        [width]="'100%'"
+                    ></app-logo-platform>
+                </div>
+            }
+        </div>
     </div>
 </div>

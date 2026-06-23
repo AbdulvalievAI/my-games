@@ -49,9 +49,20 @@ $mat-btn-small-size: 24px;
         margin-right: $gap-size;
     }
 
-    &__logos-wrapper {
-        display: flex;
+    &__right {
         margin-left: auto;
+        display: flex;
+    }
+
+    &__platforms {
+        display: flex;
+    }
+
+    &__accounts {
+        margin-right: $gap-size;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     &__logo-wrapper {
