@@ -31,7 +31,12 @@
         @if (isLoad$ | async) {
             <mat-spinner [diameter]="75"></mat-spinner>
         } @else {
-            <app-games-list [gamesList]="gamesList"></app-games-list>
+            <app-games-list
+                [gamesList]="gamesList"
+                [gameGroupsList]="gameGroupsList"
+                [platformList]="platformList"
+                [accountsList]="accountsList"
+            ></app-games-list>
         }
     </div>
 </div>

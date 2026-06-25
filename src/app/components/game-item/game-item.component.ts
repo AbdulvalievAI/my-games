@@ -4,11 +4,11 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
-import { GamesService } from "../../services/api/games.service";
-import { GamingAccountsService } from "../../services/api/gaming-accounts.service";
-import { PlatformsService } from "../../services/api/platforms.service";
+import type { EPlatform } from "../../data/platforms";
 import { ExplorerService } from "../../services/explorer.service";
-import type { IGame } from "../../types/games.interfaces";
+import type { IGame, IGameGroup } from "../../types/games.interfaces";
+import type { IGamingAccount } from "../../types/gaming-accounts.interfaces";
+import type { IPlatform } from "../../types/platforms.interfaces";
 import { EmptyLogoComponent } from "../empty-logo/empty-logo.component";
 import { LogoPlatformComponent } from "../logo-platform/logo-platform.component";
 
@@ -18,9 +18,7 @@ import { LogoPlatformComponent } from "../logo-platform/logo-platform.component"
     styleUrls: [ './game-item.component.scss' ],
     standalone: true,
     providers: [
-        PlatformsService,
         ExplorerService,
-        GamingAccountsService,
     ],
     imports: [
         LogoPlatformComponent,
@@ -31,13 +29,13 @@ import { LogoPlatformComponent } from "../logo-platform/logo-platform.component"
     ],
 })
 export class GameItemComponent {
-    public readonly platformsService = inject(PlatformsService);
     public readonly explorerService = inject(ExplorerService);
-    private readonly _gamesService = inject(GamesService);
     private readonly _snackBar = inject(MatSnackBar);
-    public readonly gamingAccountsService = inject(GamingAccountsService);
 
-    @Input() gameData: IGame = this._gamesService.mockGame;
+    @Input() gameData: IGame;
+    @Input() mapGameGroups: Map<string, IGameGroup>;
+    @Input() mapPlatforms: Map<EPlatform, IPlatform>;
+    @Input() mapAccounts: Map<string, IGamingAccount>;
 
     public copyName(event: PointerEvent): void {
         event.stopPropagation();

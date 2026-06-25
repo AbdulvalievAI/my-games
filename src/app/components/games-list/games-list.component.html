@@ -13,7 +13,12 @@
                         role="listitem"
                         class="mat-mdc-list-item-interactive"
                     >
-                        <app-game-item [gameData]="game"></app-game-item>
+                        <app-game-item
+                            [gameData]="game"
+                            [mapGameGroups]="mapGameGroups"
+                            [mapPlatforms]="mapPlatforms"
+                            [mapAccounts]="mapAccounts"
+                        ></app-game-item>
                     </mat-list-item>
                 </ng-container>
             </mat-list>
