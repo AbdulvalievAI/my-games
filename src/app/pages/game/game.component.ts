@@ -350,7 +350,7 @@ export class GameComponent implements OnInit, OnDestroy {
             logo: newGameData.logo,
             platforms: newGameData.platforms.map(item => item.type),
             dateCreate: newGameData.dateCreate || new Date().toISOString(),
-            dateEdit: newGameData.dateEdit || new Date().toISOString(),
+            dateEdit: new Date().toISOString(),
             groups: newGameData.gameGroups.map(item => item.id),
             completed: Boolean(newGameData.completed),
             accounts: newGameData.accounts.map(item => item.id),
