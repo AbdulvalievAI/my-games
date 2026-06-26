@@ -1,49 +1,73 @@
 <div class="game-item" (click)="explorerService.goToGameEdit(gameData.id)">
-    <div class="game-item__logo">
-        @if (gameData.logo) {
-            <img [src]="gameData.logo" [alt]="gameData.logo" />
-        } @else {
-            <app-empty-logo></app-empty-logo>
+    <div class="game-item__left">
+        <div class="game-item__logo">
+            @if (gameData.logo) {
+                <img [src]="gameData.logo" [alt]="gameData.logo" />
+            } @else {
+                <app-empty-logo></app-empty-logo>
+            }
+        </div>
+
+        @if (gameData.completed) {
+            <mat-icon class="game-item__completed green">
+                check_circle
+            </mat-icon>
         }
+
+        <div class="game-item__tools">
+            <button
+                class="game-item__btn game-item__btn--small"
+                matIconButton
+                matTooltip="Копировать название"
+                (click)="copyName($event)"
+            >
+                <mat-icon>content_copy</mat-icon>
+            </button>
+
+            <button
+                class="game-item__btn game-item__btn--small"
+                matIconButton
+                matTooltip="Открыть в окне"
+                (click)="openBlank($event)"
+            >
+                <mat-icon>open_in_new</mat-icon>
+            </button>
+        </div>
+
+        <div class="game-item__name">
+            {{ gameData.name }}
+        </div>
     </div>
 
-    @if (gameData.completed) {
-        <mat-icon class="game-item__completed green"> check_circle </mat-icon>
-    }
+    <div class="game-item__center">
+        @if (gameData.accounts?.length || gameData.groups?.length) {
+            @if (gameData.accounts?.length) {
+                <div class="game-item__accounts">
+                    <span class="game-item__account-title">Аккаунты:</span>
 
-    <div class="game-item__tools">
-        <button
-            class="game-item__btn game-item__btn--small"
-            matIconButton
-            matTooltip="Копировать название"
-            (click)="copyName($event)"
-        >
-            <mat-icon>content_copy</mat-icon>
-        </button>
+                    @for (accountId of gameData.accounts; track accountId) {
+                        <span class="mr">{{
+                            mapAccounts.get(accountId)?.name || "???"
+                        }}</span>
+                    }
+                </div>
+            }
 
-        <button
-            class="game-item__btn game-item__btn--small"
-            matIconButton
-            matTooltip="Открыть в окне"
-            (click)="openBlank($event)"
-        >
-            <mat-icon>open_in_new</mat-icon>
-        </button>
-    </div>
+            @if (gameData.groups?.length) {
+                <div class="game-item__groups">
+                    <span class="game-item__account-title">Группы:</span>
 
-    <div class="game-item__name">
-        {{ gameData.name }}
+                    @for (groupId of gameData.groups; track groupId) {
+                        <span class="mr">{{
+                            mapGameGroups.get(groupId)?.name || "???"
+                        }}</span>
+                    }
+                </div>
+            }
+        }
     </div>
 
     <div class="game-item__right">
-        @if (gameData.accounts?.length) {
-            <div class="game-item__accounts">
-                @for (accountId of gameData.accounts; track accountId) {
-                    <span>{{ mapAccounts.get(accountId)?.name || " " }}</span>
-                }
-            </div>
-        }
-
         <div class="game-item__platforms">
             @for (platformType of gameData.platforms; track platformType) {
                 <div class="game-item__logo-wrapper">

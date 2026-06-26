@@ -24,7 +24,7 @@ export class FilterListService implements OnDestroy {
             id: 'sort_edit_date',
             name: 'Дата изменения',
             type: 'editDate',
-            icon: 'calendar_today',
+            icon: 'event',
         },
         {
             id: 'sort_alphabet',
