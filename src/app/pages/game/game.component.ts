@@ -366,7 +366,12 @@ export class GameComponent implements OnInit, OnDestroy {
             this.form.get('name')?.valueChanges
                 .pipe(takeUntil(this._destroy$))
                 .subscribe(this._fieldNameChangeHandler.bind(this));
-        }
+
+            }
+
+            this.form.get('accounts')?.valueChanges
+                .pipe(takeUntil(this._destroy$))
+                .subscribe(this._accountsChangeHandler.bind(this));
     }
 
     private _fieldNameChangeHandler(name: string | null): void {
@@ -409,6 +414,25 @@ export class GameComponent implements OnInit, OnDestroy {
                 this._cdr.detectChanges();
             }
         }, this.similarGame.stepDelay);
+    }
+
+    private _accountsChangeHandler(accounts: IGamingAccount[] | null): void {
+        const platformsControl = this.form.get('platforms');
+
+        if (accounts?.length) {
+            accounts.forEach(aItem => {
+                const selectedPlatform = platformsControl?.value?.find(pItem => pItem.type === aItem.platform);
+                const platforms = platformsControl?.value;
+
+                if (!selectedPlatform && platforms) {
+                    const platform = this.platformsService.getPlatformByType(aItem.platform);
+
+                    if (platform) {
+                        platformsControl?.setValue([ ...platforms, platform ]);
+                    }
+                }
+            });
+        }
     }
 
     private _setSimilarGame(settings: { allDelay: number, stepDelay: number }): void {
