@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
     MatCard,
@@ -20,7 +20,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     templateUrl: './error-dialog.component.html',
     styleUrls: [ './error-dialog.component.scss' ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatDialogModule,
         MatCard,

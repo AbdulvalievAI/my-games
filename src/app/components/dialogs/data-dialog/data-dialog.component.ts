@@ -1,4 +1,4 @@
-import { Component, type ElementRef, inject, type OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, type ElementRef, inject, type OnDestroy, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -34,7 +34,6 @@ interface IDataList {
         GameGroupsService,
         GamingAccountsService,
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatCardHeader,
         MatCard,

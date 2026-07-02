@@ -1,4 +1,4 @@
-import { Component, inject, Input, ChangeDetectionStrategy } from "@angular/core";
+import { Component, inject, Input } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -20,7 +20,6 @@ import { LogoPlatformComponent } from "../logo-platform/logo-platform.component"
     providers: [
         ExplorerService,
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         LogoPlatformComponent,
         MatIconModule,

@@ -1,6 +1,6 @@
 
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, type OnDestroy, type OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, type OnDestroy, type OnInit } from '@angular/core';
 import { FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
@@ -47,7 +47,6 @@ interface IInfoItem {
     selector: 'app-auth-dialog',
     templateUrl: './auth-dialog.component.html',
     styleUrls: [ './auth-dialog.component.scss' ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatFormFieldModule,
         MatInputModule,

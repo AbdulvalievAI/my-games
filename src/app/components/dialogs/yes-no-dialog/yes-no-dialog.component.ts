@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
     MAT_DIALOG_DATA,
@@ -13,7 +13,6 @@ import type { IYesNoDialogSettings } from './yes-no-dialog.interface';
     templateUrl: './yes-no-dialog.component.html',
     styleUrls: [ './yes-no-dialog.component.scss' ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatDialogModule,
         MatButtonModule,

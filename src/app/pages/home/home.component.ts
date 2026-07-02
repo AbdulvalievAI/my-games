@@ -4,9 +4,7 @@ import {
   Component,
   inject,
   type OnDestroy,
-  type OnInit,
-  ChangeDetectionStrategy
-} from '@angular/core';
+  type OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -41,7 +39,6 @@ import type { IPlatform } from '../../types/platforms.interfaces';
         GameGroupsService,
         GamingAccountsService,
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         FilterComponent,
         MatIconModule,

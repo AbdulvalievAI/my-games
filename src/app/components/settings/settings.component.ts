@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, type OnDestroy, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, inject, type OnDestroy, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -18,7 +18,6 @@ import type { TActionSettings } from './settings.interface';
         DialogService,
         ExplorerService,
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatMenuModule,
         MatIconModule,

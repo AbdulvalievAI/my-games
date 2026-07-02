@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, inject, type OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, type OnInit } from '@angular/core';
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
@@ -17,7 +17,6 @@ import { ThemeService } from './services/theme.service';
         ThemeService,
         DialogService,
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         RouterModule,
