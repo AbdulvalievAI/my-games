@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
     MAT_DIALOG_DATA,
     MatDialogModule,
@@ -10,6 +10,7 @@ import {
     templateUrl: './image-dialog.component.html',
     styleUrls: [ './image-dialog.component.scss' ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatDialogModule,
     ],

@@ -1,13 +1,14 @@
 
 
 import {
-    Component,
-    EventEmitter,
-    inject,
-    Input,
-    type OnDestroy,
-    type OnInit,
-    Output,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  type OnDestroy,
+  type OnInit,
+  Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormBuilder, FormControl, type FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,6 +38,7 @@ import { FilterListService } from './filter-list.service';
         FilterListService,
         PlatformsService,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatFormFieldModule,
         MatIconModule,

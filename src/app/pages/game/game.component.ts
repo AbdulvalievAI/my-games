@@ -1,10 +1,11 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import {
-    ChangeDetectorRef,
-    Component,
-    inject,
-    type OnDestroy,
-    type OnInit,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  type OnDestroy,
+  type OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
     type AbstractControl,
@@ -65,6 +66,7 @@ interface ISimilarGame {
         GameGroupsService,
         GamingAccountsService,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatIconModule,
         ReactiveFormsModule,

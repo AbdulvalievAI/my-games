@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from "@angular/material/icon";
 import { MatListModule } from '@angular/material/list';
@@ -11,6 +11,7 @@ import type { IBtnConfig, IBtnListItem } from './btn-list.interface';
     templateUrl: './btn-list.component.html',
     styleUrls: [ './btn-list.component.scss' ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatListModule,
         MatIcon,

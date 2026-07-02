@@ -17,7 +17,7 @@
                     matMiniFab
                     color="primary"
                     (click)="dialogRef.close()"
-                    [disabled]="(isLoad$ | async)?.isLoad"
+                    [disabled]="$safeNavigationMigration((isLoad$ | async)?.isLoad)"
                 >
                     <mat-icon>close</mat-icon>
                 </button>

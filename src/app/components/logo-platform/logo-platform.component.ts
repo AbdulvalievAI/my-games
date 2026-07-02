@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input } from "@angular/core";
+import { Component, Input, ChangeDetectionStrategy } from "@angular/core";
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { EPlatformLogo } from "../../data/platforms";
@@ -10,6 +10,7 @@ import type { IPlatform } from "../../types/platforms.interfaces";
     templateUrl: './logo-platform.component.html',
     styleUrls: [ './logo-platform.component.scss' ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         MatTooltipModule

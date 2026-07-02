@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormField,MatLabel, MatOption, MatSelect, type MatSelectChange } from "@angular/material/select";
@@ -13,6 +13,7 @@ import { ThemeService } from '../../../services/theme.service';
     providers: [
         ThemeService,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatOption,
         MatSelect,

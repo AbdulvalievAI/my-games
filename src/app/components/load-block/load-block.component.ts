@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input } from "@angular/core";
+import { Component, Input, ChangeDetectionStrategy } from "@angular/core";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @Component({
@@ -7,6 +7,7 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
     templateUrl: './load-block.component.html',
     styleUrls: [ './load-block.component.scss' ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         MatProgressSpinner,
