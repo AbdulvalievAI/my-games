@@ -5,7 +5,6 @@ import {
   inject,
   type OnDestroy,
   type OnInit,
-  ChangeDetectionStrategy
 } from '@angular/core';
 import {
     type AbstractControl,
@@ -66,7 +65,6 @@ interface ISimilarGame {
         GameGroupsService,
         GamingAccountsService,
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatIconModule,
         ReactiveFormsModule,

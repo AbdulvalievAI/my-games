@@ -1,6 +1,5 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import {
-    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     inject,
@@ -26,7 +25,6 @@ import type { IGameGroup } from '../../types/games.interfaces';
     templateUrl: './game-groups-list.component.html',
     styleUrls: [ './game-groups-list.component.scss' ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         DialogService,
         ExplorerService,
