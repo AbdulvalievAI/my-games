@@ -46,18 +46,16 @@
                     <span class="game-item__account-title">Аккаунты:</span>
 
                     @for (accountId of gameData.accounts; track accountId) {
+                        @let account = mapAccounts.get(accountId);
+
                         <app-logo-platform
                             class="game-item__logo-platform"
-                            [data]="
-                                mapPlatforms.get(
-                                    mapAccounts.get(accountId)?.platform
-                                )
-                            "
+                            [data]="mapPlatforms.get(account?.platform)"
                             [width]="'100%'"
                         ></app-logo-platform>
 
                         <span class="game-item__account-name">{{
-                            mapAccounts.get(accountId)?.name || "???"
+                            account?.name || "???"
                         }}</span>
                     }
                 </div>
