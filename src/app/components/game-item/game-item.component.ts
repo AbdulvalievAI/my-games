@@ -34,7 +34,7 @@ export class GameItemComponent {
 
     @Input() gameData: IGame;
     @Input() mapGameGroups: Map<string, IGameGroup>;
-    @Input() mapPlatforms: Map<EPlatform, IPlatform>;
+    @Input() mapPlatforms: Map<EPlatform | undefined, IPlatform>;
     @Input() mapAccounts: Map<string, IGamingAccount>;
 
     public copyName(event: PointerEvent): void {

@@ -108,6 +108,7 @@ $mat-btn-small-size: 24px;
     &__accounts {
         display: flex;
         flex-direction: row;
+        align-items: center;
     }
 
     &__groups {
@@ -118,6 +119,16 @@ $mat-btn-small-size: 24px;
     &__account-title {
         font-weight: bold;
         margin-right: $gap-size;
+        margin-left: 5px;
+    }
+
+    &__account-name {
+        margin-left: 3px;
+        margin-right: $gap-size;
+    }
+
+    &__logo-platform {
+        @include icon-size(21px);
     }
 }
 

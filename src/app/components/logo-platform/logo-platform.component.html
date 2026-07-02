@@ -1,7 +1,9 @@
-<img
-    class="logo-platform"
-    [src]="data?.logo || EPlatformLogo.EMPTY"
-    [alt]="data?.logo || 'Логотип'"
-    [matTooltip]="data?.name || 'Неизвестно'"
-    [ngStyle]="{ width: width }"
-/>
+@if (data) {
+    <img
+        class="logo-platform"
+        [src]="data.logo || EPlatformLogo.EMPTY"
+        [alt]="data.logo || 'Логотип'"
+        [matTooltip]="data.name || 'Неизвестно'"
+        [ngStyle]="{ width: width }"
+    />
+}
