@@ -43,8 +43,9 @@ export class GameItemComponent {
         this.openSnackBar('Название скопировано в буфер обмена')
     }
 
-    public openBlank(event: PointerEvent): void {
+    public openBlank(event: PointerEvent | MouseEvent): void {
         event.stopPropagation();
+        event.preventDefault();
         this.explorerService.openBlankGameEdit(this.gameData.id)
     }
 
