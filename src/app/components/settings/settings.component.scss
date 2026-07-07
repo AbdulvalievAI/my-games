@@ -1,6 +1,10 @@
 @use "../../styles/gaps" as *;
 @use "../../styles/variables" as *;
 
+:host {
+    width: max-content;
+}
+
 .settings {
     &__buttons {
         display: flex;
