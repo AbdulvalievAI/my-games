@@ -66,7 +66,9 @@
                     <app-logo-platform
                         [data]="
                             platformsService.getPlatformByType(
-                                $safeNavigationMigration(form.value.account?.platform)
+                                $safeNavigationMigration(
+                                    form.value.account?.platform
+                                )
                             )
                         "
                     ></app-logo-platform>
@@ -119,7 +121,7 @@
     </form>
 
     <button
-        class="ml"
+        class="ml mr"
         color="warn"
         mat-mini-fab
         extended

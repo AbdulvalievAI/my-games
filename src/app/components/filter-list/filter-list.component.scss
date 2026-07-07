@@ -9,3 +9,7 @@
 form mat-form-field {
     margin-right: $gap-size;
 }
+
+mat-form-field {
+    row-gap: $gap-size;
+}
