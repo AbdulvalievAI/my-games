@@ -38,26 +38,11 @@ export class GameItemComponent {
     @Input() mapAccounts: Map<string, IGamingAccount>;
 
     public copyName(event: PointerEvent): void {
+        event.preventDefault();
         event.stopPropagation();
+
         navigator.clipboard.writeText(this.gameData.name);
         this.openSnackBar('Название скопировано в буфер обмена')
-    }
-
-    public gameItemClick(event: MouseEvent): void {
-        if ([ 0, 1 ].includes(event.button)) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (event.button === 0) {
-                this.explorerService.goToGameEdit(this.gameData.id);
-
-                return;
-            }
-
-            if (event.button === 1) {
-                this.openBlank(event);
-            }
-        }
     }
 
     public openBlank(event: PointerEvent | MouseEvent): void {

@@ -52,6 +52,7 @@ $mat-btn-small-size: 24px;
         left: 180px;
         border: 1px solid grey;
         border-radius: $border-radius;
+        z-index: 999999999;
     }
 
     &__btn {

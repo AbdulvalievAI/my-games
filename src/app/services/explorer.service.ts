@@ -52,13 +52,6 @@ export class ExplorerService {
         this._router.navigate(this._getPathGameGroupEdit(id));
     }
 
-    public openBlankGameGroupEdit(id: string): void {
-        const url = this._router.serializeUrl(
-            this._router.createUrlTree(this._getPathGameGroupEdit(id)),
-        );
-        window.open(url, '_blank');
-    }
-
     /* Gaming Accounts */
 
     public goToGamingAccountsList(): void {
