@@ -1,8 +1,4 @@
-<div
-    class="game-item"
-    (click)="explorerService.goToGameEdit(gameData.id)"
-    (mousedown)="openBlank($event)"
->
+<div class="game-item" (mousedown)="gameItemClick($event)">
     <div class="game-item__left">
         <div class="game-item__logo">
             @if (gameData.logo) {
