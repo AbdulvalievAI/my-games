@@ -4,9 +4,12 @@ mat-list-item {
     height: fit-content !important;
     padding: 1vh 0 !important;
     border-bottom: 1px solid gray;
+    background-color: transparent;
+    transition: background-color 1s ease-out;
 
     &:hover {
-        background-color: #0000000a;
+        transition: background-color 0.2s ease-out;
+        background: color-mix(in srgb, white 40%, black 30%);
     }
 }
 
