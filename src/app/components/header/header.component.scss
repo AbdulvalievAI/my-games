@@ -2,6 +2,12 @@
 @use "../../styles/variables" as *;
 @use "../../styles/gaps" as *;
 
+:host {
+    min-height: 7vh;
+    display: block;
+    margin-bottom: 1vh;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
