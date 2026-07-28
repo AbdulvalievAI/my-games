@@ -1,0 +1,48 @@
+name: Deploy Angular to GitHub Pages
+
+on:
+    push:
+        branches:
+            - main # Укажите master, если ваша главная ветка называется master
+
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+concurrency:
+    group: "pages"
+    cancel-in-progress: true
+
+jobs:
+    deploy:
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        runs-size: ubuntu-latest
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 24 # Укажите версию Node, если у вас старый Angular
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build Angular Project
+              # Обязательно замените "my-games" ниже на точное имя вашего репозитория!
+              run: npx ng build --configuration production --base-href=/my-games/
+
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  # Для Angular 17+ путь dist/имя-проекта/browser, для старых - dist/имя-проекта
+                  path: ./dist/my-games/browser
+
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
