@@ -34,7 +34,7 @@ export class GamesService implements OnDestroy {
         return {
             id: 'ERROR',
             name: 'Что то пошло не так \\(О-О)/',
-            logo: '/assets/omg.jpg',
+            logo: './assets/omg.jpg',
             platforms: [ EPlatform.STEAM ],
             dateEdit: '2023-12-12T13:42:08.914Z',
         };

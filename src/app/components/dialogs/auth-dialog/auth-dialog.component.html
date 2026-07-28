@@ -17,7 +17,9 @@
                     matMiniFab
                     color="primary"
                     (click)="dialogRef.close()"
-                    [disabled]="$safeNavigationMigration((isLoad$ | async)?.isLoad)"
+                    [disabled]="
+                        $safeNavigationMigration((isLoad$ | async)?.isLoad)
+                    "
                 >
                     <mat-icon>close</mat-icon>
                 </button>
@@ -96,7 +98,7 @@
                             (click)="openWindowToken()"
                         >
                             <img
-                                src="/assets/yandex.png"
+                                src="./assets/yandex.png"
                                 alt="Icon"
                                 width="30"
                                 height="30"
