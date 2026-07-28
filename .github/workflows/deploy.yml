@@ -27,7 +27,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 24 # Укажите версию Node, если у вас старый Angular
+                  node-version: 20 # Укажите версию Node, если у вас старый Angular
 
             - name: Install dependencies
               run: npm ci
