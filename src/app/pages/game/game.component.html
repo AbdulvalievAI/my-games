@@ -147,9 +147,9 @@
                 }
             </mat-form-field>
 
-            @if (similarGame.findedGames.length) {
+            @if (similarGame.foundGames.length) {
                 <app-btn-list
-                    [buttonsList]="similarGame.findedGames"
+                    [buttonsList]="similarGame.foundGames"
                     (clickItem)="explorerService.goToGameEdit($event.id)"
                 ></app-btn-list>
             }

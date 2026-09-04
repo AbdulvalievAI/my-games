@@ -64,12 +64,12 @@ export class ExplorerService {
     }
 
     public goToGamingAccountEdit(id: string): void {
-        this._router.navigate(this._getPathGamingAccounEdit(id));
+        this._router.navigate(this._getPathGamingAccountEdit(id));
     }
 
     public openBlankGamingAccountEdit(id: string): void {
         const url = this._router.serializeUrl(
-            this._router.createUrlTree(this._getPathGamingAccounEdit(id)),
+            this._router.createUrlTree(this._getPathGamingAccountEdit(id)),
         );
         window.open(url, '_blank');
     }
@@ -82,7 +82,7 @@ export class ExplorerService {
         return [ '/gameGroup', id ];
     }
 
-    private _getPathGamingAccounEdit(id: string) {
+    private _getPathGamingAccountEdit(id: string) {
         return [ '/gamingAccount', id ];
     }
 }

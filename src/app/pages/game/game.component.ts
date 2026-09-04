@@ -48,7 +48,7 @@ interface ISimilarGame {
     interval: ReturnType<typeof setInterval> | null;
     isShowProgress: boolean;
     isLoadData: boolean;
-    findedGames: IGame[] | [];
+    foundGames: IGame[] | [];
     stepDelay: number,
     sizeStepProgress: number,
 };
@@ -376,7 +376,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     private _fieldNameChangeHandler(name: string | null): void {
         const clear = (isShowProgress: boolean) => {
-            this.similarGame.findedGames = [];
+            this.similarGame.foundGames = [];
             this.similarGame.isShowProgress = isShowProgress;
             this.similarGame.valueProgress = 0;
 
@@ -404,7 +404,7 @@ export class GameComponent implements OnInit, OnDestroy {
                 const games = this._gamesService.searchGamesByName(name);
 
                 if (games?.length) {
-                    this.similarGame.findedGames = games.slice(0, 8);
+                    this.similarGame.foundGames = games.slice(0, 8);
                 }
 
                 this.similarGame.isLoadData = false;
@@ -446,7 +446,7 @@ export class GameComponent implements OnInit, OnDestroy {
             interval: null,
             isShowProgress: false,
             isLoadData: false,
-            findedGames: [],
+            foundGames: [],
             stepDelay,
             sizeStepProgress,
         }

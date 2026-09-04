@@ -29,7 +29,7 @@ export enum EPlatformLogo {
     EMPTY = './assets/alternative_logo.png',
 }
 
-export const platforms: IPlatform[] = [
+export const platformsStub: IPlatform[] = [
     {
         id: '0',
         name: 'Local',

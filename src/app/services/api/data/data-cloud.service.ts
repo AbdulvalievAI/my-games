@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { forkJoin, map, type Observable } from "rxjs";
 
 import { EYdxFileNames } from '../../../config/yandex.config';
-import { type EPlatform,platforms } from "../../../data/platforms";
+import { type EPlatform, platformsStub } from "../../../data/platforms";
 import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
 import type { IGame, IGameGroup } from "../../../types/games.interfaces";
 import type { IGamingAccount } from "../../../types/gaming-accounts.interfaces";
@@ -31,7 +31,7 @@ export class DataCloudService implements IDataPointService {
             this._diskService.downloadFile<IGamingAccount>(EYdxFileNames.GAMING_ACCOUNTS),
             /* this._diskService.downloadFile<IPlatform>(EYdxFileNames.PLATFORMS), */
         ])
-        .pipe(map(([ games, gameGroups, gamingAccounts/* , platforms */ ]) => {
+        .pipe(map(([ games, gameGroups, gamingAccounts, platforms = platformsStub ]) => {
             this._setMapGames(games?.jsonData || []);
             this._setMapGameGroups(gameGroups?.jsonData || []);
             this._setMapGamingAccounts(gamingAccounts?.jsonData || []);

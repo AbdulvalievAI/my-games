@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import cloneDeep from "lodash-es/cloneDeep";
 import type { Observable } from "rxjs";
 
-import { type EPlatform,platforms } from "../../../data/platforms";
+import { type EPlatform, platformsStub } from "../../../data/platforms";
 import type { IDataPointService, IServerMessage } from "../../../types/api.interfaces";
 import type { IGame, IGameGroup } from "../../../types/games.interfaces";
 import type { IGamingAccount } from "../../../types/gaming-accounts.interfaces";
@@ -48,13 +48,13 @@ export class DataLocalService implements IDataPointService {
     public updateGame(game: IGame): Observable<IGame> {
         return this._toolsService.serverDelay(() => {
             const gamesList = this._getParseData<IGame>(this._keyGame);
-            const findedGameIdx = gamesList.findIndex(gameItem => gameItem.id === game.id);
+            const foundGameIdx = gamesList.findIndex(gameItem => gameItem.id === game.id);
 
-            if (findedGameIdx === -1) {
+            if (foundGameIdx === -1) {
                 throw new Error(`Не найдена игра с id ${game.id}`);
             }
 
-            gamesList[findedGameIdx] = game;
+            gamesList[foundGameIdx] = game;
             localStorage.setItem(this._keyGame, JSON.stringify(gamesList));
 
             return cloneDeep(game);
@@ -63,38 +63,38 @@ export class DataLocalService implements IDataPointService {
 
     public updateGames(games: IGame[]): Observable<IGame[]> {
         return this._toolsService.serverDelay(() => {
-            const gamesList = this._getParseData<IGame>(this._keyGame);
+            const currentGamesList = this._getParseData<IGame>(this._keyGame);
 
             games.forEach(gameItem => {
-                const findedGameIdx = gamesList.findIndex(gameItem => gameItem.id === gameItem.id);
+                const foundGameIdx = currentGamesList.findIndex(currentGameItem => currentGameItem.id === gameItem.id);
 
-                if (findedGameIdx === -1) {
+                if (foundGameIdx === -1) {
                     throw new Error(`Не найдена игра с id ${gameItem.id}`);
                 }
 
-                gamesList[findedGameIdx] = gameItem;
+                currentGamesList[foundGameIdx] = gameItem;
             });
 
-            localStorage.setItem(this._keyGame, JSON.stringify(gamesList));
+            localStorage.setItem(this._keyGame, JSON.stringify(currentGamesList));
 
-            return cloneDeep(gamesList);
+            return cloneDeep(currentGamesList);
         });
     }
 
     public deleteGame(id: string): Observable<IServerMessage> {
         return this._toolsService.serverDelay(() => {
             const gamesList = this._getParseData<IGame>(this._keyGame);
-            const findedGameIdx = gamesList.findIndex(gameItem => gameItem.id === id);
+            const foundGameIdx = gamesList.findIndex(gameItem => gameItem.id === id);
             const successMsg = {
                 "status": "success",
                 "message": `Объект c id ${id} успешно удалён`
             };
 
-            if (findedGameIdx === -1) {
+            if (foundGameIdx === -1) {
                 return successMsg;
             }
 
-            gamesList.splice(findedGameIdx, 1);
+            gamesList.splice(foundGameIdx, 1);
             localStorage.setItem(this._keyGame, JSON.stringify(gamesList));
 
             return successMsg;
@@ -269,7 +269,7 @@ export class DataLocalService implements IDataPointService {
 
     private _getDataPlatforms(isMock = true): IPlatform[] {
         if (isMock) {
-            return cloneDeep(platforms);
+            return cloneDeep(platformsStub);
         } else {
             return this._getParseData<IPlatform>(this._keyPlatforms)
         }

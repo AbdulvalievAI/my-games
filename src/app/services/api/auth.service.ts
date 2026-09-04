@@ -12,7 +12,7 @@ export class AuthService {
     public readonly useFake = false;
 
     private readonly _keyLsToken = 'yandex_token';
-    private readonly _keyLsCliendId = 'client_id';
+    private readonly _keyLsClientId = 'client_id';
 
     // Метод для генерации URL авторизации
     public getAuthUrl(clientId: string): string {
@@ -34,12 +34,12 @@ export class AuthService {
     }
 
     public logout() {
-        this.clearCliendId();
+        this.clearClientId();
         this.clearToken();
     }
 
     public isAuthorized(): boolean {
-        return this.hasToken() && this.hasCliendId();
+        return this.hasToken() && this.hasClientId();
     }
 
     /** Token */
@@ -65,19 +65,19 @@ export class AuthService {
 
     /** ClientId */
 
-    public hasCliendId(): boolean {
-        return !!localStorage.getItem(this._keyLsCliendId);
+    public hasClientId(): boolean {
+        return !!localStorage.getItem(this._keyLsClientId);
     }
 
-    public getCliendId(): string | null {
-        return localStorage.getItem(this._keyLsCliendId);
+    public getClientId(): string | null {
+        return localStorage.getItem(this._keyLsClientId);
     }
 
-    public saveCliendId(id: string): void {
-        localStorage.setItem(this._keyLsCliendId, id);
+    public saveClientId(id: string): void {
+        localStorage.setItem(this._keyLsClientId, id);
     }
 
-    public clearCliendId() {
-        localStorage.removeItem(this._keyLsCliendId);
+    public clearClientId() {
+        localStorage.removeItem(this._keyLsClientId);
     }
 }

@@ -100,11 +100,11 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
         this.disabledForm = this.authService.isAuthorized()
 
         const token = this.authService.getToken();
-        const clientId = this.authService.getCliendId();
+        const clientId = this.authService.getClientId();
 
         this.form = this._fb.group({
             token: this._createTokenControl(token, this.disabledForm),
-            clientId: this._createCliendIdControl(clientId, this.disabledForm),
+            clientId: this._createClientIdControl(clientId, this.disabledForm),
         }) as FormGroup<IAuthForm>;
     }
 
@@ -132,7 +132,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
                         this.isLoad$.next({ isLoad: false, status: 'Успешно!' });
 
                         if (clientId) {
-                            this.authService.saveCliendId(clientId);
+                            this.authService.saveClientId(clientId);
                         }
 
                         if (token) {
@@ -169,7 +169,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
         return this._fb.control({ value: token, disabled }, Validators.required);
     }
 
-    private _createCliendIdControl(clientId: string | null, disabled = false) {
+    private _createClientIdControl(clientId: string | null, disabled = false) {
         return this._fb.control({ value: clientId, disabled }, [ Validators.required ]);
     }
 

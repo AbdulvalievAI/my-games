@@ -1,10 +1,11 @@
 
 import { AsyncPipe } from '@angular/common';
 import {
-  Component,
-  inject,
-  type OnDestroy,
-  type OnInit } from '@angular/core';
+    Component,
+    inject,
+    type OnDestroy,
+    type OnInit
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

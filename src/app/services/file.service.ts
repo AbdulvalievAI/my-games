@@ -19,11 +19,16 @@ export class FileService {
             mimeType = format === 'json' ? 'application/json' : 'text/csv'
         } = options;
 
-        let content: string;
 
         if (!data.length) {
-            data = (yandexDiskConfig.emptyFileContent as T) as T[];
+            return new File(
+                [ yandexDiskConfig.emptyFileContent ],
+                filename,
+                { type: mimeType },
+            );
         }
+
+        let content: string;
 
         switch (format) {
             case 'json':
@@ -38,7 +43,11 @@ export class FileService {
                 throw new Error('Unsupported format. Use "json" or "csv"');
         }
 
-        return new File([ content ], filename, { type: mimeType });
+        return new File(
+            [ content ],
+            filename,
+            { type: mimeType },
+        );
     }
 
     public downloadFile(file: File): void {

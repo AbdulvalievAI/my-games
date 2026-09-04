@@ -4,7 +4,7 @@ import type { Observable } from "rxjs";
 
 import { gameGroups } from "../../../data/game-groups";
 import { games } from "../../../data/games";
-import { type EPlatform, platforms } from "../../../data/platforms";
+import { type EPlatform, platformsStub } from "../../../data/platforms";
 import type {
     IDataPointService,
     IServerMessage,
@@ -21,7 +21,7 @@ export class DataFakeApiService implements IDataPointService {
 
     private _games = cloneDeep(games);
     private _gameGroups = cloneDeep(gameGroups);
-    private readonly _platforms = cloneDeep(platforms);
+    private readonly _platforms = cloneDeep(platformsStub);
 
     public createGame(game: IGame): Observable<IGame> {
         return this._toolsService.serverDelay(() => {
@@ -44,14 +44,14 @@ export class DataFakeApiService implements IDataPointService {
     public updateGame(game: IGame): Observable<IGame> {
         return this._toolsService.serverDelay(() => {
             const gamesList = this._games;
-            const findedGameIdx = gamesList.findIndex(gameItem => gameItem.id === game.id);
+            const foundGameIdx = gamesList.findIndex(gameItem => gameItem.id === game.id);
 
-            if (findedGameIdx !== -1) {
-                gamesList[findedGameIdx] = game;
+            if (foundGameIdx !== -1) {
+                gamesList[foundGameIdx] = game;
 
                 this._games = gamesList;
 
-                return gamesList[findedGameIdx];
+                return gamesList[foundGameIdx];
             } else {
                 throw new Error(`Не найдена игра с id ${game.id}`)
             }
